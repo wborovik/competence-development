@@ -10,6 +10,6 @@ import java.time.LocalDateTime;
 @Setter
 @MappedSuperclass
 public abstract class AuditEntity extends AbstractEntity {
-    private LocalDateTime create;
-    private LocalDateTime change;
+    private LocalDateTime created;
+    private LocalDateTime changed;
 }
