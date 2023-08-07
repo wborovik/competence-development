@@ -4,10 +4,8 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <!--Создание таблиц:-->
-    <include file="changelog/1_init_ddl.xml" relativeToChangelogFile="true"/>
-
-    <!--Заполнение таблиц данными:-->
-    <include file="changelog/2_insert_dml.xml" relativeToChangelogFile="true"/>
+    <changeSet id="2-01" author="vborovik">
+        <sqlFile path="db/scripts/01_alter_database.sql"/>
+    </changeSet>
 
 </databaseChangeLog>

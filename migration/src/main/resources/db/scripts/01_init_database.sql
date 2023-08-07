@@ -32,14 +32,8 @@ customer_id bigint,
 executor_id bigint,
 primary key (id));
 
-create sequence admin_seq start with 1 increment by 50;
-
-create sequence customer_seq start with 1 increment by 50;
-
-create sequence executor_seq start with 1 increment by 50;
-
-create sequence orders_seq start with 1 increment by 50;
+create sequence global_sequence start with 1 increment by 1;
 
 alter table if exists orders add constraint FK624gtjin3po807j3vix093tlf foreign key (customer_id) references customer;
 
-alter table if exists orders add constraint FKnniiumcfln8h9ux9hjt8fpjtx foreign key (executor_id) references executor
+alter table if exists orders add constraint FKnniiumcfln8h9ux9hjt8fpjtx foreign key (executor_id) references executor;
