@@ -31,7 +31,7 @@
         <postgresql.version>42.6.0</postgresql.version>
         <liquibase.version>4.23.0</liquibase.version>
         <javax.validation.version>2.0.1.Final</javax.validation.version>
-
+        <cxf.version>4.0.2</cxf.version>
     </properties>
 
     <dependencies>
