@@ -7,8 +7,6 @@ import lombok.Setter;
 import ru.axbit.domain.domain.common.AuditEntity;
 import ru.axbit.domain.domain.common.UserData;
 
-import javax.validation.constraints.NotNull;
-
 @Getter
 @Setter
 @Entity

@@ -7,9 +7,7 @@ import ru.axbit.service.util.SafeUtils;
 import ru.axbit.vborovik.competence.core.CustomerPageType;
 import ru.axbit.vborovik.competence.myservice.types.GetCustomerListResponse;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 @AllArgsConstructor
