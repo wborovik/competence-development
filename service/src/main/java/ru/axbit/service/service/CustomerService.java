@@ -1,8 +1,8 @@
 package ru.axbit.service.service;
 
-import ru.axbit.vborovik.competence.core.CustomerPageType;
-import ru.axbit.vborovik.competence.filtertypes.GetCustomerListFilterType;
+import ru.axbit.vborovik.competence.myservice.types.GetCustomerListRequest;
+import ru.axbit.vborovik.competence.myservice.types.GetCustomerListResponse;
 
 public interface CustomerService {
-    CustomerPageType getCustomer(GetCustomerListFilterType body);
+    GetCustomerListResponse getCustomerList(GetCustomerListRequest body);
 }

@@ -10,5 +10,5 @@ import lombok.Setter;
 public class UserData {
     private String name;
     private String surname;
-    private int age;
+    private Integer age;
 }

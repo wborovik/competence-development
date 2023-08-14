@@ -21,9 +21,16 @@
         <wsdl:part name="body" element="ns:getCustomerListRequest"/>
     </wsdl:message>
 
+    <wsdl:message name="getExecutorListInput">
+        <wsdl:part name="body" element="ns:getExecutorListRequest"/>
+    </wsdl:message>
+
     <!--    Output msg-->
     <wsdl:message name="getCustomerListOutput">
         <wsdl:part name="body" element="ns:getCustomerListResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getExecutorListOutput">
+        <wsdl:part name="body" element="ns:getExecutorListResponse"/>
     </wsdl:message>
 
     <!--    PortType  -->
@@ -34,6 +41,14 @@
             </wsdl:documentation>
             <wsdl:input message="tns:getCustomerListInput"/>
             <wsdl:output message="tns:getCustomerListOutput"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getExecutorList">
+            <wsdl:documentation>
+
+            </wsdl:documentation>
+            <wsdl:input message="getExecutorListInput"/>
+            <wsdl:output message="getExecutorListOutput"/>
         </wsdl:operation>
     </wsdl:portType>
 

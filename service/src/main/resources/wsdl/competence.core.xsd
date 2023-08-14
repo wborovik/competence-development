@@ -16,8 +16,14 @@
 
     <xs:complexType name="CustomerPageType">
         <xs:sequence>
+            <xs:element name="customerId" type="xs:long"/>
             <xs:element name="userData" type="UserDataPageType"/>
         </xs:sequence>
+    </xs:complexType>
 
+    <xs:complexType name="ExecutorPageType">
+        <xs:sequence>
+            <xs:element name="userData" type="UserDataPageType"/>
+        </xs:sequence>
     </xs:complexType>
 </xs:schema>

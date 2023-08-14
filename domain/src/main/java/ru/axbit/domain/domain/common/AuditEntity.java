@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public abstract class AuditEntity extends AbstractEntity {
     @NotNull
-    private LocalDateTime createdDate;
-    private LocalDateTime changedDate;
+    private LocalDateTime created;
+    private LocalDateTime changed;
     @NotNull
-    private boolean isDeleted;
+    private boolean deleted;
 }

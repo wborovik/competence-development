@@ -29,7 +29,30 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="result" type="core:CustomerPageType"/>
+                <xs:element name="result" type="core:CustomerPageType" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!--    Метод getCustomerList-->
+    <xs:element name="getExecutorListRequest">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода getExecutorList</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="filter" type="filter:GetExecutorListFilterType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getExecutorListResponse">
+        <xs:annotation>
+            <xs:documentation>Выходные параметры метода getExecutorList</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="result" type="core:ExecutorPageType"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

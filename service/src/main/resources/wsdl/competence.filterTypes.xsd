@@ -14,4 +14,10 @@
             <xs:element name="customerId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
+
+    <xs:complexType name="GetExecutorListFilterType">
+        <xs:sequence>
+            <xs:element name="executorId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
 </xs:schema>
