@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:tns="http://vborovik.axbit.ru/competence/filterTypes/"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:core="http://vborovik.axbit.ru/competence/core/"
+           targetNamespace="http://vborovik.axbit.ru/competence/filterTypes/"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="competence.filterTypes.xsd"/>
+    <xs:import namespace="http://vborovik.axbit.ru/competence/core/"
+               schemaLocation="competence.core.xsd"/>
+
+    <xs:complexType name="GetCustomerListFilterType">
+        <xs:sequence>
+            <xs:element name="customerId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="GetExecutorListFilterType">
+        <xs:sequence>
+            <xs:element name="executorId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
