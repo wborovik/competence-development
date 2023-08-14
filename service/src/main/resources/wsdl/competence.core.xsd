@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://vborovik.axbit.ru/competence/core/"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://vborovik.axbit.ru/competence/core/"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="competence.core.xsd"/>
+
+    <xs:complexType name="UserDataPageType">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="surname" type="xs:string"/>
+            <xs:element name="age" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CustomerPageType">
+        <xs:sequence>
+            <xs:element name="userData" type="UserDataPageType"/>
+        </xs:sequence>
+
+    </xs:complexType>
+</xs:schema>
