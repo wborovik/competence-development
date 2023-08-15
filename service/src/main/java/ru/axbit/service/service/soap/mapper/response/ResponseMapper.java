@@ -6,7 +6,7 @@ import ru.axbit.domain.domain.common.UserData;
 import ru.axbit.domain.domain.user.Customer;
 import ru.axbit.vborovik.competence.core.CustomerPageType;
 import ru.axbit.vborovik.competence.core.UserDataPageType;
-import ru.axbit.vborovik.competence.myservice.types.GetCustomerListResponse;
+import ru.axbit.vborovik.competence.userservice.types.GetCustomerListResponse;
 
 import java.util.Objects;
 import java.util.Optional;

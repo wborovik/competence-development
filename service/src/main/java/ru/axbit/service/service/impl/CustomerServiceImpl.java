@@ -8,8 +8,8 @@ import ru.axbit.domain.repository.CustomerRepository;
 import ru.axbit.service.service.CustomerService;
 import ru.axbit.service.service.soap.mapper.response.ResponseMapper;
 import ru.axbit.vborovik.competence.filtertypes.GetCustomerListFilterType;
-import ru.axbit.vborovik.competence.myservice.types.GetCustomerListRequest;
-import ru.axbit.vborovik.competence.myservice.types.GetCustomerListResponse;
+import ru.axbit.vborovik.competence.userservice.types.GetCustomerListRequest;
+import ru.axbit.vborovik.competence.userservice.types.GetCustomerListResponse;
 
 import java.util.HashSet;
 import java.util.Objects;
