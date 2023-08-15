@@ -1,4 +1,64 @@
 package ru.axbit.service.config.soap;
 
+import jakarta.xml.ws.Endpoint;
+import jakarta.xml.ws.soap.SOAPBinding;
+import lombok.RequiredArgsConstructor;
+import org.apache.cxf.Bus;
+import org.apache.cxf.bus.spring.SpringBus;
+import org.apache.cxf.jaxws.EndpointImpl;
+import org.apache.cxf.transport.servlet.CXFServlet;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletPath;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
+import ru.axbit.vborovik.competence.myservice.MyService;
+import ru.axbit.vborovik.competence.myservice.MyServicePortType;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Configuration
+@RequiredArgsConstructor
+@Profile("myService")
 public class SoapConfig {
+
+    @Bean
+    public ServletRegistrationBean<CXFServlet> cxfServlet() {
+        CXFServlet cxfServlet = new CXFServlet();
+        ServletRegistrationBean<CXFServlet> servletReg = new ServletRegistrationBean<>(cxfServlet, "/services/*");
+        servletReg.setLoadOnStartup(1);
+        return servletReg;
+    }
+
+    @Bean
+    @Primary
+    public DispatcherServletPath dispatcherServletPathProvider() {
+        return () -> "/";
+    }
+
+    @Bean(name = Bus.DEFAULT_BUS_ID)
+    public SpringBus springBus() {
+        return new SpringBus();
+    }
+
+    @Bean
+    public Endpoint createMyServiceEndpoint(SpringBus bus, @Qualifier("myServiceSoap") MyServicePortType myServicePortType) {
+        EndpointImpl endpoint = new EndpointImpl(bus, myServicePortType, SOAPBinding.SOAP12HTTP_BINDING);
+        endpoint.setProperties(getEndpointProps());
+        endpoint.setServiceName(MyService.SERVICE);
+        endpoint.setWsdlLocation("classpath:wsdl/myService.wsdl");
+        endpoint.publish("competence/myService");
+
+        return endpoint;
+    }
+
+    private Map<String, Object> getEndpointProps() {
+        Map<String, Object> props = new HashMap<>();
+        props.put("schema-validation-enabled", "REQUEST");
+
+        return props;
+    }
 }

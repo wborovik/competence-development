@@ -8,16 +8,16 @@
 
     <xs:complexType name="UserDataPageType">
         <xs:sequence>
-            <xs:element name="name" type="xs:string"/>
-            <xs:element name="surname" type="xs:string"/>
-            <xs:element name="age" type="xs:int"/>
+            <xs:element name="name" type="xs:string" minOccurs="0"/>
+            <xs:element name="surname" type="xs:string" minOccurs="0"/>
+            <xs:element name="age" type="xs:int" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="CustomerPageType">
         <xs:sequence>
             <xs:element name="customerId" type="xs:long"/>
-            <xs:element name="userData" type="UserDataPageType"/>
+            <xs:element name="userData" type="UserDataPageType" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
