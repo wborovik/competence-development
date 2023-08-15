@@ -2,7 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
            xmlns:core="http://vborovik.axbit.ru/competence/core/"
            xmlns:filter="http://vborovik.axbit.ru/competence/filterTypes/"
-           targetNamespace="http://vborovik.axbit.ru/competence/myService/types/"
+           targetNamespace="http://vborovik.axbit.ru/competence/userService/types/"
            elementFormDefault="qualified">
 
     <xs:import namespace="http://vborovik.axbit.ru/competence/core/"

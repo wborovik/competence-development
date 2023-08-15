@@ -14,15 +14,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
-import ru.axbit.vborovik.competence.myservice.MyService;
-import ru.axbit.vborovik.competence.myservice.MyServicePortType;
+import ru.axbit.vborovik.competence.userservice.UserService;
+import ru.axbit.vborovik.competence.userservice.UserServicePortType;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
 @RequiredArgsConstructor
-@Profile("myService")
+@Profile("userService")
 public class SoapConfig {
 
     @Bean
@@ -45,12 +45,12 @@ public class SoapConfig {
     }
 
     @Bean
-    public Endpoint createMyServiceEndpoint(SpringBus bus, @Qualifier("myServiceSoap") MyServicePortType myServicePortType) {
-        EndpointImpl endpoint = new EndpointImpl(bus, myServicePortType, SOAPBinding.SOAP12HTTP_BINDING);
+    public Endpoint createMyServiceEndpoint(SpringBus bus, @Qualifier("userServiceSoap") UserServicePortType userServicePortType) {
+        EndpointImpl endpoint = new EndpointImpl(bus, userServicePortType, SOAPBinding.SOAP12HTTP_BINDING);
         endpoint.setProperties(getEndpointProps());
-        endpoint.setServiceName(MyService.SERVICE);
-        endpoint.setWsdlLocation("classpath:wsdl/myService.wsdl");
-        endpoint.publish("competence/myService");
+        endpoint.setServiceName(UserService.SERVICE);
+        endpoint.setWsdlLocation("classpath:wsdl/userService.wsdl");
+        endpoint.publish("competence/userService");
 
         return endpoint;
     }

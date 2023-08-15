@@ -2,8 +2,8 @@ package ru.axbit.service.service.impl;
 
 import org.springframework.stereotype.Service;
 import ru.axbit.service.service.ExecutorService;
-import ru.axbit.vborovik.competence.myservice.types.GetExecutorListRequest;
-import ru.axbit.vborovik.competence.myservice.types.GetExecutorListResponse;
+import ru.axbit.vborovik.competence.userservice.types.GetExecutorListRequest;
+import ru.axbit.vborovik.competence.userservice.types.GetExecutorListResponse;
 
 @Service
 public class ExecutorServiceImpl implements ExecutorService {
