@@ -13,4 +13,7 @@
     <!--Изменение поля created_date на not null:-->
     <include file="changelog/3_update_created_date.xml" relativeToChangelogFile="true"/>
 
+    <!--Добавление данных в таблицы:-->
+    <include file="changelog/4_insert_dml.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>
