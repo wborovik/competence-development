@@ -1,6 +1,7 @@
 package ru.axbit.domain.domain.common;
 
-import jakarta.persistence.MappedSuperclass;
+
+import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;

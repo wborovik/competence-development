@@ -1,6 +1,6 @@
 package ru.axbit.domain.domain.common;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.io.Serializable;
 

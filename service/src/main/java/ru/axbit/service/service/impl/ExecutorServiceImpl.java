@@ -1,6 +1,5 @@
 package ru.axbit.service.service.impl;
 
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.axbit.domain.domain.user.Executor;
@@ -11,6 +10,7 @@ import ru.axbit.vborovik.competence.filtertypes.GetExecutorListFilterType;
 import ru.axbit.vborovik.competence.userservice.types.GetExecutorListRequest;
 import ru.axbit.vborovik.competence.userservice.types.GetExecutorListResponse;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;

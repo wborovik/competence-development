@@ -1,7 +1,7 @@
 package ru.axbit.domain.domain.admin;
 
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 import ru.axbit.domain.domain.common.AuditEntity;

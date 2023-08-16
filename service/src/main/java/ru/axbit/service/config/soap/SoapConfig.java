@@ -1,7 +1,7 @@
 package ru.axbit.service.config.soap;
 
-import jakarta.xml.ws.Endpoint;
-import jakarta.xml.ws.soap.SOAPBinding;
+import javax.xml.ws.Endpoint;
+import javax.xml.ws.soap.SOAPBinding;
 import lombok.RequiredArgsConstructor;
 import org.apache.cxf.Bus;
 import org.apache.cxf.bus.spring.SpringBus;

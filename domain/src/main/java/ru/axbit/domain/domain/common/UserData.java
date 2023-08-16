@@ -1,8 +1,9 @@
 package ru.axbit.domain.domain.common;
 
-import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.Embeddable;
 
 @Getter
 @Setter
