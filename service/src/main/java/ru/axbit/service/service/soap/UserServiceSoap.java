@@ -3,6 +3,7 @@ package ru.axbit.service.service.soap;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.axbit.service.service.CustomerService;
+import ru.axbit.service.service.ExecutorService;
 import ru.axbit.vborovik.competence.userservice.UserServicePortType;
 import ru.axbit.vborovik.competence.userservice.types.GetCustomerListRequest;
 import ru.axbit.vborovik.competence.userservice.types.GetCustomerListResponse;
@@ -13,10 +14,11 @@ import ru.axbit.vborovik.competence.userservice.types.GetExecutorListResponse;
 @AllArgsConstructor
 public class UserServiceSoap implements UserServicePortType {
     private final CustomerService customerService;
+    private final ExecutorService executorService;
 
     @Override
     public GetExecutorListResponse getExecutorList(GetExecutorListRequest body) {
-        return null;
+        return executorService.getExecutorList(body);
     }
 
     @Override
