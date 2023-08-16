@@ -14,8 +14,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
-import ru.axbit.vborovik.competence.userservice.UserService;
-import ru.axbit.vborovik.competence.userservice.UserServicePortType;
+import ru.axbit.vborovik.competence.userservice.v1.UserService;
+import ru.axbit.vborovik.competence.userservice.v1.UserServicePortType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,12 +45,12 @@ public class SoapConfig {
     }
 
     @Bean
-    public Endpoint createMyServiceEndpoint(SpringBus bus, @Qualifier("userServiceSoap") UserServicePortType userServicePortType) {
+    public Endpoint createUserServiceEndpoint(SpringBus bus, @Qualifier("userServiceSoap") UserServicePortType userServicePortType) {
         EndpointImpl endpoint = new EndpointImpl(bus, userServicePortType, SOAPBinding.SOAP12HTTP_BINDING);
         endpoint.setProperties(getEndpointProps());
         endpoint.setServiceName(UserService.SERVICE);
-        endpoint.setWsdlLocation("classpath:wsdl/userService.wsdl");
-        endpoint.publish("competence/userService");
+        endpoint.setWsdlLocation("classpath:wsdl/v1/userService/userService.wsdl");
+        endpoint.publish("competence/userService/v1");
 
         return endpoint;
     }

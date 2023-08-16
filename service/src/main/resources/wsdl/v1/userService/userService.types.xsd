@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           xmlns:core="http://vborovik.axbit.ru/competence/core/"
-           xmlns:filter="http://vborovik.axbit.ru/competence/filterTypes/"
-           targetNamespace="http://vborovik.axbit.ru/competence/userService/types/"
+           xmlns:core="http://vborovik.axbit.ru/competence/core/v1/"
+           xmlns:filter="http://vborovik.axbit.ru/competence/filterTypes/v1/"
+           targetNamespace="http://vborovik.axbit.ru/competence/userService/types/v1/"
            elementFormDefault="qualified">
 
-    <xs:import namespace="http://vborovik.axbit.ru/competence/core/"
-               schemaLocation="competence.core.xsd"/>
-    <xs:import namespace="http://vborovik.axbit.ru/competence/filterTypes/"
-               schemaLocation="competence.filterTypes.xsd"/>
+    <xs:import namespace="http://vborovik.axbit.ru/competence/core/v1/"
+               schemaLocation="../competence.core.xsd"/>
+    <xs:import namespace="http://vborovik.axbit.ru/competence/filterTypes/v1/"
+               schemaLocation="../competence.filterTypes.xsd"/>
 
     <!--    Requests & Responses-->
     <!--    Метод getCustomerList-->

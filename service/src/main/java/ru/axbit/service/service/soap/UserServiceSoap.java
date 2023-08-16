@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.axbit.service.service.CustomerService;
 import ru.axbit.service.service.ExecutorService;
-import ru.axbit.vborovik.competence.userservice.UserServicePortType;
-import ru.axbit.vborovik.competence.userservice.types.GetCustomerListRequest;
-import ru.axbit.vborovik.competence.userservice.types.GetCustomerListResponse;
-import ru.axbit.vborovik.competence.userservice.types.GetExecutorListRequest;
-import ru.axbit.vborovik.competence.userservice.types.GetExecutorListResponse;
+import ru.axbit.vborovik.competence.userservice.v1.UserServicePortType;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListResponse;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListResponse;
 
 @Service
 @AllArgsConstructor

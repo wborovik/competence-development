@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns="http://vborovik.axbit.ru/competence/core/"
+<xs:schema xmlns="http://vborovik.axbit.ru/competence/core/v1/"
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           targetNamespace="http://vborovik.axbit.ru/competence/core/"
+           targetNamespace="http://vborovik.axbit.ru/competence/core/v1/"
            elementFormDefault="qualified">
 
     <xs:include schemaLocation="competence.core.xsd"/>

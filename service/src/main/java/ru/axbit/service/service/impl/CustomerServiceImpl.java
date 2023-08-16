@@ -7,9 +7,9 @@ import ru.axbit.domain.domain.user.Customer;
 import ru.axbit.domain.repository.CustomerRepository;
 import ru.axbit.service.service.CustomerService;
 import ru.axbit.service.service.soap.mapper.response.ResponseMapper;
-import ru.axbit.vborovik.competence.filtertypes.GetCustomerListFilterType;
-import ru.axbit.vborovik.competence.userservice.types.GetCustomerListRequest;
-import ru.axbit.vborovik.competence.userservice.types.GetCustomerListResponse;
+import ru.axbit.vborovik.competence.filtertypes.v1.GetCustomerListFilterType;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListResponse;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -32,6 +32,6 @@ public class CustomerServiceImpl implements CustomerService {
         if (Objects.isNull(filter)) return new HashSet<>();
         Set<Long> customerIds = new HashSet<>(filter.getCustomerId());
 
-        return customerRepository.findAllByIdInAndDeletedIsFalse(customerIds);
+        return customerRepository.findAllByIdInAndDeletedIsFalseOrderById(customerIds);
     }
 }
