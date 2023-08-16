@@ -52,7 +52,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="result" type="core:ExecutorPageType"/>
+                <xs:element name="result" type="core:ExecutorPageType" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

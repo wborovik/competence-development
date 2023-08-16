@@ -23,7 +23,8 @@
 
     <xs:complexType name="ExecutorPageType">
         <xs:sequence>
-            <xs:element name="userData" type="UserDataPageType"/>
+            <xs:element name="executorId" type="xs:long"/>
+            <xs:element name="userData" type="UserDataPageType" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 </xs:schema>
