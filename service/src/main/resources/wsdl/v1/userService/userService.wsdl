@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
                   xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                  xmlns:tns="http://vborovik.axbit.ru/competence/userService/"
-                  xmlns:core="http://vborovik.axbit.ru/competence/core/"
-                  xmlns:ns="http://vborovik.axbit.ru/competence/userService/types/"
+                  xmlns:tns="http://vborovik.axbit.ru/competence/userService/v1/"
+                  xmlns:core="http://vborovik.axbit.ru/competence/core/v1/"
+                  xmlns:ns="http://vborovik.axbit.ru/competence/userService/types/v1/"
                   name="userService"
-                  targetNamespace="http://vborovik.axbit.ru/competence/userService/">
+                  targetNamespace="http://vborovik.axbit.ru/competence/userService/v1/">
 
     <wsdl:types>
         <xsd:schema>
-            <xsd:import namespace="http://vborovik.axbit.ru/competence/core/"
-                        schemaLocation="competence.core.xsd"/>
-            <xsd:import namespace="http://vborovik.axbit.ru/competence/userService/types/"
+            <xsd:import namespace="http://vborovik.axbit.ru/competence/core/v1/"
+                        schemaLocation="../competence.core.xsd"/>
+            <xsd:import namespace="http://vborovik.axbit.ru/competence/userService/types/v1/"
                         schemaLocation="userService.types.xsd"/>
         </xsd:schema>
     </wsdl:types>

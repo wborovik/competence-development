@@ -6,9 +6,9 @@ import ru.axbit.domain.domain.user.Executor;
 import ru.axbit.domain.repository.ExecutorRepository;
 import ru.axbit.service.service.ExecutorService;
 import ru.axbit.service.service.soap.mapper.response.ResponseMapper;
-import ru.axbit.vborovik.competence.filtertypes.GetExecutorListFilterType;
-import ru.axbit.vborovik.competence.userservice.types.GetExecutorListRequest;
-import ru.axbit.vborovik.competence.userservice.types.GetExecutorListResponse;
+import ru.axbit.vborovik.competence.filtertypes.v1.GetExecutorListFilterType;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListResponse;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
@@ -32,6 +32,6 @@ public class ExecutorServiceImpl implements ExecutorService {
         if (Objects.isNull(filter)) return new HashSet<>();
         Set<Long> executorIds = new HashSet<>(filter.getExecutorId());
 
-        return executorRepository.findAllByIdInAndDeletedIsFalse(executorIds);
+        return executorRepository.findAllByIdInAndDeletedIsFalseOrderById(executorIds);
     }
 }

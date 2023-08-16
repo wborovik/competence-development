@@ -7,5 +7,5 @@ import java.util.Set;
 
 public interface CustomerRepository extends AbstractRepository<Customer> {
 
-    Set<Customer> findAllByIdInAndDeletedIsFalse(Set<Long> ids);
+    Set<Customer> findAllByIdInAndDeletedIsFalseOrderById(Set<Long> ids);
 }

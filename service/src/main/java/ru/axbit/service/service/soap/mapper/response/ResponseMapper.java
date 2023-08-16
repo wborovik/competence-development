@@ -5,11 +5,11 @@ import org.springframework.stereotype.Service;
 import ru.axbit.domain.domain.common.UserData;
 import ru.axbit.domain.domain.user.Customer;
 import ru.axbit.domain.domain.user.Executor;
-import ru.axbit.vborovik.competence.core.CustomerPageType;
-import ru.axbit.vborovik.competence.core.ExecutorPageType;
-import ru.axbit.vborovik.competence.core.UserDataPageType;
-import ru.axbit.vborovik.competence.userservice.types.GetCustomerListResponse;
-import ru.axbit.vborovik.competence.userservice.types.GetExecutorListResponse;
+import ru.axbit.vborovik.competence.core.v1.CustomerPageType;
+import ru.axbit.vborovik.competence.core.v1.ExecutorPageType;
+import ru.axbit.vborovik.competence.core.v1.UserDataPageType;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListResponse;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListResponse;
 
 import java.util.Objects;
 import java.util.Optional;
