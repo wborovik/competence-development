@@ -3,8 +3,8 @@ package ru.axbit.service.service.soap.mapper.response;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.axbit.domain.domain.common.UserData;
-import ru.axbit.domain.domain.user.Customer;
 import ru.axbit.domain.domain.user.Executor;
+import ru.axbit.vborovik.competence.core.v1.CustomerPageItemType;
 import ru.axbit.vborovik.competence.core.v1.CustomerPageType;
 import ru.axbit.vborovik.competence.core.v1.ExecutorPageType;
 import ru.axbit.vborovik.competence.core.v1.UserDataPageType;
@@ -18,12 +18,16 @@ import java.util.Set;
 @AllArgsConstructor
 @Service
 public class ResponseMapper {
-    public static GetCustomerListResponse mapGetCustomerResponse(Set<Customer> customers) {
+    public static GetCustomerListResponse mapGetCustomerResponse(CustomerListPojo customerPojo) {
         var response = new GetCustomerListResponse();
+        CustomerPageType customerPageType = CommonMapper.mapPagingResults(CustomerPageType.class, customerPojo.getCustomers());
+        response.setResult(customerPageType);
+        var customers = customerPojo.getCustomers();
         if (customers.isEmpty()) return response;
-        var resultList = response.getResult();
+        var pageType = response.getResult();
+        var resultList = pageType.getCustomerItem();
         customers.forEach(customer -> {
-            var result = new CustomerPageType();
+            var result = new CustomerPageItemType();
             result.setCustomerId(customer.getId());
             var customerUserData = Optional.ofNullable(customer.getUserData());
             var userData = mapExecutorPageType(customerUserData);
