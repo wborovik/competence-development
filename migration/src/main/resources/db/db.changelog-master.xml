@@ -16,4 +16,14 @@
     <!--Добавление данных в таблицы:-->
     <include file="changelog/4_insert_dml.xml" relativeToChangelogFile="true"/>
 
+    <!--Добавление данных в таблицу orders:-->
+    <include file="changelog/5_insert_orders_dml.xml" relativeToChangelogFile="true"/>
+
+    <!--Изменение таблицы orders:-->
+    <include file="changelog/6_alter_orders_dml.xml" relativeToChangelogFile="true"/>
+
+    <!--Добавление данных в таблицу orders:-->
+    <include file="changelog/7_insert_orders_dml.xml" relativeToChangelogFile="true"/>
+
+
 </databaseChangeLog>
