@@ -1,16 +1,16 @@
 package ru.axbit.domain.domain.admin;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
-import ru.axbit.domain.domain.common.AuditEntity;
+import lombok.experimental.FieldNameConstants;
 import ru.axbit.domain.domain.common.UserData;
+
+import javax.persistence.Entity;
 
 @Getter
 @Setter
 @Entity
-public class Admin extends AuditEntity {
-    @Embedded
-    UserData userData;
+@FieldNameConstants
+public class Admin extends UserData {
+
 }

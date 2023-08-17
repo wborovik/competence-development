@@ -7,8 +7,8 @@ import java.util.List;
 @Data
 public class CustomerCriteriaDTO {
     private List<Long> customerId;
-    private String name;
-    private String surname;
-    private Integer age;
-    private boolean excludeDeleted = false;
+    private List<String> customerName;
+    private List<String> customerSurname;
+    private List<Integer> customerAge;
+    private boolean isDeleted = false;
 }

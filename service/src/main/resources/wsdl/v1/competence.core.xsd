@@ -15,6 +15,16 @@
     </xs:complexType>
 
     <xs:complexType name="CustomerPageType">
+        <xs:complexContent>
+            <xs:extension base="PagingResults">
+                <xs:sequence>
+                    <xs:element name="customerItem" type="CustomerPageItemType" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="CustomerPageItemType">
         <xs:sequence>
             <xs:element name="customerId" type="xs:long"/>
             <xs:element name="userData" type="UserDataPageType" minOccurs="0"/>
@@ -22,9 +32,102 @@
     </xs:complexType>
 
     <xs:complexType name="ExecutorPageType">
+        <xs:complexContent>
+            <xs:extension base="PagingResults">
+                <xs:sequence>
+                    <xs:element name="customerItem" type="ExecutorPageItemType" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="ExecutorPageItemType">
         <xs:sequence>
             <xs:element name="executorId" type="xs:long"/>
             <xs:element name="userData" type="UserDataPageType" minOccurs="0"/>
         </xs:sequence>
+    </xs:complexType>
+
+    <!--pagination-->
+    <xs:complexType name="PagingResults" abstract="true">
+        <xs:annotation>
+            <xs:documentation>Список с пагинацией</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="pageNumber" type="xs:int" use="required">
+            <xs:annotation>
+                <xs:documentation>Номер страницы (zero-based)</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="pageTotal" type="xs:int" use="required">
+            <xs:annotation>
+                <xs:documentation>Общее количество страниц</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="pageSize" type="xs:int" use="required">
+            <xs:annotation>
+                <xs:documentation>Размер страницы</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="morePagesAvailable" type="xs:boolean" use="required">
+            <xs:annotation>
+                <xs:documentation>Флаг доступности других страниц с результатами для "постраничного листания" (true - если доступны еще страницы; false - иначе)</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="totalItemsCount" type="xs:long" use="required">
+            <xs:annotation>
+                <xs:documentation>Общее количество элементов (на всех страницах)</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="PagingOptions">
+        <xs:annotation>
+            <xs:documentation>Параметры пагинации</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="sortingOptions" type="SortingOptions" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="pageNumber" type="xs:int" use="required">
+            <xs:annotation>
+                <xs:documentation>Номер страницы (zero-based)</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="pageSize" type="xs:int" use="required">
+            <xs:annotation>
+                <xs:documentation>Размер страницы</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <!--sorting-->
+    <xs:complexType name="SortingOptions">
+        <xs:annotation>
+            <xs:documentation>Условия сортировки</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="sortOrder" type="SortOrder">
+                <xs:annotation>
+                    <xs:documentation>Условия сортировки (используются в соответствии с переданной
+                        последовательностью)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SortOrder">
+        <xs:annotation>
+            <xs:documentation>Сортировка</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="attributeName" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>Наименование поля, по которому должна быть произведена сортировка</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="desceding" type="xs:boolean" default="false">
+            <xs:annotation>
+                <xs:documentation>Направление сортировки</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
     </xs:complexType>
 </xs:schema>

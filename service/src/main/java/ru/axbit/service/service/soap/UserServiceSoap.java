@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.axbit.service.service.CustomerService;
 import ru.axbit.service.service.ExecutorService;
+import ru.axbit.service.util.CommonResultBuilder;
 import ru.axbit.vborovik.competence.userservice.v1.UserServicePortType;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListResponse;
@@ -18,11 +19,11 @@ public class UserServiceSoap implements UserServicePortType {
 
     @Override
     public GetExecutorListResponse getExecutorList(GetExecutorListRequest body) {
-        return executorService.getExecutorList(body);
+        return CommonResultBuilder.buildResponse(executorService::getExecutorList, body);
     }
 
     @Override
     public GetCustomerListResponse getCustomerList(GetCustomerListRequest body) {
-        return customerService.getCustomerList(body);
+        return CommonResultBuilder.buildResponse(customerService::getCustomerList, body);
     }
 }
