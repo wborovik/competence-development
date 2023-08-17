@@ -1,10 +1,13 @@
 package ru.axbit.domain.domain.common;
 
+import lombok.experimental.FieldNameConstants;
+
 import javax.persistence.*;
 
 import java.io.Serializable;
 
 @MappedSuperclass
+@FieldNameConstants
 public abstract class AbstractEntity implements Serializable {
     @Id
     @Column(nullable = false, updatable = false)

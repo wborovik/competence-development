@@ -32,6 +32,16 @@
     </xs:complexType>
 
     <xs:complexType name="ExecutorPageType">
+        <xs:complexContent>
+            <xs:extension base="PagingResults">
+                <xs:sequence>
+                    <xs:element name="customerItem" type="ExecutorPageItemType" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="ExecutorPageItemType">
         <xs:sequence>
             <xs:element name="executorId" type="xs:long"/>
             <xs:element name="userData" type="UserDataPageType" minOccurs="0"/>

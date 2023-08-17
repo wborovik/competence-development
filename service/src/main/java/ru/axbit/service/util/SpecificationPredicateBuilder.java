@@ -47,13 +47,18 @@ public class SpecificationPredicateBuilder {
             path = root.get(fieldNameCamelCase.get(0));
         } else {
             path = root.get(defaultFieldName);
-            descending = true;
+            descending = false;
         }
         if (descending) {
             criteriaQuery.orderBy(criteriaBuilder.desc(path));
         } else {
             criteriaQuery.orderBy(criteriaBuilder.asc(path));
         }
+        return this;
+    }
+
+    public SpecificationPredicateBuilder isDeleted(Path<?> path, Boolean isDeleted) {
+        predicates.add(path.in(isDeleted));
         return this;
     }
 }

@@ -18,7 +18,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="filter" type="filter:GetCustomerListFilterType"/>
+                <xs:element name="filter" type="filter:GetCustomerListFilterType" minOccurs="0"/>
                 <xs:element name="pagingOptions" type="core:PagingOptions" minOccurs="0"/>
             </xs:sequence>
         </xs:complexType>
@@ -42,7 +42,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="filter" type="filter:GetExecutorListFilterType"/>
+                <xs:element name="filter" type="filter:GetExecutorListFilterType" minOccurs="0"/>
                 <xs:element name="pagingOptions" type="core:PagingOptions" minOccurs="0"/>
             </xs:sequence>
         </xs:complexType>
@@ -54,7 +54,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="result" type="core:ExecutorPageType" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="result" type="core:ExecutorPageType"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

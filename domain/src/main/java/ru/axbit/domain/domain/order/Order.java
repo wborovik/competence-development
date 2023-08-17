@@ -3,11 +3,13 @@ package ru.axbit.domain.domain.order;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 import ru.axbit.domain.domain.common.AuditEntity;
 import ru.axbit.domain.domain.user.Customer;
 import ru.axbit.domain.domain.user.Executor;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -15,9 +17,11 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @Table(name = "orders")
+@FieldNameConstants
 public class Order extends AuditEntity {
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     Customer customer;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     Executor executor;
 }

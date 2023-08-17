@@ -3,24 +3,19 @@ package ru.axbit.service.service.soap.mapper.response;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.axbit.domain.domain.common.UserData;
-import ru.axbit.domain.domain.user.Executor;
-import ru.axbit.vborovik.competence.core.v1.CustomerPageItemType;
-import ru.axbit.vborovik.competence.core.v1.CustomerPageType;
-import ru.axbit.vborovik.competence.core.v1.ExecutorPageType;
-import ru.axbit.vborovik.competence.core.v1.UserDataPageType;
+import ru.axbit.vborovik.competence.core.v1.*;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListResponse;
 
 import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 
-@AllArgsConstructor
 @Service
+@AllArgsConstructor
 public class ResponseMapper {
     public static GetCustomerListResponse mapGetCustomerResponse(CustomerListPojo customerPojo) {
         var response = new GetCustomerListResponse();
-        CustomerPageType customerPageType = CommonMapper.mapPagingResults(CustomerPageType.class, customerPojo.getCustomers());
+        if (Objects.isNull(customerPojo)) return response;
+        var customerPageType = CommonMapper.mapPagingResults(CustomerPageType.class, customerPojo.getCustomers());
         response.setResult(customerPageType);
         var customers = customerPojo.getCustomers();
         if (customers.isEmpty()) return response;
@@ -29,34 +24,37 @@ public class ResponseMapper {
         customers.forEach(customer -> {
             var result = new CustomerPageItemType();
             result.setCustomerId(customer.getId());
-            var customerUserData = Optional.ofNullable(customer.getUserData());
-            var userData = mapExecutorPageType(customerUserData);
+            var userData = mapUserDataType(customer);
             result.setUserData(userData);
             resultList.add(result);
         });
         return response;
     }
 
-    public static GetExecutorListResponse mapGetExecutorResponse(Set<Executor> executors) {
+    public static GetExecutorListResponse mapGetExecutorResponse(ExecutorListPojo executorPojo) {
         var response = new GetExecutorListResponse();
+        if (Objects.isNull(executorPojo)) return response;
+        var executorPageType = CommonMapper.mapPagingResults(ExecutorPageType.class, executorPojo.getExecutors());
+        response.setResult(executorPageType);
+        var executors = executorPojo.getExecutors();
         if (executors.isEmpty()) return response;
-        var resultList = response.getResult();
+        var pageType = response.getResult();
+        var resultList = pageType.getCustomerItem();
         executors.forEach(executor -> {
-            var result = new ExecutorPageType();
+            var result = new ExecutorPageItemType();
             result.setExecutorId(executor.getId());
-            var executorUserData = Optional.ofNullable(executor.getUserData());
-            var userData = mapExecutorPageType(executorUserData);
+            var userData = mapUserDataType(executor);
             result.setUserData(userData);
             resultList.add(result);
         });
         return response;
     }
 
-    public static UserDataPageType mapExecutorPageType(Optional<UserData> userData) {
+    public static UserDataPageType mapUserDataType(UserData userData) {
         var userDataType = new UserDataPageType();
-        userData.map(UserData::getName).ifPresent(userDataType::setName);
-        userData.map(UserData::getSurname).ifPresent(userDataType::setSurname);
-        userData.map(UserData::getAge).ifPresent(userDataType::setAge);
+        userDataType.setName(userData.getName());
+        userDataType.setSurname(userData.getSurname());
+        userDataType.setAge(userData.getAge());
         userDataType = (Objects.isNull(userDataType.getName())
                 && Objects.isNull(userDataType.getSurname()) && Objects.isNull(userDataType.getAge())) ?
                 null : userDataType;

@@ -12,6 +12,7 @@ import java.util.Optional;
 public class PagingUtils {
     public static final int FIRST_PAGE_NUMBER = 0;
     public static final int MAX_PAGE_SIZE = 20;
+    public static final String FIELD_ID = "id";
 
     @Getter
     @Builder
@@ -38,7 +39,7 @@ public class PagingUtils {
         if (Objects.isNull(pagingOptions)) return sortingOptions.build();
         var attributeName = Optional.ofNullable(pagingOptions.getSortingOptions())
                 .map(ru.axbit.vborovik.competence.core.v1.SortingOptions::getSortOrder)
-                .map(SortOrder::getAttributeName).orElse("id");
+                .map(SortOrder::getAttributeName).orElse(FIELD_ID);
         var isDescending = Optional.ofNullable(pagingOptions.getSortingOptions())
                 .map(ru.axbit.vborovik.competence.core.v1.SortingOptions::getSortOrder)
                 .map(SortOrder::isDesceding).orElse(false);
