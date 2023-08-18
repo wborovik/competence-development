@@ -48,6 +48,24 @@
         </xs:sequence>
     </xs:complexType>
 
+    <xs:complexType name="OrderPageType">
+        <xs:complexContent>
+            <xs:extension base="PagingResults">
+                <xs:sequence>
+                    <xs:element name="orderItem" type="OrderPageItemType" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="OrderPageItemType">
+        <xs:sequence>
+            <xs:element name="orderId" type="xs:long"/>
+            <xs:element name="customer" type="CustomerPageItemType" minOccurs="0"/>
+            <xs:element name="executor" type="ExecutorPageItemType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
     <!--pagination-->
     <xs:complexType name="PagingResults" abstract="true">
         <xs:annotation>

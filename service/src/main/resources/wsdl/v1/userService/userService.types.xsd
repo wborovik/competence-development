@@ -59,4 +59,28 @@
         </xs:complexType>
     </xs:element>
 
+    <!--    Метод getOrderList-->
+    <xs:element name="getOrderListRequest">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода getOrderList</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="filter" type="filter:GetOrderListFilterType" minOccurs="0"/>
+                <xs:element name="pagingOptions" type="core:PagingOptions" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getOrderListResponse">
+        <xs:annotation>
+            <xs:documentation>Выходные параметры метода getOrderList</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="result" type="core:OrderPageType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
 </xs:schema>

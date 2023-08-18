@@ -25,12 +25,21 @@
         <wsdl:part name="body" element="ns:getExecutorListRequest"/>
     </wsdl:message>
 
+    <wsdl:message name="getOrderListInput">
+        <wsdl:part name="body" element="ns:getOrderListRequest"/>
+    </wsdl:message>
+
     <!--    Output msg-->
     <wsdl:message name="getCustomerListOutput">
         <wsdl:part name="body" element="ns:getCustomerListResponse"/>
     </wsdl:message>
+
     <wsdl:message name="getExecutorListOutput">
         <wsdl:part name="body" element="ns:getExecutorListResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="getOrderListOutput">
+        <wsdl:part name="body" element="ns:getOrderListResponse"/>
     </wsdl:message>
 
     <!--    PortType  -->
@@ -50,6 +59,14 @@
             <wsdl:input message="tns:getExecutorListInput"/>
             <wsdl:output message="tns:getExecutorListOutput"/>
         </wsdl:operation>
+
+        <wsdl:operation name="getOrderList">
+            <wsdl:documentation>
+
+            </wsdl:documentation>
+            <wsdl:input message="tns:getOrderListInput"/>
+            <wsdl:output message="tns:getOrderListOutput"/>
+        </wsdl:operation>
     </wsdl:portType>
 
     <!--    Binding    -->
@@ -65,6 +82,15 @@
         </wsdl:operation>
 
         <wsdl:operation name="getExecutorList">
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getOrderList">
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>
