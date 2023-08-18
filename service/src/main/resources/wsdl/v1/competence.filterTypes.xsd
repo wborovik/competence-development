@@ -24,4 +24,12 @@
                     <xs:element name="executorSurname" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
                 </xs:sequence>
     </xs:complexType>
+
+    <xs:complexType name="GetOrderListFilterType">
+        <xs:sequence>
+            <xs:element name="orderId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="customerId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="executorId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
 </xs:schema>
