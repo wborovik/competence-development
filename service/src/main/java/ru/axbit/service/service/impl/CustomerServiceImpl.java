@@ -9,7 +9,7 @@ import ru.axbit.domain.domain.common.AbstractEntity;
 import ru.axbit.domain.domain.user.Customer;
 import ru.axbit.domain.repository.CustomerRepository;
 import ru.axbit.service.service.CustomerService;
-import ru.axbit.service.service.soap.mapper.request.CustomerMapperDTO;
+import ru.axbit.service.service.soap.mapper.request.CommonMapperDTO;
 import ru.axbit.service.service.soap.mapper.response.CustomerListPojo;
 import ru.axbit.service.service.soap.mapper.response.ResponseMapper;
 import ru.axbit.service.service.soap.spec.CustomerSpecification;
@@ -37,7 +37,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (Objects.isNull(filter)) return null;
         var pageRequest = PagingUtils.getPageRequest(pagingOptions);
         var sorting = PagingUtils.getSortOptions(pagingOptions, AbstractEntity.Fields.id);
-        var criteriaDto = CustomerMapperDTO.mapCustomerDTO(filter);
+        var criteriaDto = CommonMapperDTO.mapCustomerDTO(filter);
         Specification<Customer> specification = CustomerSpecification.create(criteriaDto, sorting);
         Page<Customer> customers = customerRepository.findAll(specification, pageRequest);
 

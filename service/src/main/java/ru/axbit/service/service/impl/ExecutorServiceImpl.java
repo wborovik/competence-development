@@ -8,7 +8,7 @@ import ru.axbit.domain.domain.common.AbstractEntity;
 import ru.axbit.domain.domain.user.Executor;
 import ru.axbit.domain.repository.ExecutorRepository;
 import ru.axbit.service.service.ExecutorService;
-import ru.axbit.service.service.soap.mapper.request.CustomerMapperDTO;
+import ru.axbit.service.service.soap.mapper.request.CommonMapperDTO;
 import ru.axbit.service.service.soap.mapper.response.ExecutorListPojo;
 import ru.axbit.service.service.soap.mapper.response.ResponseMapper;
 import ru.axbit.service.service.soap.spec.ExecutorSpecification;
@@ -38,7 +38,7 @@ public class ExecutorServiceImpl implements ExecutorService {
         if (Objects.isNull(filter)) return null;
         var pageRequest = PagingUtils.getPageRequest(pagingOptions);
         var sorting = PagingUtils.getSortOptions(pagingOptions, AbstractEntity.Fields.id);
-        var criteriaDto = CustomerMapperDTO.mapExecutorDTO(filter);
+        var criteriaDto = CommonMapperDTO.mapExecutorDTO(filter);
         Specification<Executor> specification = ExecutorSpecification.create(criteriaDto, sorting);
         Page<Executor> executors = executorRepository.findAll(specification, pageRequest);
 
