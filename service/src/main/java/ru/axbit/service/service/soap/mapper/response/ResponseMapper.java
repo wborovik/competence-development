@@ -3,9 +3,13 @@ package ru.axbit.service.service.soap.mapper.response;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.axbit.domain.domain.common.UserData;
+import ru.axbit.domain.domain.order.Order;
+import ru.axbit.domain.domain.user.Customer;
+import ru.axbit.domain.domain.user.Executor;
 import ru.axbit.vborovik.competence.core.v1.*;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListResponse;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetOrderListResponse;
 
 import java.util.Objects;
 
@@ -22,13 +26,19 @@ public class ResponseMapper {
         var pageType = response.getResult();
         var resultList = pageType.getCustomerItem();
         customers.forEach(customer -> {
-            var result = new CustomerPageItemType();
-            result.setCustomerId(customer.getId());
-            var userData = mapUserDataType(customer);
-            result.setUserData(userData);
+            var result = mapCustomerPageItemType(customer);
             resultList.add(result);
         });
         return response;
+    }
+
+    public static CustomerPageItemType mapCustomerPageItemType(Customer customer) {
+        var result = new CustomerPageItemType();
+        if(Objects.isNull(customer)) return result;
+        result.setCustomerId(customer.getId());
+        var userData = mapUserDataType(customer);
+        result.setUserData(userData);
+        return result;
     }
 
     public static GetExecutorListResponse mapGetExecutorResponse(ExecutorListPojo executorPojo) {
@@ -41,13 +51,19 @@ public class ResponseMapper {
         var pageType = response.getResult();
         var resultList = pageType.getCustomerItem();
         executors.forEach(executor -> {
-            var result = new ExecutorPageItemType();
-            result.setExecutorId(executor.getId());
-            var userData = mapUserDataType(executor);
-            result.setUserData(userData);
+            var result = mapExecutorPageItemType(executor);
             resultList.add(result);
         });
         return response;
+    }
+
+    public static ExecutorPageItemType mapExecutorPageItemType(Executor executor) {
+        var result = new ExecutorPageItemType();
+        if (Objects.isNull(executor)) return result;
+        result.setExecutorId(executor.getId());
+        var userData = mapUserDataType(executor);
+        result.setUserData(userData);
+        return result;
     }
 
     public static UserDataPageType mapUserDataType(UserData userData) {
@@ -59,5 +75,30 @@ public class ResponseMapper {
                 && Objects.isNull(userDataType.getSurname()) && Objects.isNull(userDataType.getAge())) ?
                 null : userDataType;
         return userDataType;
+    }
+
+    public static GetOrderListResponse mapGetOrderResponse(OrderListPojo orderPojo) {
+        var response = new GetOrderListResponse();
+        if (Objects.isNull(orderPojo)) return response;
+        var orderPageType = CommonMapper.mapPagingResults(OrderPageType.class, orderPojo.getOrders());
+        response.setResult(orderPageType);
+        var orders = orderPojo.getOrders();
+        if (orders.isEmpty()) return response;
+        var pageType = response.getResult();
+        var resultList = pageType.getOrderItem();
+        orders.forEach(order -> {
+            var result = mapOrderPageItemType(order);
+            resultList.add(result);
+        });
+        return response;
+    }
+
+    public static OrderPageItemType mapOrderPageItemType(Order order) {
+        var result = new OrderPageItemType();
+        if (Objects.isNull(order)) return result;
+        result.setOrderId(order.getId());
+        result.setCustomer(mapCustomerPageItemType(order.getCustomer()));
+        result.setExecutor(mapExecutorPageItemType(order.getExecutor()));
+        return result;
     }
 }
