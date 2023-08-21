@@ -22,12 +22,12 @@ import javax.transaction.Transactional;
 import java.util.Objects;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
 
     @Override
-    @Transactional
     public GetOrderListResponse getOrderList(GetOrderListRequest body) {
         var orderPojo = getOrderList(body.getFilter(), body.getPagingOptions());
 
