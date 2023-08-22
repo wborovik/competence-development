@@ -148,4 +148,15 @@
             </xs:annotation>
         </xs:attribute>
     </xs:complexType>
+
+    <xs:element name="result" fixed="true">
+        <xs:annotation>
+            <xs:documentation>Элемент для использования в методах, не возвращающих ничего (void)</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:boolean"/>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
 </xs:schema>

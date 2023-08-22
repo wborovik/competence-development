@@ -3,6 +3,7 @@ package ru.axbit.domain.domain.cls;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.BatchSize;
 import ru.axbit.domain.domain.cls.common.ClsBase;
 import ru.axbit.domain.domain.order.Order;
 
@@ -20,6 +21,7 @@ public class ClsOrderCategory extends ClsBase {
 
     private String description;
 
+    @BatchSize(size = 500)
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Order> orders;
 }

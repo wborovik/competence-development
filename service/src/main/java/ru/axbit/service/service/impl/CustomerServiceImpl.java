@@ -16,6 +16,8 @@ import ru.axbit.service.service.soap.spec.CustomerSpecification;
 import ru.axbit.service.util.PagingUtils;
 import ru.axbit.vborovik.competence.core.v1.PagingOptions;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetCustomerListFilterType;
+import ru.axbit.vborovik.competence.userservice.types.v1.DefaultResponse;
+import ru.axbit.vborovik.competence.userservice.types.v1.EditCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListResponse;
 
@@ -31,6 +33,11 @@ public class CustomerServiceImpl implements CustomerService {
     public GetCustomerListResponse getCustomerList(GetCustomerListRequest body) {
         var customerPojo = getCustomerList(body.getFilter(), body.getPagingOptions());
         return ResponseMapper.mapGetCustomerResponse(customerPojo);
+    }
+
+    @Override
+    public DefaultResponse editCustomer(EditCustomerRequest body) {
+        return null;
     }
 
     private CustomerListPojo getCustomerList(GetCustomerListFilterType filter, PagingOptions pagingOptions) {

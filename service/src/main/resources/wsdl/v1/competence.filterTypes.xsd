@@ -18,11 +18,11 @@
     </xs:complexType>
 
     <xs:complexType name="GetExecutorListFilterType">
-                <xs:sequence>
-                    <xs:element name="executorId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element name="executorName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element name="executorSurname" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-                </xs:sequence>
+        <xs:sequence>
+            <xs:element name="executorId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="executorName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="executorSurname" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="GetOrderListFilterType">
@@ -32,6 +32,17 @@
             <xs:element name="executorId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="orderData" type="tns:KeyValuePair" minOccurs="0"/>
         </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="EditCustomerType">
+        <xs:complexContent>
+            <xs:extension base="tns:Base">
+                <xs:sequence>
+                    <xs:element name="customerName" type="xs:string"/>
+                    <xs:element name="customerSurname" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="KeyValuePair">
@@ -47,5 +58,12 @@
                 </xs:attribute>
             </xs:extension>
         </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="Base">
+        <xs:annotation>
+            <xs:documentation>Базовый тип для предоставления атрибута идентификатора</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="id" type="xs:long" use="required"/>
     </xs:complexType>
 </xs:schema>
