@@ -7,6 +7,7 @@ import ru.axbit.domain.domain.order.Order;
 import ru.axbit.domain.domain.user.Customer;
 import ru.axbit.domain.domain.user.Executor;
 import ru.axbit.vborovik.competence.core.v1.*;
+import ru.axbit.vborovik.competence.userservice.types.v1.DefaultResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetOrderListResponse;
@@ -100,5 +101,13 @@ public class ResponseMapper {
         result.setCustomer(mapCustomerPageItemType(order.getCustomer()));
         result.setExecutor(mapExecutorPageItemType(order.getExecutor()));
         return result;
+    }
+
+    public static DefaultResponse mapDefaultResponse(boolean status) {
+        var response = new DefaultResponse();
+        var result = new Result();
+        result.setValue(status);
+        response.setResult(result);
+        return response;
     }
 }

@@ -38,8 +38,9 @@
         <xs:complexContent>
             <xs:extension base="tns:Base">
                 <xs:sequence>
-                    <xs:element name="customerName" type="xs:string"/>
-                    <xs:element name="customerSurname" type="xs:string"/>
+                    <xs:element name="customerName" type="xs:string" minOccurs="0"/>
+                    <xs:element name="customerSurname" type="xs:string" minOccurs="0"/>
+                    <xs:element name="customerAge" type="xs:int" minOccurs="0"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -60,7 +61,7 @@
         </xs:simpleContent>
     </xs:complexType>
 
-    <xs:complexType name="Base">
+    <xs:complexType name="Base" abstract="true">
         <xs:annotation>
             <xs:documentation>Базовый тип для предоставления атрибута идентификатора</xs:documentation>
         </xs:annotation>

@@ -21,7 +21,9 @@ import ru.axbit.vborovik.competence.userservice.types.v1.EditCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListResponse;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -35,11 +37,6 @@ public class CustomerServiceImpl implements CustomerService {
         return ResponseMapper.mapGetCustomerResponse(customerPojo);
     }
 
-    @Override
-    public DefaultResponse editCustomer(EditCustomerRequest body) {
-        return null;
-    }
-
     private CustomerListPojo getCustomerList(GetCustomerListFilterType filter, PagingOptions pagingOptions) {
         if (Objects.isNull(filter)) return null;
         var pageRequest = PagingUtils.getPageRequest(pagingOptions);
@@ -51,5 +48,21 @@ public class CustomerServiceImpl implements CustomerService {
         return CustomerListPojo.builder()
                 .customers(customers)
                 .build();
+    }
+
+    @Override
+    public DefaultResponse editCustomer(EditCustomerRequest body) {
+        var editCustomerReq = body.getEditCustomer();
+        var customerId = editCustomerReq.getId();
+        var customerOptional = customerRepository.findById(customerId);
+        if (customerOptional.isPresent()) {
+            var customer = customerOptional.get();
+            Optional.ofNullable(editCustomerReq.getCustomerName()).ifPresent(customer::setName);
+            Optional.ofNullable(editCustomerReq.getCustomerSurname()).ifPresent(customer::setSurname);
+            Optional.ofNullable(editCustomerReq.getCustomerAge()).ifPresent(customer::setAge);
+            customer.setChanged(LocalDateTime.now());
+            customerRepository.save(customer);
+        }
+        return ResponseMapper.mapDefaultResponse(true);
     }
 }
