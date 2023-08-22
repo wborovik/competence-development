@@ -30,6 +30,22 @@
             <xs:element name="orderId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="customerId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="executorId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="orderData" type="tns:KeyValuePair" minOccurs="0"/>
         </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="KeyValuePair">
+        <xs:annotation>
+            <xs:documentation>Представляет тип "ключ/значение"</xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="key" type="xs:string" use="required">
+                    <xs:annotation>
+                        <xs:documentation>Ключ</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
     </xs:complexType>
 </xs:schema>
