@@ -38,6 +38,12 @@ public class SpecificationPredicateBuilder {
         return this;
     }
 
+    public void equals(Expression<?> path, Expression<?> value) {
+        if (value != null) {
+            predicates.add(criteriaBuilder.equal(path, value));
+        }
+    }
+
     public SpecificationPredicateBuilder sortBy(String customFieldName, Boolean descending, String defaultFieldName) {
         Path path;
         if (Objects.nonNull(customFieldName)) {
@@ -60,5 +66,9 @@ public class SpecificationPredicateBuilder {
     public SpecificationPredicateBuilder isDeleted(Path<?> path, Boolean isDeleted) {
         predicates.add(path.in(isDeleted));
         return this;
+    }
+
+    public void isNonNull(Expression<?> expression) {
+        predicates.add(criteriaBuilder.isNotNull(expression));
     }
 }
