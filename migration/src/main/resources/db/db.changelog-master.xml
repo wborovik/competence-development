@@ -25,5 +25,7 @@
     <!--Добавление данных в таблицу orders:-->
     <include file="changelog/7_insert_orders_dml.xml" relativeToChangelogFile="true"/>
 
+    <!--Добавление столбца check в таблицу orders:-->
+    <include file="changelog/8_alter_orders_ddl.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
