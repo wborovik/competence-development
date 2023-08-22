@@ -6,29 +6,46 @@ import ru.axbit.service.service.soap.dto.OrderCriteriaDTO;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetCustomerListFilterType;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetExecutorListFilterType;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetOrderListFilterType;
+import ru.axbit.vborovik.competence.filtertypes.v1.KeyValuePair;
+
+import static java.util.Optional.ofNullable;
 
 public class CommonMapperDTO {
     public static CustomerCriteriaDTO mapCustomerDTO(GetCustomerListFilterType filter) {
-        CustomerCriteriaDTO criteriaDTO = new CustomerCriteriaDTO();
-        criteriaDTO.setCustomerId(filter.getCustomerId());
-        criteriaDTO.setCustomerName(filter.getCustomerName());
-        criteriaDTO.setCustomerSurname(filter.getCustomerSurname());
-        return criteriaDTO;
+        CustomerCriteriaDTO.CustomerCriteriaDTOBuilder builder = CustomerCriteriaDTO.builder();
+        return builder
+                .customerId(filter.getCustomerId())
+                .customerName(filter.getCustomerName())
+                .customerSurname(filter.getCustomerSurname())
+                .isDeleted(false)
+                .build();
     }
 
     public static ExecutorCriteriaDTO mapExecutorDTO(GetExecutorListFilterType filter) {
-        ExecutorCriteriaDTO criteriaDTO = new ExecutorCriteriaDTO();
-        criteriaDTO.setExecutorId(filter.getExecutorId());
-        criteriaDTO.setExecutorName(filter.getExecutorName());
-        criteriaDTO.setExecutorSurname(filter.getExecutorSurname());
-        return criteriaDTO;
+        ExecutorCriteriaDTO.ExecutorCriteriaDTOBuilder builder = ExecutorCriteriaDTO.builder();
+        return builder
+                .executorId(filter.getExecutorId())
+                .executorName(filter.getExecutorName())
+                .executorSurname(filter.getExecutorSurname())
+                .isDeleted(false)
+                .build();
     }
 
     public static OrderCriteriaDTO mapOrderDTO(GetOrderListFilterType filter) {
-        OrderCriteriaDTO criteriaDTO = new OrderCriteriaDTO();
-        criteriaDTO.setOrderId(filter.getOrderId());
-        criteriaDTO.setCustomerId(filter.getCustomerId());
-        criteriaDTO.setExecutorId(filter.getExecutorId());
-        return criteriaDTO;
+        OrderCriteriaDTO.OrderCriteriaDTOBuilder builder = OrderCriteriaDTO.builder();
+        return builder
+                .orderId(filter.getOrderId())
+                .customerId(filter.getCustomerId())
+                .executorId(filter.getExecutorId())
+                .orderDataPath(ofNullable(filter.getOrderData())
+                        .flatMap(orgData -> ofNullable(orgData.getKey()))
+                        .map(key -> key.split("\\."))
+                        .orElse(null))
+                .orderDataValue(ofNullable(filter.getOrderData())
+                        .map(KeyValuePair::getValue)
+                        .filter(orgData -> !orgData.isBlank())
+                        .orElse(null))
+                .isDeleted(false)
+                .build();
     }
 }
