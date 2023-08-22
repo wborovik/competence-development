@@ -46,6 +46,18 @@
         </xs:complexContent>
     </xs:complexType>
 
+    <xs:complexType name="EditExecutorType">
+        <xs:complexContent>
+            <xs:extension base="tns:Base">
+                <xs:sequence>
+                    <xs:element name="executorName" type="xs:string" minOccurs="0"/>
+                    <xs:element name="executorSurname" type="xs:string" minOccurs="0"/>
+                    <xs:element name="executorAge" type="xs:int" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
     <xs:complexType name="KeyValuePair">
         <xs:annotation>
             <xs:documentation>Представляет тип "ключ/значение"</xs:documentation>

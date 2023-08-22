@@ -33,6 +33,10 @@
         <wsdl:part name="body" element="ns:editCustomerRequest"/>
     </wsdl:message>
 
+    <wsdl:message name="editExecutorInput">
+        <wsdl:part name="body" element="ns:editExecutorRequest"/>
+    </wsdl:message>
+
     <!--    Output msg-->
     <wsdl:message name="getCustomerListOutput">
         <wsdl:part name="body" element="ns:getCustomerListResponse"/>
@@ -47,6 +51,10 @@
     </wsdl:message>
     
     <wsdl:message name="editCustomerOutput">
+        <wsdl:part name="body" element="ns:defaultResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="editExecutorOutput">
         <wsdl:part name="body" element="ns:defaultResponse"/>
     </wsdl:message>
 
@@ -83,6 +91,14 @@
             <wsdl:input message="tns:editCustomerInput"/>
             <wsdl:output message="tns:editCustomerOutput"/>
         </wsdl:operation>
+
+        <wsdl:operation name="editExecutor">
+            <wsdl:documentation>
+
+            </wsdl:documentation>
+            <wsdl:input message="tns:editExecutorInput"/>
+            <wsdl:output message="tns:editExecutorOutput"/>
+        </wsdl:operation>
     </wsdl:portType>
 
     <!--    Binding    -->
@@ -116,6 +132,15 @@
         </wsdl:operation>
 
         <wsdl:operation name="editCustomer">
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="editExecutor">
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>
