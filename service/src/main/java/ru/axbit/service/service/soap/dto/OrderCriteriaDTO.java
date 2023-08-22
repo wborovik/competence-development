@@ -2,7 +2,6 @@ package ru.axbit.service.service.soap.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.List;
 
