@@ -22,6 +22,11 @@ public class UserServiceSoap implements UserServicePortType {
     }
 
     @Override
+    public DefaultResponse editCustomer(EditCustomerRequest body) {
+        return CommonResultBuilder.buildResponse(customerService::editCustomer, body);
+    }
+
+    @Override
     public GetOrderListResponse getOrderList(GetOrderListRequest body) {
         return CommonResultBuilder.buildResponse(orderService::getOrderList, body);
     }

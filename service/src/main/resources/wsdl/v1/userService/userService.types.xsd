@@ -29,9 +29,9 @@
             <xs:documentation>Выходные параметры метода getCustomerList</xs:documentation>
         </xs:annotation>
         <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="result" type="core:CustomerPageType"/>
-                    </xs:sequence>
+            <xs:sequence>
+                <xs:element name="result" type="core:CustomerPageType"/>
+            </xs:sequence>
         </xs:complexType>
     </xs:element>
 
@@ -79,6 +79,29 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="result" type="core:OrderPageType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!--    Метод editCustomer-->
+    <xs:element name="editCustomerRequest">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода editCustomer</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="editCustomer" type="filter:EditCustomerType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="defaultResponse">
+        <xs:annotation>
+            <xs:documentation>Выходные параметры методов ничего не возвращающих</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="core:result"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
