@@ -3,7 +3,7 @@ package ru.axbit.service.service.soap.mapper.response;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.axbit.domain.domain.common.UserData;
-import ru.axbit.domain.domain.order.Order;
+import ru.axbit.domain.domain.order.WorkOrder;
 import ru.axbit.domain.domain.user.Customer;
 import ru.axbit.domain.domain.user.Executor;
 import ru.axbit.vborovik.competence.core.v1.*;
@@ -94,12 +94,12 @@ public class ResponseMapper {
         return response;
     }
 
-    public static OrderPageItemType mapOrderPageItemType(Order order) {
+    public static OrderPageItemType mapOrderPageItemType(WorkOrder workOrder) {
         var result = new OrderPageItemType();
-        if (Objects.isNull(order)) return result;
-        result.setOrderId(order.getId());
-        result.setCustomer(mapCustomerPageItemType(order.getCustomer()));
-        result.setExecutor(mapExecutorPageItemType(order.getExecutor()));
+        if (Objects.isNull(workOrder)) return result;
+        result.setOrderId(workOrder.getId());
+        result.setCustomer(mapCustomerPageItemType(workOrder.getCustomer()));
+        result.setExecutor(mapExecutorPageItemType(workOrder.getExecutor()));
         return result;
     }
 

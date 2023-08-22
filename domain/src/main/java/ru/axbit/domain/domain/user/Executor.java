@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.BatchSize;
 import ru.axbit.domain.domain.common.UserData;
-import ru.axbit.domain.domain.order.Order;
+import ru.axbit.domain.domain.order.WorkOrder;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,5 +20,5 @@ public class Executor extends UserData {
 
     @BatchSize(size = 500)
     @OneToMany(mappedBy = "executor", fetch = FetchType.LAZY)
-    private List<Order> orders;
+    private List<WorkOrder> orders;
 }

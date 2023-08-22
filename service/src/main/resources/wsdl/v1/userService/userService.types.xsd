@@ -107,6 +107,18 @@
         </xs:complexType>
     </xs:element>
 
+    <!--    Метод editOrder-->
+    <xs:element name="editOrderRequest">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода editOrder</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="editOrder" type="filter:EditOrderType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
     <xs:element name="defaultResponse">
         <xs:annotation>
             <xs:documentation>Выходные параметры методов ничего не возвращающих</xs:documentation>
