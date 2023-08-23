@@ -10,6 +10,9 @@
                schemaLocation="competence.core.xsd"/>
 
     <xs:complexType name="GetCustomerListFilterType">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода getCustomerList</xs:documentation>
+        </xs:annotation>
         <xs:sequence>
             <xs:element name="customerId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="customerName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
@@ -18,6 +21,9 @@
     </xs:complexType>
 
     <xs:complexType name="GetExecutorListFilterType">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода getExecutorList</xs:documentation>
+        </xs:annotation>
         <xs:sequence>
             <xs:element name="executorId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="executorName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
@@ -26,6 +32,9 @@
     </xs:complexType>
 
     <xs:complexType name="GetOrderListFilterType">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода getOrderList</xs:documentation>
+        </xs:annotation>
         <xs:sequence>
             <xs:element name="orderId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="customerId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
@@ -35,6 +44,9 @@
     </xs:complexType>
 
     <xs:complexType name="EditCustomerType">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода editCustomer</xs:documentation>
+        </xs:annotation>
         <xs:complexContent>
             <xs:extension base="tns:Base">
                 <xs:sequence>
@@ -47,12 +59,31 @@
     </xs:complexType>
 
     <xs:complexType name="EditExecutorType">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода editExecutor</xs:documentation>
+        </xs:annotation>
         <xs:complexContent>
             <xs:extension base="tns:Base">
                 <xs:sequence>
                     <xs:element name="executorName" type="xs:string" minOccurs="0"/>
                     <xs:element name="executorSurname" type="xs:string" minOccurs="0"/>
                     <xs:element name="executorAge" type="xs:int" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="EditOrderType">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода editOrder</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="tns:Base">
+                <xs:sequence>
+                    <xs:element name="title" type="xs:string" minOccurs="0"/>
+                    <xs:element name="customerId" type="xs:long" minOccurs="0"/>
+                    <xs:element name="executorId" type="xs:long" minOccurs="0"/>
+                    <xs:element name="orderData" type="tns:KeyValuePair" minOccurs="0"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>

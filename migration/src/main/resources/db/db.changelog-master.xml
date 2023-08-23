@@ -16,16 +16,16 @@
     <!--Добавление данных в таблицы:-->
     <include file="changelog/4_insert_dml.xml" relativeToChangelogFile="true"/>
 
-    <!--Добавление данных в таблицу orders:-->
+    <!--Добавление данных в таблицу work_order:-->
     <include file="changelog/5_insert_orders_dml.xml" relativeToChangelogFile="true"/>
 
-    <!--Изменение таблицы orders:-->
+    <!--Изменение таблицы work_order:-->
     <include file="changelog/6_alter_orders_dml.xml" relativeToChangelogFile="true"/>
 
-    <!--Добавление данных в таблицу orders:-->
+    <!--Добавление данных в таблицу work_order:-->
     <include file="changelog/7_insert_orders_dml.xml" relativeToChangelogFile="true"/>
 
-    <!--Добавление столбца check в таблицу orders:-->
+    <!--Добавление столбца check в таблицу work_order:-->
     <include file="changelog/8_alter_orders_ddl.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
