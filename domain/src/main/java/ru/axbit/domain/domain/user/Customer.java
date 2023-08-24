@@ -12,12 +12,18 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.List;
 
+/**
+ * Класс, описывающий клиента, делающего заказы.
+ */
 @Getter
 @Setter
 @Entity
 @FieldNameConstants
 public class Customer extends UserData {
 
+    /**
+     * Заказы, которые заказал клиент.
+     */
     @BatchSize(size = 500)
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private List<WorkOrder> orders;

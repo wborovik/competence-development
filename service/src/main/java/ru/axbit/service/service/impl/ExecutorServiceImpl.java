@@ -25,6 +25,9 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Реализация основных CRUD методов сущности исполнителя {@link Executor}.
+ */
 @Service
 @Transactional
 @AllArgsConstructor
@@ -38,8 +41,17 @@ public class ExecutorServiceImpl implements ExecutorService {
         return ResponseMapper.mapGetExecutorResponse(executorPojo);
     }
 
+    /**
+     * Метод для получения списка исполнителей {@link Executor}.
+     *
+     * @param filter принимает тип {@link GetExecutorListFilterType}, содержащий критерии поиска.
+     * @param pagingOptions принимает тип {@link PagingOptions}, содержащий условия сортировки страниц.
+     * @return Возвращает {@link ExecutorListPojo}, который содержит страницы исполнителей, полученных из БД.
+     */
     private ExecutorListPojo getExecutorList(GetExecutorListFilterType filter, PagingOptions pagingOptions) {
-        if (Objects.isNull(filter)) return null;
+        if (Objects.isNull(filter)) {
+            return null;
+        }
         var pageRequest = PagingUtils.getPageRequest(pagingOptions);
         var sorting = PagingUtils.getSortOptions(pagingOptions, AbstractEntity.Fields.id);
         var criteriaDto = CommonMapperDTO.mapExecutorDTO(filter);

@@ -5,6 +5,10 @@ import ru.axbit.vborovik.competence.userservice.types.v1.EditCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListResponse;
 
+/**
+ * Сервис сущности заказчика {@link ru.axbit.domain.domain.user.Customer}.
+ * Описание основных методов.
+ */
 public interface CustomerService {
     GetCustomerListResponse getCustomerList(GetCustomerListRequest body);
     DefaultResponse editCustomer(EditCustomerRequest body);

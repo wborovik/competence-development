@@ -9,7 +9,18 @@ import ru.axbit.service.service.soap.dto.ExecutorCriteriaDTO;
 import ru.axbit.service.util.PagingUtils;
 import ru.axbit.service.util.SpecificationPredicateBuilder;
 
+/**
+ * Спецификация получения сущности исполнителя {@link Executor} из БД.
+ */
 public class ExecutorSpecification {
+
+    /**
+     * Метод создания спецификации сущности исполнителя {@link Executor} для выборки данных из БД.
+     *
+     * @param criteriaDTO входной параметр {@link ExecutorCriteriaDTO} DTO сущности {@link Executor}.
+     * @param sort входной параметр {@link PagingUtils.SortingOptions} свойства сортировки страниц.
+     * @return Возвращает спецификацию {@link Specification}.
+     */
     public static Specification<Executor> create(ExecutorCriteriaDTO criteriaDTO, PagingUtils.SortingOptions sort) {
         return (root, query, criteriaBuilder) ->
                 new SpecificationPredicateBuilder(root, query, criteriaBuilder)

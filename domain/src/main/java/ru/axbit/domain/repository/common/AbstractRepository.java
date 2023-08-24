@@ -6,7 +6,11 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 import ru.axbit.domain.domain.common.AbstractEntity;
 
+/**
+ * Родительский интерфейс изолированного слоя CRUD репозиториев проекта.
+ * @param <T> Параметризованный тип, наследуется от {@link AbstractEntity}.
+ */
 @NoRepositoryBean
-public interface AbstractRepository <T extends AbstractEntity>
-        extends JpaRepository<T, Number>, JpaSpecificationExecutor<T> {
+public interface AbstractRepository<T extends AbstractEntity> extends JpaRepository<T, Number>,
+        JpaSpecificationExecutor<T> {
 }

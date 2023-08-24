@@ -12,12 +12,18 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.List;
 
+/**
+ * Класс, описывающий исполнителя заказов.
+ */
 @Getter
 @Setter
 @Entity
 @FieldNameConstants
 public class Executor extends UserData {
 
+    /**
+     * Заказы, которые выполняет исполнитель.
+     */
     @BatchSize(size = 500)
     @OneToMany(mappedBy = "executor", fetch = FetchType.LAZY)
     private List<WorkOrder> orders;

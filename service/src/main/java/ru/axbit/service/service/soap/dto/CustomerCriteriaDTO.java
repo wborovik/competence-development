@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * DTO сущности заказчика {@link ru.axbit.domain.domain.user.Customer}.
+ */
 @Data
 @Builder
 public class CustomerCriteriaDTO {

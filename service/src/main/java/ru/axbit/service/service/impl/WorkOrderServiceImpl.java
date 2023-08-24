@@ -27,6 +27,9 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Реализация основных CRUD методов сущности заказа {@link WorkOrder}.
+ */
 @Service
 @Transactional
 @AllArgsConstructor
@@ -42,8 +45,17 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         return ResponseMapper.mapGetOrderResponse(orderPojo);
     }
 
+    /**
+     * Метод для получения списка заказов {@link WorkOrder}.
+     *
+     * @param filter принимает тип {@link GetOrderListFilterType}, содержащий критерии поиска.
+     * @param pagingOptions принимает тип {@link PagingOptions}, содержащий условия сортировки страниц.
+     * @return Возвращает {@link OrderListPojo}, который содержит страницы заказов, полученных из БД.
+     */
     private OrderListPojo getOrderList(GetOrderListFilterType filter, PagingOptions pagingOptions) {
-        if (Objects.isNull(filter)) return null;
+        if (Objects.isNull(filter)) {
+            return null;
+        }
         var pageRequest = PagingUtils.getPageRequest(pagingOptions);
         var sorting = PagingUtils.getSortOptions(pagingOptions, AbstractEntity.Fields.id);
         var criteriaDTO = CommonMapperDTO.mapOrderDTO(filter);
