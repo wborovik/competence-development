@@ -10,7 +10,18 @@ import ru.axbit.vborovik.competence.filtertypes.v1.KeyValuePair;
 
 import static java.util.Optional.ofNullable;
 
+/**
+ * Преобразование входных типов данных методов в DTO сущностей.
+ */
 public class CommonMapperDTO {
+
+    /**
+     * Метод, преобразующий входные данные SOAP типа {@link GetCustomerListFilterType}
+     * к DTO типу заказчика {@link CustomerCriteriaDTO}.
+     *
+     * @param filter Принимает SOAP класс {@link GetCustomerListFilterType}, содержащий переданные данные.
+     * @return Возвращает {@link CustomerCriteriaDTO} заказчика {@link ru.axbit.domain.domain.user.Customer}.
+     */
     public static CustomerCriteriaDTO mapCustomerDTO(GetCustomerListFilterType filter) {
         CustomerCriteriaDTO.CustomerCriteriaDTOBuilder builder = CustomerCriteriaDTO.builder();
         return builder
@@ -21,6 +32,13 @@ public class CommonMapperDTO {
                 .build();
     }
 
+    /**
+     * Метод, преобразующий входные данные SOAP типа {@link GetExecutorListFilterType}
+     * к DTO типу исполнителя {@link ExecutorCriteriaDTO}.
+     *
+     * @param filter Принимает SOAP класс {@link GetExecutorListFilterType}, содержащий переданные данные.
+     * @return Возвращает {@link ExecutorCriteriaDTO} исполнителя {@link ru.axbit.domain.domain.user.Executor}.
+     */
     public static ExecutorCriteriaDTO mapExecutorDTO(GetExecutorListFilterType filter) {
         ExecutorCriteriaDTO.ExecutorCriteriaDTOBuilder builder = ExecutorCriteriaDTO.builder();
         return builder
@@ -31,6 +49,13 @@ public class CommonMapperDTO {
                 .build();
     }
 
+    /**
+     * Метод, преобразующий входные данные SOAP типа {@link GetOrderListFilterType}
+     * к DTO типу заказа {@link OrderCriteriaDTO}.
+     *
+     * @param filter Принимает SOAP класс {@link GetOrderListFilterType}, содержащий переданные данные.
+     * @return Возвращает {@link OrderCriteriaDTO} заказа {@link ru.axbit.domain.domain.order.WorkOrder}.
+     */
     public static OrderCriteriaDTO mapOrderDTO(GetOrderListFilterType filter) {
         OrderCriteriaDTO.OrderCriteriaDTOBuilder builder = OrderCriteriaDTO.builder();
         return builder

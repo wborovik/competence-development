@@ -5,6 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+/**
+ * Основной класс для запуска приложения.
+ */
 @SpringBootApplication
 @EntityScan(value = {"ru.axbit.domain"})
 @EnableJpaRepositories(value = {"ru.axbit.domain"})

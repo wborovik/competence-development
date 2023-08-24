@@ -6,9 +6,21 @@ import ru.axbit.service.service.CustomerService;
 import ru.axbit.service.service.ExecutorService;
 import ru.axbit.service.service.WorkOrderService;
 import ru.axbit.service.util.CommonResultBuilder;
-import ru.axbit.vborovik.competence.userservice.types.v1.*;
+import ru.axbit.vborovik.competence.userservice.types.v1.DefaultResponse;
+import ru.axbit.vborovik.competence.userservice.types.v1.EditCustomerRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.EditExecutorRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.EditOrderRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListResponse;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListResponse;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetOrderListRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetOrderListResponse;
 import ru.axbit.vborovik.competence.userservice.v1.UserServicePortType;
 
+/**
+ * Класс, реализующий методы описанные в wsdl схеме UserService.
+ */
 @Service
 @AllArgsConstructor
 public class UserServiceSoap implements UserServicePortType {

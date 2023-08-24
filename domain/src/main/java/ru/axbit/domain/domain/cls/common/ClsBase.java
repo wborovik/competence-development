@@ -8,6 +8,9 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
+/**
+ * Абстрактный супер-класс для сущностей справочников.
+ */
 @Getter
 @Setter
 @MappedSuperclass

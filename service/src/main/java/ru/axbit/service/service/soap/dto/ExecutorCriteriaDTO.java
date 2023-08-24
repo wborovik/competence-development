@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * DTO сущности исполнителя Executor.
+ */
 @Data
 @Builder
 public class ExecutorCriteriaDTO {

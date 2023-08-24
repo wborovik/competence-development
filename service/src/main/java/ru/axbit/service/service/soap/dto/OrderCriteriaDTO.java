@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * DTO сущности заказа Order.
+ */
 @Data
 @Builder
 public class OrderCriteriaDTO {

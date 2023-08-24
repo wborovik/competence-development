@@ -2,6 +2,7 @@ package ru.axbit.service.config.soap;
 
 import javax.xml.ws.Endpoint;
 import javax.xml.ws.soap.SOAPBinding;
+
 import lombok.RequiredArgsConstructor;
 import org.apache.cxf.Bus;
 import org.apache.cxf.bus.spring.SpringBus;
@@ -20,11 +21,19 @@ import ru.axbit.vborovik.competence.userservice.v1.UserServicePortType;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Класс SOAP конфигурации сервиса userService.
+ */
 @Configuration
 @RequiredArgsConstructor
 @Profile("userService")
 public class SoapConfig {
 
+    /**
+     * Регистрация сервлета {@link ServletRegistrationBean}.
+     *
+     * @return {@link ServletRegistrationBean}.
+     */
     @Bean
     public ServletRegistrationBean<CXFServlet> cxfServlet() {
         CXFServlet cxfServlet = new CXFServlet();
@@ -33,19 +42,40 @@ public class SoapConfig {
         return servletReg;
     }
 
+    /**
+     * Путь к контексту сервлета.
+     *
+     * @return {@link DispatcherServletPath}
+     */
     @Bean
     @Primary
     public DispatcherServletPath dispatcherServletPathProvider() {
         return () -> "/";
     }
 
+    /**
+     * Получение компонента {@link SpringBus}, который предоставляет расширения для Apache CXF
+     * для работы с Spring Framework.
+     *
+     * @return {@link SpringBus}.
+     */
     @Bean(name = Bus.DEFAULT_BUS_ID)
     public SpringBus springBus() {
         return new SpringBus();
     }
 
+    /**
+     * Получение компонента {@link Endpoint}, который используется для публикации конечной точки
+     * по-заданному HTTP-адресу.
+     *
+     * @param bus                 принимает {@link SpringBus} компонент, предоставляющий расширения для Apache CXF.
+     * @param userServicePortType принимает {@link UserServicePortType} SOAP интерфейс, описывающий методы
+     *                            для взаимодействия приложения с БД.
+     * @return возвращает {@link Endpoint} компонент.
+     */
     @Bean
-    public Endpoint createUserServiceEndpoint(SpringBus bus, @Qualifier("userServiceSoap") UserServicePortType userServicePortType) {
+    public Endpoint createUserServiceEndpoint(SpringBus bus, @Qualifier("userServiceSoap")
+    UserServicePortType userServicePortType) {
         EndpointImpl endpoint = new EndpointImpl(bus, userServicePortType, SOAPBinding.SOAP12HTTP_BINDING);
         endpoint.setProperties(getEndpointProps());
         endpoint.setServiceName(UserService.SERVICE);
@@ -55,6 +85,11 @@ public class SoapConfig {
         return endpoint;
     }
 
+    /**
+     * Получение характеристик конечной точки {@link Endpoint}.
+     *
+     * @return {@link Map} характеристик.
+     */
     private Map<String, Object> getEndpointProps() {
         Map<String, Object> props = new HashMap<>();
         props.put("schema-validation-enabled", "REQUEST");

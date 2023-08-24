@@ -25,6 +25,9 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Реализация основных CRUD методов сущности заказчика {@link Customer}.
+ */
 @Service
 @Transactional
 @AllArgsConstructor
@@ -37,8 +40,17 @@ public class CustomerServiceImpl implements CustomerService {
         return ResponseMapper.mapGetCustomerResponse(customerPojo);
     }
 
+    /**
+     * Метод для получения списка заказчиков {@link Customer}.
+     *
+     * @param filter принимает тип {@link GetCustomerListFilterType}, содержащий критерии поиска.
+     * @param pagingOptions принимает тип {@link PagingOptions}, содержащий условия сортировки страниц.
+     * @return Возвращает {@link CustomerListPojo}, который содержит страницы заказчиков, полученных из БД.
+     */
     private CustomerListPojo getCustomerList(GetCustomerListFilterType filter, PagingOptions pagingOptions) {
-        if (Objects.isNull(filter)) return null;
+        if (Objects.isNull(filter)) {
+            return null;
+        }
         var pageRequest = PagingUtils.getPageRequest(pagingOptions);
         var sorting = PagingUtils.getSortOptions(pagingOptions, AbstractEntity.Fields.id);
         var criteriaDto = CommonMapperDTO.mapCustomerDTO(filter);

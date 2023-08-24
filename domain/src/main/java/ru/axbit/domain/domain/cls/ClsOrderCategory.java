@@ -12,6 +12,9 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.List;
 
+/**
+ * Класс, описывающий справочник категории заказа.
+ */
 @Getter
 @Setter
 @Entity

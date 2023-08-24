@@ -9,7 +9,17 @@ import ru.axbit.service.service.soap.dto.CustomerCriteriaDTO;
 import ru.axbit.service.util.PagingUtils;
 import ru.axbit.service.util.SpecificationPredicateBuilder;
 
+/**
+ * Спецификация получения сущности заказчика {@link Customer} из БД.
+ */
 public class CustomerSpecification {
+    /**
+     * Метод создания спецификации сущности заказчика {@link Customer} для выборки данных из БД.
+     *
+     * @param criteriaDTO входной параметр {@link CustomerCriteriaDTO} DTO сущности {@link Customer}.
+     * @param sort входной параметр {@link PagingUtils.SortingOptions} свойства сортировки страниц.
+     * @return Возвращает спецификацию {@link Specification}.
+     */
     public static Specification<Customer> create(CustomerCriteriaDTO criteriaDTO, PagingUtils.SortingOptions sort) {
         return (root, query, criteriaBuilder) ->
                 new SpecificationPredicateBuilder(root, query, criteriaBuilder)
