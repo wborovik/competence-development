@@ -71,7 +71,8 @@ public class ExecutorServiceImpl implements ExecutorService {
         var executorId = editExecutorReq.getId();
         var executorOptional = executorRepository.findById(executorId);
         executorOptional.filter(AuditEntity::isDeleted)
-                .ifPresent(executor -> BusinessExceptionEnum.E002.thr(executorId, Executor.class.getSimpleName()));
+                .ifPresent(executor -> BusinessExceptionEnum.E002
+                        .thr(executor.getId(), Executor.class.getSimpleName()));
         if (executorOptional.isPresent()) {
             var executor = executorOptional.get();
             Optional.ofNullable(editExecutorReq.getExecutorName()).ifPresent(executor::setName);
