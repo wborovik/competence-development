@@ -2,6 +2,7 @@
 <wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
                   xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                   xmlns:tns="http://vborovik.axbit.ru/competence/userService/v1/"
+                  xmlns:fault="http://vborovik.axbit.ru/competence/faults/v1/"
                   xmlns:core="http://vborovik.axbit.ru/competence/core/v1/"
                   xmlns:ns="http://vborovik.axbit.ru/competence/userService/types/v1/"
                   name="userService"
@@ -13,8 +14,16 @@
                         schemaLocation="../competence.core.xsd"/>
             <xsd:import namespace="http://vborovik.axbit.ru/competence/userService/types/v1/"
                         schemaLocation="userService.types.xsd"/>
+            <xsd:import namespace="http://vborovik.axbit.ru/competence/faults/v1/"
+                        schemaLocation="competence.faults.xsd"/>
         </xsd:schema>
     </wsdl:types>
+
+    <!--    Exception-->
+    <wsdl:message name="fault">
+        <wsdl:documentation>Ошибка</wsdl:documentation>
+        <wsdl:part name="body" element="fault:fault"/>
+    </wsdl:message>
 
     <!--    Inputs msg-->
     <wsdl:message name="getCustomerListInput">
@@ -53,7 +62,7 @@
     <wsdl:message name="getOrderListOutput">
         <wsdl:part name="body" element="ns:getOrderListResponse"/>
     </wsdl:message>
-    
+
     <wsdl:message name="editCustomerOutput">
         <wsdl:part name="body" element="ns:defaultResponse"/>
     </wsdl:message>
@@ -74,6 +83,7 @@
             </wsdl:documentation>
             <wsdl:input message="tns:getCustomerListInput"/>
             <wsdl:output message="tns:getCustomerListOutput"/>
+            <wsdl:fault name="fault" message="tns:fault"/>
         </wsdl:operation>
 
         <wsdl:operation name="getExecutorList">
@@ -82,6 +92,7 @@
             </wsdl:documentation>
             <wsdl:input message="tns:getExecutorListInput"/>
             <wsdl:output message="tns:getExecutorListOutput"/>
+            <wsdl:fault name="fault" message="tns:fault"/>
         </wsdl:operation>
 
         <wsdl:operation name="getOrderList">
@@ -90,6 +101,7 @@
             </wsdl:documentation>
             <wsdl:input message="tns:getOrderListInput"/>
             <wsdl:output message="tns:getOrderListOutput"/>
+            <wsdl:fault name="fault" message="tns:fault"/>
         </wsdl:operation>
 
         <wsdl:operation name="editCustomer">
@@ -98,6 +110,7 @@
             </wsdl:documentation>
             <wsdl:input message="tns:editCustomerInput"/>
             <wsdl:output message="tns:editCustomerOutput"/>
+            <wsdl:fault name="fault" message="tns:fault"/>
         </wsdl:operation>
 
         <wsdl:operation name="editExecutor">
@@ -106,6 +119,7 @@
             </wsdl:documentation>
             <wsdl:input message="tns:editExecutorInput"/>
             <wsdl:output message="tns:editExecutorOutput"/>
+            <wsdl:fault name="fault" message="tns:fault"/>
         </wsdl:operation>
 
         <wsdl:operation name="editOrder">
@@ -114,6 +128,7 @@
             </wsdl:documentation>
             <wsdl:input message="tns:editOrderInput"/>
             <wsdl:output message="tns:editOrderOutput"/>
+            <wsdl:fault name="fault" message="tns:fault"/>
         </wsdl:operation>
     </wsdl:portType>
 
@@ -127,6 +142,9 @@
             <wsdl:output>
                 <soap:body use="literal"/>
             </wsdl:output>
+            <wsdl:fault name="fault">
+                <soap:fault name="fault" use="literal"/>
+            </wsdl:fault>
         </wsdl:operation>
 
         <wsdl:operation name="getExecutorList">
@@ -136,6 +154,9 @@
             <wsdl:output>
                 <soap:body use="literal"/>
             </wsdl:output>
+            <wsdl:fault name="fault">
+                <soap:fault name="fault" use="literal"/>
+            </wsdl:fault>
         </wsdl:operation>
 
         <wsdl:operation name="getOrderList">
@@ -145,6 +166,9 @@
             <wsdl:output>
                 <soap:body use="literal"/>
             </wsdl:output>
+            <wsdl:fault name="fault">
+                <soap:fault name="fault" use="literal"/>
+            </wsdl:fault>
         </wsdl:operation>
 
         <wsdl:operation name="editCustomer">
@@ -154,6 +178,9 @@
             <wsdl:output>
                 <soap:body use="literal"/>
             </wsdl:output>
+            <wsdl:fault name="fault">
+                <soap:fault name="fault" use="literal"/>
+            </wsdl:fault>
         </wsdl:operation>
 
         <wsdl:operation name="editExecutor">
@@ -163,6 +190,9 @@
             <wsdl:output>
                 <soap:body use="literal"/>
             </wsdl:output>
+            <wsdl:fault name="fault">
+                <soap:fault name="fault" use="literal"/>
+            </wsdl:fault>
         </wsdl:operation>
 
         <wsdl:operation name="editOrder">
@@ -172,6 +202,9 @@
             <wsdl:output>
                 <soap:body use="literal"/>
             </wsdl:output>
+            <wsdl:fault name="fault">
+                <soap:fault name="fault" use="literal"/>
+            </wsdl:fault>
         </wsdl:operation>
     </wsdl:binding>
 

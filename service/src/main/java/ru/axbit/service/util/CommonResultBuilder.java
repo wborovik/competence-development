@@ -1,6 +1,8 @@
 package ru.axbit.service.util;
 
 import lombok.extern.slf4j.Slf4j;
+import ru.axbit.service.exception.BusinessException;
+import ru.axbit.service.exception.UserServiceExceptionMapper;
 
 /**
  * Фасад логгера SLF4J.
@@ -23,6 +25,9 @@ public class CommonResultBuilder {
     public static <T, R, E extends Exception> R buildResponse(ExFunction<T, R, E> function, T request) throws E {
         try {
             return function.apply(request);
+        } catch (BusinessException e) {
+            log.warn(e.getMessage());
+            throw (E) UserServiceExceptionMapper.convert(e, request.getClass());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw (E) new RuntimeException(e);

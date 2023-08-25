@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://vborovik.axbit.ru/competence/faults/v1/"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://vborovik.axbit.ru/competence/faults/v1/"
+           elementFormDefault="qualified">
+    <xs:include schemaLocation="competence.faults.xsd"/>
+
+    <xs:element name="fault" type="BusinessFault">
+        <xs:annotation>
+            <xs:documentation>Базовый тип ошибки</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:complexType name="BusinessFault">
+        <xs:annotation>
+            <xs:documentation>Бизнес ошибка</xs:documentation>
+        </xs:annotation>
+                <xs:sequence>
+                    <xs:element name="message" type="ErrorMessage"/>
+                </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ErrorMessage">
+        <xs:annotation>
+            <xs:documentation>Сообщение об ошибке</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="code" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Код сообщения</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="message" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Текст сообщения</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

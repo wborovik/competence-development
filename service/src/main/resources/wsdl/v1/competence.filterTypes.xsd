@@ -83,7 +83,7 @@
                     <xs:element name="title" type="xs:string" minOccurs="0"/>
                     <xs:element name="customerId" type="xs:long" minOccurs="0"/>
                     <xs:element name="executorId" type="xs:long" minOccurs="0"/>
-                    <xs:element name="orderData" type="tns:KeyValuePair" minOccurs="0"/>
+                    <xs:element name="orderData" type="xs:string" minOccurs="0"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
