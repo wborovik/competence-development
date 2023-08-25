@@ -6,8 +6,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.axbit.domain.domain.common.AbstractEntity;
+import ru.axbit.domain.domain.common.AuditEntity;
 import ru.axbit.domain.domain.user.Customer;
 import ru.axbit.domain.repository.CustomerRepository;
+import ru.axbit.service.exception.BusinessExceptionEnum;
 import ru.axbit.service.service.CustomerService;
 import ru.axbit.service.service.soap.mapper.request.CommonMapperDTO;
 import ru.axbit.service.service.soap.mapper.response.CustomerListPojo;
@@ -43,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
     /**
      * Метод для получения списка заказчиков {@link Customer}.
      *
-     * @param filter принимает тип {@link GetCustomerListFilterType}, содержащий критерии поиска.
+     * @param filter        принимает тип {@link GetCustomerListFilterType}, содержащий критерии поиска.
      * @param pagingOptions принимает тип {@link PagingOptions}, содержащий условия сортировки страниц.
      * @return Возвращает {@link CustomerListPojo}, который содержит страницы заказчиков, полученных из БД.
      */
@@ -67,6 +69,8 @@ public class CustomerServiceImpl implements CustomerService {
         var editCustomerReq = body.getEditCustomer();
         var customerId = editCustomerReq.getId();
         var customerOptional = customerRepository.findById(customerId);
+        customerOptional.filter(AuditEntity::isDeleted)
+                .ifPresent(customer -> BusinessExceptionEnum.E002.thr(customerId, Customer.class.getSimpleName()));
         if (customerOptional.isPresent()) {
             var customer = customerOptional.get();
             Optional.ofNullable(editCustomerReq.getCustomerName()).ifPresent(customer::setName);
@@ -74,6 +78,8 @@ public class CustomerServiceImpl implements CustomerService {
             Optional.ofNullable(editCustomerReq.getCustomerAge()).ifPresent(customer::setAge);
             customer.setChanged(LocalDateTime.now());
             customerRepository.save(customer);
+        } else {
+            BusinessExceptionEnum.E001.thr(customerId, Customer.class.getSimpleName());
         }
         return ResponseMapper.mapDefaultResponse(true);
     }

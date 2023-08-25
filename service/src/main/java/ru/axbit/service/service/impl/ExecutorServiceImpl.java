@@ -5,8 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.axbit.domain.domain.common.AbstractEntity;
+import ru.axbit.domain.domain.common.AuditEntity;
 import ru.axbit.domain.domain.user.Executor;
 import ru.axbit.domain.repository.ExecutorRepository;
+import ru.axbit.service.exception.BusinessExceptionEnum;
 import ru.axbit.service.service.ExecutorService;
 import ru.axbit.service.service.soap.mapper.request.CommonMapperDTO;
 import ru.axbit.service.service.soap.mapper.response.ExecutorListPojo;
@@ -44,7 +46,7 @@ public class ExecutorServiceImpl implements ExecutorService {
     /**
      * Метод для получения списка исполнителей {@link Executor}.
      *
-     * @param filter принимает тип {@link GetExecutorListFilterType}, содержащий критерии поиска.
+     * @param filter        принимает тип {@link GetExecutorListFilterType}, содержащий критерии поиска.
      * @param pagingOptions принимает тип {@link PagingOptions}, содержащий условия сортировки страниц.
      * @return Возвращает {@link ExecutorListPojo}, который содержит страницы исполнителей, полученных из БД.
      */
@@ -68,6 +70,8 @@ public class ExecutorServiceImpl implements ExecutorService {
         var editExecutorReq = body.getEditExecutor();
         var executorId = editExecutorReq.getId();
         var executorOptional = executorRepository.findById(executorId);
+        executorOptional.filter(AuditEntity::isDeleted)
+                .ifPresent(executor -> BusinessExceptionEnum.E002.thr(executorId, Executor.class.getSimpleName()));
         if (executorOptional.isPresent()) {
             var executor = executorOptional.get();
             Optional.ofNullable(editExecutorReq.getExecutorName()).ifPresent(executor::setName);
@@ -75,6 +79,8 @@ public class ExecutorServiceImpl implements ExecutorService {
             Optional.ofNullable(editExecutorReq.getExecutorAge()).ifPresent(executor::setAge);
             executor.setChanged(LocalDateTime.now());
             executorRepository.save(executor);
+        } else {
+            BusinessExceptionEnum.E001.thr(executorId, Executor.class.getSimpleName());
         }
         return ResponseMapper.mapDefaultResponse(true);
     }
