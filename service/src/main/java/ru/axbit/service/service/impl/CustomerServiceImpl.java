@@ -70,7 +70,8 @@ public class CustomerServiceImpl implements CustomerService {
         var customerId = editCustomerReq.getId();
         var customerOptional = customerRepository.findById(customerId);
         customerOptional.filter(AuditEntity::isDeleted)
-                .ifPresent(customer -> BusinessExceptionEnum.E002.thr(customerId, Customer.class.getSimpleName()));
+                .ifPresent(customer -> BusinessExceptionEnum.E002
+                        .thr(customer.getId(), Customer.class.getSimpleName()));
         if (customerOptional.isPresent()) {
             var customer = customerOptional.get();
             Optional.ofNullable(editCustomerReq.getCustomerName()).ifPresent(customer::setName);
