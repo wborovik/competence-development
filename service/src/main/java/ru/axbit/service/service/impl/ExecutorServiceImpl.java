@@ -17,13 +17,13 @@ import ru.axbit.service.service.soap.spec.ExecutorSpecification;
 import ru.axbit.service.util.PagingUtils;
 import ru.axbit.vborovik.competence.core.v1.PagingOptions;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetExecutorListFilterType;
+import ru.axbit.vborovik.competence.userservice.types.v1.CreateExecutorRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.DefaultResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.EditExecutorRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListResponse;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -65,6 +65,12 @@ public class ExecutorServiceImpl implements ExecutorService {
                 .build();
     }
 
+    /**
+     * Метод для изменения исполнителя {@link Executor}.
+     *
+     * @param body передается SOAP тип {@link EditExecutorRequest} с вносимыми изменениями.
+     * @return возвращается SOAP тип {@link DefaultResponse}, содержащий статус проведенной операции.
+     */
     @Override
     public DefaultResponse editExecutor(EditExecutorRequest body) {
         var editExecutorReq = body.getEditExecutor();
@@ -78,11 +84,28 @@ public class ExecutorServiceImpl implements ExecutorService {
             Optional.ofNullable(editExecutorReq.getExecutorName()).ifPresent(executor::setName);
             Optional.ofNullable(editExecutorReq.getExecutorSurname()).ifPresent(executor::setSurname);
             Optional.ofNullable(editExecutorReq.getExecutorAge()).ifPresent(executor::setAge);
-            executor.setChanged(LocalDateTime.now());
             executorRepository.save(executor);
         } else {
             BusinessExceptionEnum.E001.thr(executorId, Executor.class.getSimpleName());
         }
+        return ResponseMapper.mapDefaultResponse(true);
+    }
+
+    /**
+     * Метод для создания исполнителя {@link Executor}.
+     *
+     * @param body принимает SOAP тип {@link CreateExecutorRequest} с сохраняемыми данными.
+     * @return возвращает SOAP тип {@link DefaultResponse}, содержащий статус проведенной операции.
+     */
+    @Override
+    public DefaultResponse createExecutor(CreateExecutorRequest body) {
+        var createExecutorReq = body.getCreateExecutor();
+        var executor = new Executor();
+        Optional.ofNullable(createExecutorReq.getExecutorName()).ifPresent(executor::setName);
+        Optional.ofNullable(createExecutorReq.getExecutorSurname()).ifPresent(executor::setSurname);
+        Optional.ofNullable(createExecutorReq.getExecutorAge()).ifPresent(executor::setAge);
+        executorRepository.save(executor);
+
         return ResponseMapper.mapDefaultResponse(true);
     }
 }

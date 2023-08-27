@@ -28,4 +28,10 @@
     <!--Добавление столбца check в таблицу work_order:-->
     <include file="changelog/8_alter_orders_ddl.xml" relativeToChangelogFile="true"/>
 
+    <!--Удаление таблицы admin:-->
+    <include file="changelog/9_drop_table_admin.xml" relativeToChangelogFile="true"/>
+
+    <!--Изменение sequence:-->
+    <include file="changelog/10_alter_sequence.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>

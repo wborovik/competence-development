@@ -119,6 +119,30 @@
         </xs:complexType>
     </xs:element>
 
+    <!--    Метод createCustomer-->
+    <xs:element name="createCustomerRequest">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода createCustomer</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="createCustomer" type="filter:CreateCustomerType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Метод createExecutor-->
+    <xs:element name="createExecutorRequest">
+        <xs:annotation>
+            <xs:documentation>Выходные параметры метода createExecutor</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="createExecutor" type="filter:CreateExecutorType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
     <xs:element name="defaultResponse">
         <xs:annotation>
             <xs:documentation>Выходные параметры методов ничего не возвращающих</xs:documentation>

@@ -18,12 +18,12 @@ import ru.axbit.service.service.soap.spec.CustomerSpecification;
 import ru.axbit.service.util.PagingUtils;
 import ru.axbit.vborovik.competence.core.v1.PagingOptions;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetCustomerListFilterType;
+import ru.axbit.vborovik.competence.userservice.types.v1.CreateCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.DefaultResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.EditCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListResponse;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -47,7 +47,7 @@ public class CustomerServiceImpl implements CustomerService {
      *
      * @param filter        принимает тип {@link GetCustomerListFilterType}, содержащий критерии поиска.
      * @param pagingOptions принимает тип {@link PagingOptions}, содержащий условия сортировки страниц.
-     * @return Возвращает {@link CustomerListPojo}, который содержит страницы заказчиков, полученных из БД.
+     * @return возвращает {@link CustomerListPojo}, который содержит страницы заказчиков, полученных из БД.
      */
     private CustomerListPojo getCustomerList(GetCustomerListFilterType filter, PagingOptions pagingOptions) {
         if (Objects.isNull(filter)) {
@@ -64,6 +64,12 @@ public class CustomerServiceImpl implements CustomerService {
                 .build();
     }
 
+    /**
+     * Метод для изменения клиента {@link Customer}.
+     *
+     * @param body принимает SOAP тип {@link EditCustomerRequest} с вносимыми изменениями.
+     * @return возвращает SOAP тип {@link DefaultResponse}, содержащий статус проведенной операции.
+     */
     @Override
     public DefaultResponse editCustomer(EditCustomerRequest body) {
         var editCustomerReq = body.getEditCustomer();
@@ -77,11 +83,28 @@ public class CustomerServiceImpl implements CustomerService {
             Optional.ofNullable(editCustomerReq.getCustomerName()).ifPresent(customer::setName);
             Optional.ofNullable(editCustomerReq.getCustomerSurname()).ifPresent(customer::setSurname);
             Optional.ofNullable(editCustomerReq.getCustomerAge()).ifPresent(customer::setAge);
-            customer.setChanged(LocalDateTime.now());
             customerRepository.save(customer);
         } else {
             BusinessExceptionEnum.E001.thr(customerId, Customer.class.getSimpleName());
         }
+        return ResponseMapper.mapDefaultResponse(true);
+    }
+
+    /**
+     * Метод для создания клиента {@link Customer}.
+     *
+     * @param body принимает SOAP тип {@link CreateCustomerRequest} с сохраняемыми данными.
+     * @return возвращает SOAP тип {@link DefaultResponse}, содержащий статус проведенной операции.
+     */
+    @Override
+    public DefaultResponse createCustomer(CreateCustomerRequest body) {
+        var createCustomerReq = body.getCreateCustomer();
+        var customer = new Customer();
+        Optional.ofNullable(createCustomerReq.getCustomerName()).ifPresent(customer::setName);
+        Optional.ofNullable(createCustomerReq.getCustomerSurname()).ifPresent(customer::setSurname);
+        Optional.ofNullable(createCustomerReq.getCustomerAge()).ifPresent(customer::setAge);
+        customerRepository.save(customer);
+
         return ResponseMapper.mapDefaultResponse(true);
     }
 }
