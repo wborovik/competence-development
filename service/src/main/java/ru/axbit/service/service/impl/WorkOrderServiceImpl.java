@@ -15,6 +15,7 @@ import ru.axbit.domain.repository.WorkOrderRepository;
 import ru.axbit.service.exception.BusinessException;
 import ru.axbit.service.exception.BusinessExceptionEnum;
 import ru.axbit.service.service.WorkOrderService;
+import ru.axbit.service.service.json.JsonMappingService;
 import ru.axbit.service.service.soap.mapper.request.CommonMapperDTO;
 import ru.axbit.service.service.soap.mapper.response.OrderListPojo;
 import ru.axbit.service.service.soap.mapper.response.ResponseMapper;
@@ -42,6 +43,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     private final WorkOrderRepository workOrderRepository;
     private final CustomerRepository customerRepository;
     private final ExecutorRepository executorRepository;
+    private final JsonMappingService jsonMappingService;
 
     @Override
     public GetOrderListResponse getOrderList(GetOrderListRequest body) {
@@ -72,6 +74,12 @@ public class WorkOrderServiceImpl implements WorkOrderService {
                 .build();
     }
 
+    /**
+     * Метод для изменения заказа {@link WorkOrder}.
+     *
+     * @param body передается SOAP тип {@link EditOrderRequest} с вносимыми изменениями.
+     * @return возвращается SOAP тип {@link DefaultResponse}, содержащий статус проведенной операции.
+     */
     @Override
     public DefaultResponse editOrder(EditOrderRequest body) {
         var editOrderReq = body.getEditOrder();
@@ -98,6 +106,8 @@ public class WorkOrderServiceImpl implements WorkOrderService {
                                 Executor.class.getSimpleName()));
                 order.setExecutor(executor);
             }
+            Optional.ofNullable(editOrderReq.getOrderData()).ifPresent(orderData
+                    -> order.setOrderCheck(jsonMappingService.mapToJsonNode(orderData)));
             order.setChanged(LocalDateTime.now());
             workOrderRepository.save(order);
         } else {
