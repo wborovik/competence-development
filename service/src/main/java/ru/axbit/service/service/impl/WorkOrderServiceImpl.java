@@ -29,7 +29,6 @@ import ru.axbit.vborovik.competence.userservice.types.v1.GetOrderListRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetOrderListResponse;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -108,7 +107,6 @@ public class WorkOrderServiceImpl implements WorkOrderService {
             }
             Optional.ofNullable(editOrderReq.getOrderData()).ifPresent(orderData
                     -> order.setOrderCheck(jsonMappingService.mapToJsonNode(orderData)));
-            order.setChanged(LocalDateTime.now());
             workOrderRepository.save(order);
         } else {
             BusinessExceptionEnum.E001.thr(orderId, WorkOrder.class.getSimpleName());

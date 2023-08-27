@@ -89,6 +89,28 @@
         </xs:complexContent>
     </xs:complexType>
 
+    <xs:complexType name="CreateCustomerType">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода createCustomer</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="customerName" type="xs:string" minOccurs="0"/>
+            <xs:element name="customerSurname" type="xs:string" minOccurs="0"/>
+            <xs:element name="customerAge" type="xs:int" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CreateExecutorType">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода createExecutor</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="executorName" type="xs:string" minOccurs="0"/>
+            <xs:element name="executorSurname" type="xs:string" minOccurs="0"/>
+            <xs:element name="executorAge" type="xs:int" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
     <xs:complexType name="KeyValuePair">
         <xs:annotation>
             <xs:documentation>Представляет тип "ключ/значение"</xs:documentation>
