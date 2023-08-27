@@ -6,7 +6,7 @@ import ru.axbit.domain.repository.common.AbstractRepository;
 import java.util.Optional;
 
 /**
- *  Интерфейс, в котором описываются методы для CRUD операций сущности заказа WorkOrder.
+ *  Интерфейс, в котором описываются методы для CRUD операций сущности заказа {@link WorkOrder}.
  */
 
 public interface WorkOrderRepository extends AbstractRepository<WorkOrder> {

@@ -80,10 +80,7 @@
         <xs:complexContent>
             <xs:extension base="tns:Base">
                 <xs:sequence>
-                    <xs:element name="title" type="xs:string" minOccurs="0"/>
-                    <xs:element name="customerId" type="xs:long" minOccurs="0"/>
-                    <xs:element name="executorId" type="xs:long" minOccurs="0"/>
-                    <xs:element name="orderData" type="xs:string" minOccurs="0"/>
+                    <xs:element name="createOrEditOrder" type="tns:CreateOrEditOrderDataType"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -108,6 +105,25 @@
             <xs:element name="executorName" type="xs:string" minOccurs="0"/>
             <xs:element name="executorSurname" type="xs:string" minOccurs="0"/>
             <xs:element name="executorAge" type="xs:int" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CreateOrderType">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода createOrder</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="createOrEditOrder" type="tns:CreateOrEditOrderDataType"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="CreateOrEditOrderDataType">
+        <xs:sequence>
+            <xs:element name="title" type="xs:string" minOccurs="0"/>
+            <xs:element name="customerId" type="xs:long" minOccurs="0"/>
+            <xs:element name="executorId" type="xs:long" minOccurs="0"/>
+            <xs:element name="categoryId" type="xs:long" minOccurs="0"/>
+            <xs:element name="orderData" type="xs:string" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
