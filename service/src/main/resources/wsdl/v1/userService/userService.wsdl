@@ -58,6 +58,10 @@
         <wsdl:part name="body" element="ns:createExecutorRequest"/>
     </wsdl:message>
 
+    <wsdl:message name="createOrderInput">
+        <wsdl:part name="body" element="ns:createOrderRequest"/>
+    </wsdl:message>
+
     <!--    Output msg-->
     <wsdl:message name="getCustomerListOutput">
         <wsdl:part name="body" element="ns:getCustomerListResponse"/>
@@ -91,77 +95,72 @@
         <wsdl:part name="body" element="ns:defaultResponse"/>
     </wsdl:message>
 
+    <wsdl:message name="createOrderOutput">
+        <wsdl:part name="body" element="ns:defaultResponse"/>
+    </wsdl:message>
+
     <!--    PortType  -->
     <wsdl:portType name="userServicePortType">
         <wsdl:operation name="getCustomerList">
-            <wsdl:documentation>
-
-            </wsdl:documentation>
+            <wsdl:documentation>Метод, который возвращает список клиентов Customer</wsdl:documentation>
             <wsdl:input message="tns:getCustomerListInput"/>
             <wsdl:output message="tns:getCustomerListOutput"/>
             <wsdl:fault name="fault" message="tns:fault"/>
         </wsdl:operation>
 
         <wsdl:operation name="getExecutorList">
-            <wsdl:documentation>
-
-            </wsdl:documentation>
+            <wsdl:documentation>Метод, который возвращает список исполнителей Executor</wsdl:documentation>
             <wsdl:input message="tns:getExecutorListInput"/>
             <wsdl:output message="tns:getExecutorListOutput"/>
             <wsdl:fault name="fault" message="tns:fault"/>
         </wsdl:operation>
 
         <wsdl:operation name="getOrderList">
-            <wsdl:documentation>
-
-            </wsdl:documentation>
+            <wsdl:documentation>Метод, который возвращает список заказов Order</wsdl:documentation>
             <wsdl:input message="tns:getOrderListInput"/>
             <wsdl:output message="tns:getOrderListOutput"/>
             <wsdl:fault name="fault" message="tns:fault"/>
         </wsdl:operation>
 
         <wsdl:operation name="editCustomer">
-            <wsdl:documentation>
-
-            </wsdl:documentation>
+            <wsdl:documentation>Метод для изменения клиента Customer</wsdl:documentation>
             <wsdl:input message="tns:editCustomerInput"/>
             <wsdl:output message="tns:editCustomerOutput"/>
             <wsdl:fault name="fault" message="tns:fault"/>
         </wsdl:operation>
 
         <wsdl:operation name="editExecutor">
-            <wsdl:documentation>
-
-            </wsdl:documentation>
+            <wsdl:documentation>Метод для изменения исполнителя Executor</wsdl:documentation>
             <wsdl:input message="tns:editExecutorInput"/>
             <wsdl:output message="tns:editExecutorOutput"/>
             <wsdl:fault name="fault" message="tns:fault"/>
         </wsdl:operation>
 
         <wsdl:operation name="editOrder">
-            <wsdl:documentation>
-
-            </wsdl:documentation>
+            <wsdl:documentation>Метод для изменения заказа Order</wsdl:documentation>
             <wsdl:input message="tns:editOrderInput"/>
             <wsdl:output message="tns:editOrderOutput"/>
             <wsdl:fault name="fault" message="tns:fault"/>
         </wsdl:operation>
 
         <wsdl:operation name="createCustomer">
-            <wsdl:documentation>
-
-            </wsdl:documentation>
+            <wsdl:documentation>Метод для создания клиента Customer</wsdl:documentation>
             <wsdl:input message="tns:createCustomerInput"/>
             <wsdl:output message="tns:createCustomerOutput"/>
             <wsdl:fault name="fault" message="tns:fault"/>
         </wsdl:operation>
 
         <wsdl:operation name="createExecutor">
-            <wsdl:documentation>
-
-            </wsdl:documentation>
+            <wsdl:documentation>Метод для создания исполнителя Executor</wsdl:documentation>
             <wsdl:input message="tns:createExecutorInput"/>
             <wsdl:output message="tns:createExecutorOutput"/>
+            <wsdl:fault name="fault" message="tns:fault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="createOrder">
+            <wsdl:documentation>Метод для создания заказа Order</wsdl:documentation>
+            <wsdl:input message="tns:createOrderInput"/>
+            <wsdl:output message="tns:createOrderOutput"/>
             <wsdl:fault name="fault" message="tns:fault"/>
         </wsdl:operation>
     </wsdl:portType>
@@ -254,6 +253,18 @@
         </wsdl:operation>
 
         <wsdl:operation name="createExecutor">
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="fault">
+                <soap:fault name="fault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="createOrder">
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>

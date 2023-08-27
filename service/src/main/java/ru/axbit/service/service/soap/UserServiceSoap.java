@@ -8,6 +8,7 @@ import ru.axbit.service.service.WorkOrderService;
 import ru.axbit.service.util.CommonResultBuilder;
 import ru.axbit.vborovik.competence.userservice.types.v1.CreateCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.CreateExecutorRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.CreateOrderRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.DefaultResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.EditCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.EditExecutorRequest;
@@ -68,5 +69,10 @@ public class UserServiceSoap implements UserServicePortType {
     @Override
     public DefaultResponse editOrder(EditOrderRequest body) {
         return CommonResultBuilder.buildResponse(orderService::editOrder, body);
+    }
+
+    @Override
+    public DefaultResponse createOrder(CreateOrderRequest body) {
+        return CommonResultBuilder.buildResponse(orderService::createOrder, body);
     }
 }

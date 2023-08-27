@@ -134,11 +134,23 @@
     <!-- Метод createExecutor-->
     <xs:element name="createExecutorRequest">
         <xs:annotation>
-            <xs:documentation>Выходные параметры метода createExecutor</xs:documentation>
+            <xs:documentation>Входные параметры метода createExecutor</xs:documentation>
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="createExecutor" type="filter:CreateExecutorType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Метод createOrder-->
+    <xs:element name="createOrderRequest">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода createOrder</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="createOrder" type="filter:CreateOrderType"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
