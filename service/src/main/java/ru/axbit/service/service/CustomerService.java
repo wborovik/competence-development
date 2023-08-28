@@ -2,6 +2,7 @@ package ru.axbit.service.service;
 
 import ru.axbit.vborovik.competence.userservice.types.v1.CreateCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.DefaultResponse;
+import ru.axbit.vborovik.competence.userservice.types.v1.DeleteCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.EditCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListResponse;
@@ -16,4 +17,6 @@ public interface CustomerService {
     DefaultResponse editCustomer(EditCustomerRequest body);
 
     DefaultResponse createCustomer(CreateCustomerRequest body);
+
+    DefaultResponse deleteCustomer(DeleteCustomerRequest body);
 }

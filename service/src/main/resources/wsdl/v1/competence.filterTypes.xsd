@@ -118,12 +118,24 @@
     </xs:complexType>
     
     <xs:complexType name="CreateOrEditOrderDataType">
+        <xs:annotation>
+            <xs:documentation>Данные, которые передаются в параметрах метода createOrder</xs:documentation>
+        </xs:annotation>
         <xs:sequence>
             <xs:element name="title" type="xs:string" minOccurs="0"/>
             <xs:element name="customerId" type="xs:long" minOccurs="0"/>
             <xs:element name="executorId" type="xs:long" minOccurs="0"/>
             <xs:element name="categoryId" type="xs:long" minOccurs="0"/>
             <xs:element name="orderData" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DeleteCustomerType">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода editCustomer</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="customerId" type="xs:long"/>
         </xs:sequence>
     </xs:complexType>
 
