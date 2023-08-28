@@ -56,4 +56,12 @@ public abstract class AuditEntity extends AbstractEntity {
     private void preUpdate() {
         prePersist();
     }
+
+    public boolean nonDeleted() {
+        return !isDeleted();
+    }
+
+    public void activate() {
+        setDeleted(false);
+    }
 }

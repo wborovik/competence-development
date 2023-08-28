@@ -130,9 +130,9 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="DeleteEntityType">
+    <xs:complexType name="DeleteOrActivateEntityType">
         <xs:annotation>
-            <xs:documentation>Входные параметры методов edit</xs:documentation>
+            <xs:documentation>Входные параметры методов edit и activate</xs:documentation>
         </xs:annotation>
         <xs:sequence>
             <xs:element name="id" type="xs:long"/>

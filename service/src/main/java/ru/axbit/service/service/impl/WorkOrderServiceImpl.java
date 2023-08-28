@@ -26,6 +26,7 @@ import ru.axbit.service.util.PagingUtils;
 import ru.axbit.vborovik.competence.core.v1.PagingOptions;
 import ru.axbit.vborovik.competence.filtertypes.v1.CreateOrEditOrderDataType;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetOrderListFilterType;
+import ru.axbit.vborovik.competence.userservice.types.v1.ActivateOrderRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.CreateOrderRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.DefaultResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.DeleteOrderRequest;
@@ -124,9 +125,28 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         var orderId = deleteOrderReq.getId();
         var orderOptional = workOrderRepository.findById(orderId);
         orderOptional.filter(AuditEntity::isDeleted)
-                .ifPresent(executor -> BusinessExceptionEnum.E002
-                        .thr(executor.getId(), WorkOrder.class.getSimpleName()));
+                .ifPresent(order -> BusinessExceptionEnum.E002
+                        .thr(order.getId(), WorkOrder.class.getSimpleName()));
         CustomerServiceImpl.deleteEntity(orderOptional, orderId, WorkOrder.class.getSimpleName());
+
+        return ResponseMapper.mapDefaultResponse(true);
+    }
+
+    /**
+     * Метод для активации удаленного заказа {@link WorkOrder}.
+     *
+     * @param body принимает SOAP тип {@link ActivateOrderRequest}, в котором указан идентификатор записи.
+     * @return возвращает SOAP тип {@link DefaultResponse}, содержащий статус проведенной операции.
+     */
+    @Override
+    public DefaultResponse activateOrder(ActivateOrderRequest body) {
+        var activateOrderReq = body.getActivateOrder();
+        var orderId = activateOrderReq.getId();
+        var orderOptional = workOrderRepository.findById(orderId);
+        orderOptional.filter(AuditEntity::nonDeleted)
+                .ifPresent(order -> BusinessExceptionEnum.E005
+                        .thr(order.getId(), WorkOrder.class.getSimpleName()));
+        CustomerServiceImpl.activateEntity(orderOptional, orderId, WorkOrder.class.getSimpleName());
 
         return ResponseMapper.mapDefaultResponse(true);
     }

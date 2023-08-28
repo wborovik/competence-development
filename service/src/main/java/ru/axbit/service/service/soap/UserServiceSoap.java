@@ -6,6 +6,9 @@ import ru.axbit.service.service.CustomerService;
 import ru.axbit.service.service.ExecutorService;
 import ru.axbit.service.service.WorkOrderService;
 import ru.axbit.service.util.CommonResultBuilder;
+import ru.axbit.vborovik.competence.userservice.types.v1.ActivateCustomerRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.ActivateExecutorRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.ActivateOrderRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.CreateCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.CreateExecutorRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.CreateOrderRequest;
@@ -37,6 +40,11 @@ public class UserServiceSoap implements UserServicePortType {
     @Override
     public DefaultResponse deleteOrder(DeleteOrderRequest body) {
         return CommonResultBuilder.buildResponse(orderService::deleteOrder, body);
+    }
+
+    @Override
+    public DefaultResponse activateCustomer(ActivateCustomerRequest body) {
+        return CommonResultBuilder.buildResponse(customerService::activateCustomer, body);
     }
 
     @Override
@@ -72,6 +80,16 @@ public class UserServiceSoap implements UserServicePortType {
     @Override
     public GetCustomerListResponse getCustomerList(GetCustomerListRequest body) {
         return CommonResultBuilder.buildResponse(customerService::getCustomerList, body);
+    }
+
+    @Override
+    public DefaultResponse activateExecutor(ActivateExecutorRequest body) {
+        return CommonResultBuilder.buildResponse(executorService::activateExecutor, body);
+    }
+
+    @Override
+    public DefaultResponse activateOrder(ActivateOrderRequest body) {
+        return CommonResultBuilder.buildResponse(orderService::activateOrder, body);
     }
 
     @Override
