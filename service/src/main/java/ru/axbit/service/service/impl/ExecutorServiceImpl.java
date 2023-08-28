@@ -19,6 +19,7 @@ import ru.axbit.vborovik.competence.core.v1.PagingOptions;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetExecutorListFilterType;
 import ru.axbit.vborovik.competence.userservice.types.v1.CreateExecutorRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.DefaultResponse;
+import ru.axbit.vborovik.competence.userservice.types.v1.DeleteExecutorRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.EditExecutorRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListResponse;
@@ -105,6 +106,25 @@ public class ExecutorServiceImpl implements ExecutorService {
         Optional.ofNullable(createExecutorReq.getExecutorSurname()).ifPresent(executor::setSurname);
         Optional.ofNullable(createExecutorReq.getExecutorAge()).ifPresent(executor::setAge);
         executorRepository.save(executor);
+
+        return ResponseMapper.mapDefaultResponse(true);
+    }
+
+    /**
+     * Метод для удаления клиента {@link Executor}.
+     *
+     * @param body принимает SOAP тип {@link DeleteExecutorRequest}, в котором указан идентификатор записи.
+     * @return возвращает SOAP тип {@link DefaultResponse}, содержащий статус проведенной операции.
+     */
+    @Override
+    public DefaultResponse deleteExecutor(DeleteExecutorRequest body) {
+        var createExecutorReq = body.getDeleteExecutor();
+        var executorId = createExecutorReq.getId();
+        var executorOptional = executorRepository.findById(executorId);
+        executorOptional.filter(AuditEntity::isDeleted)
+                .ifPresent(executor -> BusinessExceptionEnum.E002
+                        .thr(executor.getId(), Executor.class.getSimpleName()));
+        CustomerServiceImpl.deleteEntity(executorOptional, executorId, Executor.class.getSimpleName());
 
         return ResponseMapper.mapDefaultResponse(true);
     }
