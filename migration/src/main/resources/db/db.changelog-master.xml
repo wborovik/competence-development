@@ -34,4 +34,7 @@
     <!--Изменение sequence:-->
     <include file="changelog/10_alter_sequence.xml" relativeToChangelogFile="true"/>
 
+    <!--Создание индексов:-->
+    <include file="changelog/11_create_index.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>
