@@ -12,6 +12,7 @@ import ru.axbit.vborovik.competence.userservice.types.v1.CreateOrderRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.DefaultResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.DeleteCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.DeleteExecutorRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.DeleteOrderRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.EditCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.EditExecutorRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.EditOrderRequest;
@@ -32,6 +33,11 @@ public class UserServiceSoap implements UserServicePortType {
     private final CustomerService customerService;
     private final ExecutorService executorService;
     private final WorkOrderService orderService;
+
+    @Override
+    public DefaultResponse deleteOrder(DeleteOrderRequest body) {
+        return CommonResultBuilder.buildResponse(orderService::deleteOrder, body);
+    }
 
     @Override
     public GetExecutorListResponse getExecutorList(GetExecutorListRequest body) {

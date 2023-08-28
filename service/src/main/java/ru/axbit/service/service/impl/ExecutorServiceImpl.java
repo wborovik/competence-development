@@ -118,8 +118,8 @@ public class ExecutorServiceImpl implements ExecutorService {
      */
     @Override
     public DefaultResponse deleteExecutor(DeleteExecutorRequest body) {
-        var createExecutorReq = body.getDeleteExecutor();
-        var executorId = createExecutorReq.getId();
+        var deleteExecutorReq = body.getDeleteExecutor();
+        var executorId = deleteExecutorReq.getId();
         var executorOptional = executorRepository.findById(executorId);
         executorOptional.filter(AuditEntity::isDeleted)
                 .ifPresent(executor -> BusinessExceptionEnum.E002

@@ -179,6 +179,18 @@
         </xs:complexType>
     </xs:element>
 
+    <!-- Метод deleteOrder-->
+    <xs:element name="deleteOrderRequest">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода deleteOrder</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="deleteOrder" type="filter:DeleteEntityType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
     <xs:element name="defaultResponse">
         <xs:annotation>
             <xs:documentation>Выходные параметры методов ничего не возвращающих</xs:documentation>

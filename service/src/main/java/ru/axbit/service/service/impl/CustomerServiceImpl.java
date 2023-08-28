@@ -117,8 +117,8 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Override
     public DefaultResponse deleteCustomer(DeleteCustomerRequest body) {
-        var createCustomerReq = body.getDeleteCustomer();
-        var customerId = createCustomerReq.getId();
+        var deleteCustomerReq = body.getDeleteCustomer();
+        var customerId = deleteCustomerReq.getId();
         var customerOptional = customerRepository.findById(customerId);
         customerOptional.filter(AuditEntity::isDeleted)
                 .ifPresent(customer -> BusinessExceptionEnum.E002

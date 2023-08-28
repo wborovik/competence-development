@@ -70,6 +70,10 @@
         <wsdl:part name="body" element="ns:deleteExecutorRequest"/>
     </wsdl:message>
 
+    <wsdl:message name="deleteOrderInput">
+        <wsdl:part name="body" element="ns:deleteOrderRequest"/>
+    </wsdl:message>
+
     <!--    Output msg-->
     <wsdl:message name="getCustomerListOutput">
         <wsdl:part name="body" element="ns:getCustomerListResponse"/>
@@ -112,6 +116,10 @@
     </wsdl:message>
 
     <wsdl:message name="deleteExecutorOutput">
+        <wsdl:part name="body" element="ns:defaultResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="deleteOrderOutput">
         <wsdl:part name="body" element="ns:defaultResponse"/>
     </wsdl:message>
 
@@ -191,6 +199,13 @@
             <wsdl:documentation>Метод для удаления исполнителя Executor</wsdl:documentation>
             <wsdl:input message="tns:deleteExecutorInput"/>
             <wsdl:output message="tns:deleteExecutorOutput"/>
+            <wsdl:fault name="fault" message="tns:fault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="deleteOrder">
+            <wsdl:documentation>Метод для удаления заказа Order</wsdl:documentation>
+            <wsdl:input message="tns:deleteOrderInput"/>
+            <wsdl:output message="tns:deleteOrderOutput"/>
             <wsdl:fault name="fault" message="tns:fault"/>
         </wsdl:operation>
     </wsdl:portType>
@@ -319,6 +334,18 @@
         </wsdl:operation>
 
         <wsdl:operation name="deleteExecutor">
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="fault">
+                <soap:fault name="fault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="deleteOrder">
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>
