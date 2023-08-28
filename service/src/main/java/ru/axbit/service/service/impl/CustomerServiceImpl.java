@@ -20,6 +20,7 @@ import ru.axbit.vborovik.competence.core.v1.PagingOptions;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetCustomerListFilterType;
 import ru.axbit.vborovik.competence.userservice.types.v1.CreateCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.DefaultResponse;
+import ru.axbit.vborovik.competence.userservice.types.v1.DeleteCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.EditCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListResponse;
@@ -105,6 +106,25 @@ public class CustomerServiceImpl implements CustomerService {
         Optional.ofNullable(createCustomerReq.getCustomerAge()).ifPresent(customer::setAge);
         customerRepository.save(customer);
 
+        return ResponseMapper.mapDefaultResponse(true);
+    }
+
+    /**
+     * Метод для удаления клиента {@link Customer}.
+     * @param body принимает SOAP тип {@link DeleteCustomerRequest}, в котором указан идентификатор записи.
+     * @return возвращает SOAP тип {@link DefaultResponse}, содержащий статус проведенной операции.
+     */
+    @Override
+    public DefaultResponse deleteCustomer(DeleteCustomerRequest body) {
+        var createCustomerReq = body.getDeleteCustomer();
+        var customerId = createCustomerReq.getCustomerId();
+        var customerOptional = customerRepository.findById(customerId);
+        if (customerOptional.isPresent()) {
+            var customer = customerOptional.get();
+            customer.setDeleted(true);
+        } else {
+            BusinessExceptionEnum.E001.thr(customerId, Customer.class.getSimpleName());
+        }
         return ResponseMapper.mapDefaultResponse(true);
     }
 }

@@ -155,6 +155,18 @@
         </xs:complexType>
     </xs:element>
 
+    <!-- Метод deleteCustomer-->
+    <xs:element name="deleteCustomerRequest">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода deleteCustomer</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="deleteCustomer" type="filter:DeleteCustomerType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
     <xs:element name="defaultResponse">
         <xs:annotation>
             <xs:documentation>Выходные параметры методов ничего не возвращающих</xs:documentation>
