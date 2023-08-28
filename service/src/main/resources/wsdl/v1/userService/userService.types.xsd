@@ -162,7 +162,19 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="deleteCustomer" type="filter:DeleteCustomerType"/>
+                <xs:element name="deleteCustomer" type="filter:DeleteEntityType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Метод deleteExecutor-->
+    <xs:element name="deleteExecutorRequest">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода deleteExecutor</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="deleteExecutor" type="filter:DeleteEntityType"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

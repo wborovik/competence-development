@@ -111,20 +111,38 @@ public class CustomerServiceImpl implements CustomerService {
 
     /**
      * Метод для удаления клиента {@link Customer}.
+     *
      * @param body принимает SOAP тип {@link DeleteCustomerRequest}, в котором указан идентификатор записи.
      * @return возвращает SOAP тип {@link DefaultResponse}, содержащий статус проведенной операции.
      */
     @Override
     public DefaultResponse deleteCustomer(DeleteCustomerRequest body) {
         var createCustomerReq = body.getDeleteCustomer();
-        var customerId = createCustomerReq.getCustomerId();
+        var customerId = createCustomerReq.getId();
         var customerOptional = customerRepository.findById(customerId);
-        if (customerOptional.isPresent()) {
-            var customer = customerOptional.get();
+        customerOptional.filter(AuditEntity::isDeleted)
+                .ifPresent(customer -> BusinessExceptionEnum.E002
+                        .thr(customer.getId(), Customer.class.getSimpleName()));
+        deleteEntity(customerOptional, customerId, Customer.class.getSimpleName());
+
+        return ResponseMapper.mapDefaultResponse(true);
+    }
+
+    /**
+     * Вспомогательный метод, который делает проверку существует ли в БД запись по переданному id.
+     * Если существует, для записи меняется статус на "удалена".
+     * Если не существует, будет выброшено соответствующее бизнес исключение.
+     *
+     * @param optionalAudit передается результаты поиска в БД, обернутые типом {@link Optional}.
+     * @param entityId      передается идентификатор, по которому производилась запись типа {@link Long}.
+     * @param simpleName    передается имя таблицы, в которой осуществлялся поиск типа {@link String}.
+     */
+    public static void deleteEntity(Optional<? extends AuditEntity> optionalAudit, Long entityId, String simpleName) {
+        if (optionalAudit.isPresent()) {
+            var customer = optionalAudit.get();
             customer.setDeleted(true);
         } else {
-            BusinessExceptionEnum.E001.thr(customerId, Customer.class.getSimpleName());
+            BusinessExceptionEnum.E001.thr(entityId, simpleName);
         }
-        return ResponseMapper.mapDefaultResponse(true);
     }
 }
