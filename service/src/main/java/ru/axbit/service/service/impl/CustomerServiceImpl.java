@@ -18,6 +18,7 @@ import ru.axbit.service.service.soap.spec.CustomerSpecification;
 import ru.axbit.service.util.PagingUtils;
 import ru.axbit.vborovik.competence.core.v1.PagingOptions;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetCustomerListFilterType;
+import ru.axbit.vborovik.competence.userservice.types.v1.ActivateCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.CreateCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.DefaultResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.DeleteCustomerRequest;
@@ -129,18 +130,55 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     /**
+     * Метод для активации удаленного клиента {@link Customer}.
+     *
+     * @param body принимает SOAP тип {@link ActivateCustomerRequest}, в котором указан идентификатор записи.
+     * @return возвращает SOAP тип {@link DefaultResponse}, содержащий статус проведенной операции.
+     */
+    @Override
+    public DefaultResponse activateCustomer(ActivateCustomerRequest body) {
+        var activateCustomerReq = body.getActivateCustomer();
+        var customerId = activateCustomerReq.getId();
+        var customerOptional = customerRepository.findById(customerId);
+        customerOptional.filter(AuditEntity::nonDeleted)
+                .ifPresent(customer -> BusinessExceptionEnum.E005
+                        .thr(customer.getId(), Customer.class.getSimpleName()));
+        activateEntity(customerOptional, customerId, Customer.class.getSimpleName());
+
+        return ResponseMapper.mapDefaultResponse(true);
+    }
+
+    /**
      * Вспомогательный метод, который делает проверку существует ли в БД запись по переданному id.
      * Если существует, для записи меняется статус на "удалена".
      * Если не существует, будет выброшено соответствующее бизнес исключение.
      *
-     * @param optionalAudit передается результаты поиска в БД, обернутые типом {@link Optional}.
+     * @param optionalAudit передаются результаты поиска в БД, обернутые типом {@link Optional}.
      * @param entityId      передается идентификатор, по которому производилась запись типа {@link Long}.
      * @param simpleName    передается имя таблицы, в которой осуществлялся поиск типа {@link String}.
      */
     public static void deleteEntity(Optional<? extends AuditEntity> optionalAudit, Long entityId, String simpleName) {
         if (optionalAudit.isPresent()) {
-            var customer = optionalAudit.get();
-            customer.setDeleted(true);
+            var entity = optionalAudit.get();
+            entity.setDeleted(true);
+        } else {
+            BusinessExceptionEnum.E001.thr(entityId, simpleName);
+        }
+    }
+
+    /**
+     * Вспомогательный метод, который делает проверку существует ли в БД запись по переданному id.
+     * Если существует, для записи меняется статус на "активна".
+     * Если не существует, будет выброшено соответствующее бизнес исключение.
+     *
+     * @param optionalAudit передаются результаты поиска в БД, обернутые типом {@link Optional}.
+     * @param entityId      передается идентификатор, по которому производилась запись типа {@link Long}.
+     * @param simpleName    передается имя таблицы, в которой осуществлялся поиск типа {@link String}.
+     */
+    public static void activateEntity(Optional<? extends AuditEntity> optionalAudit, Long entityId, String simpleName) {
+        if (optionalAudit.isPresent()) {
+            var entity = optionalAudit.get();
+            entity.activate();
         } else {
             BusinessExceptionEnum.E001.thr(entityId, simpleName);
         }

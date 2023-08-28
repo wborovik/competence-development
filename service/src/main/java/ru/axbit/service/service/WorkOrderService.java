@@ -1,5 +1,6 @@
 package ru.axbit.service.service;
 
+import ru.axbit.vborovik.competence.userservice.types.v1.ActivateOrderRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.CreateOrderRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.DefaultResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.DeleteOrderRequest;
@@ -19,4 +20,6 @@ public interface WorkOrderService {
     DefaultResponse createOrder(CreateOrderRequest body);
 
     DefaultResponse deleteOrder(DeleteOrderRequest body);
+
+    DefaultResponse activateOrder(ActivateOrderRequest body);
 }

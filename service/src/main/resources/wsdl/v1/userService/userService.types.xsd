@@ -162,7 +162,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="deleteCustomer" type="filter:DeleteEntityType"/>
+                <xs:element name="deleteCustomer" type="filter:DeleteOrActivateEntityType"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -174,7 +174,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="deleteExecutor" type="filter:DeleteEntityType"/>
+                <xs:element name="deleteExecutor" type="filter:DeleteOrActivateEntityType"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -186,7 +186,43 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="deleteOrder" type="filter:DeleteEntityType"/>
+                <xs:element name="deleteOrder" type="filter:DeleteOrActivateEntityType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Метод activateCustomer-->
+    <xs:element name="activateCustomerRequest">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода activateCustomer</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="activateCustomer" type="filter:DeleteOrActivateEntityType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Метод activateExecutor-->
+    <xs:element name="activateExecutorRequest">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода activateExecutor</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="activateExecutor" type="filter:DeleteOrActivateEntityType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Метод activateOrder-->
+    <xs:element name="activateOrderRequest">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода activateOrder</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="activateOrder" type="filter:DeleteOrActivateEntityType"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

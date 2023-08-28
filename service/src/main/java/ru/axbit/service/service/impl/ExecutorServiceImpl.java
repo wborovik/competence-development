@@ -17,6 +17,7 @@ import ru.axbit.service.service.soap.spec.ExecutorSpecification;
 import ru.axbit.service.util.PagingUtils;
 import ru.axbit.vborovik.competence.core.v1.PagingOptions;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetExecutorListFilterType;
+import ru.axbit.vborovik.competence.userservice.types.v1.ActivateExecutorRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.CreateExecutorRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.DefaultResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.DeleteExecutorRequest;
@@ -125,6 +126,25 @@ public class ExecutorServiceImpl implements ExecutorService {
                 .ifPresent(executor -> BusinessExceptionEnum.E002
                         .thr(executor.getId(), Executor.class.getSimpleName()));
         CustomerServiceImpl.deleteEntity(executorOptional, executorId, Executor.class.getSimpleName());
+
+        return ResponseMapper.mapDefaultResponse(true);
+    }
+
+    /**
+     * Метод для активации удаленного исполнителя {@link Executor}.
+     *
+     * @param body принимает SOAP тип {@link ActivateExecutorRequest}, в котором указан идентификатор записи.
+     * @return возвращает SOAP тип {@link DefaultResponse}, содержащий статус проведенной операции.
+     */
+    @Override
+    public DefaultResponse activateExecutor(ActivateExecutorRequest body) {
+        var activateExecutorReq = body.getActivateExecutor();
+        var executorId = activateExecutorReq.getId();
+        var executorOptional = executorRepository.findById(executorId);
+        executorOptional.filter(AuditEntity::nonDeleted)
+                .ifPresent(executor -> BusinessExceptionEnum.E005
+                        .thr(executor.getId(), Executor.class.getSimpleName()));
+        CustomerServiceImpl.activateEntity(executorOptional, executorId, Executor.class.getSimpleName());
 
         return ResponseMapper.mapDefaultResponse(true);
     }
