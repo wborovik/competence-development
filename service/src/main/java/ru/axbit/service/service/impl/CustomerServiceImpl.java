@@ -6,16 +6,16 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.axbit.domain.domain.common.AbstractEntity;
-import ru.axbit.domain.domain.common.AuditEntity;
 import ru.axbit.domain.domain.user.Customer;
 import ru.axbit.domain.repository.CustomerRepository;
-import ru.axbit.service.exception.BusinessExceptionEnum;
 import ru.axbit.service.service.CustomerService;
+import ru.axbit.service.service.common.AbstractCommonService;
 import ru.axbit.service.service.soap.mapper.request.CommonMapperDTO;
 import ru.axbit.service.service.soap.mapper.response.CustomerListPojo;
 import ru.axbit.service.service.soap.mapper.response.ResponseMapper;
 import ru.axbit.service.service.soap.spec.CustomerSpecification;
 import ru.axbit.service.util.PagingUtils;
+import ru.axbit.service.util.ValidationUtils;
 import ru.axbit.vborovik.competence.core.v1.PagingOptions;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetCustomerListFilterType;
 import ru.axbit.vborovik.competence.userservice.types.v1.ActivateCustomerRequest;
@@ -27,7 +27,6 @@ import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListResponse;
 
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Реализация основных CRUD методов сущности заказчика {@link Customer}.
@@ -35,8 +34,10 @@ import java.util.Optional;
 @Service
 @Transactional
 @AllArgsConstructor
-public class CustomerServiceImpl implements CustomerService {
+public class CustomerServiceImpl extends AbstractCommonService implements CustomerService {
     private final CustomerRepository customerRepository;
+
+    private static final String CUSTOMER_TABLE_NAME = Customer.class.getSimpleName();
 
     @Override
     public GetCustomerListResponse getCustomerList(GetCustomerListRequest body) {
@@ -76,19 +77,10 @@ public class CustomerServiceImpl implements CustomerService {
     public DefaultResponse editCustomer(EditCustomerRequest body) {
         var editCustomerReq = body.getEditCustomer();
         var customerId = editCustomerReq.getId();
-        var customerOptional = customerRepository.findById(customerId);
-        customerOptional.filter(AuditEntity::isDeleted)
-                .ifPresent(customer -> BusinessExceptionEnum.E002
-                        .thr(customer.getId(), Customer.class.getSimpleName()));
-        if (customerOptional.isPresent()) {
-            var customer = customerOptional.get();
-            Optional.ofNullable(editCustomerReq.getCustomerName()).ifPresent(customer::setName);
-            Optional.ofNullable(editCustomerReq.getCustomerSurname()).ifPresent(customer::setSurname);
-            Optional.ofNullable(editCustomerReq.getCustomerAge()).ifPresent(customer::setAge);
-            customerRepository.save(customer);
-        } else {
-            BusinessExceptionEnum.E001.thr(customerId, Customer.class.getSimpleName());
-        }
+        var customer = findEntityById(customerId, customerRepository, CUSTOMER_TABLE_NAME);
+        ValidationUtils.checkIsDeleted(customer, customerId, CUSTOMER_TABLE_NAME);
+        setUserData(customer, customerRepository, editCustomerReq.getUserData());
+
         return ResponseMapper.mapDefaultResponse(true);
     }
 
@@ -102,10 +94,7 @@ public class CustomerServiceImpl implements CustomerService {
     public DefaultResponse createCustomer(CreateCustomerRequest body) {
         var createCustomerReq = body.getCreateCustomer();
         var customer = new Customer();
-        Optional.ofNullable(createCustomerReq.getCustomerName()).ifPresent(customer::setName);
-        Optional.ofNullable(createCustomerReq.getCustomerSurname()).ifPresent(customer::setSurname);
-        Optional.ofNullable(createCustomerReq.getCustomerAge()).ifPresent(customer::setAge);
-        customerRepository.save(customer);
+        setUserData(customer, customerRepository, createCustomerReq.getUserData());
 
         return ResponseMapper.mapDefaultResponse(true);
     }
@@ -120,11 +109,8 @@ public class CustomerServiceImpl implements CustomerService {
     public DefaultResponse deleteCustomer(DeleteCustomerRequest body) {
         var deleteCustomerReq = body.getDeleteCustomer();
         var customerId = deleteCustomerReq.getId();
-        var customerOptional = customerRepository.findById(customerId);
-        customerOptional.filter(AuditEntity::isDeleted)
-                .ifPresent(customer -> BusinessExceptionEnum.E002
-                        .thr(customer.getId(), Customer.class.getSimpleName()));
-        deleteEntity(customerOptional, customerId, Customer.class.getSimpleName());
+        var customer = findEntityById(customerId, customerRepository, CUSTOMER_TABLE_NAME);
+        deleteEntity(customer, customerId, CUSTOMER_TABLE_NAME);
 
         return ResponseMapper.mapDefaultResponse(true);
     }
@@ -139,48 +125,9 @@ public class CustomerServiceImpl implements CustomerService {
     public DefaultResponse activateCustomer(ActivateCustomerRequest body) {
         var activateCustomerReq = body.getActivateCustomer();
         var customerId = activateCustomerReq.getId();
-        var customerOptional = customerRepository.findById(customerId);
-        customerOptional.filter(AuditEntity::nonDeleted)
-                .ifPresent(customer -> BusinessExceptionEnum.E005
-                        .thr(customer.getId(), Customer.class.getSimpleName()));
-        activateEntity(customerOptional, customerId, Customer.class.getSimpleName());
+        var customer = findEntityById(customerId, customerRepository, CUSTOMER_TABLE_NAME);
+        activateEntity(customer, customerId, CUSTOMER_TABLE_NAME);
 
         return ResponseMapper.mapDefaultResponse(true);
-    }
-
-    /**
-     * Вспомогательный метод, который делает проверку существует ли в БД запись по переданному id.
-     * Если существует, для записи меняется статус на "удалена".
-     * Если не существует, будет выброшено соответствующее бизнес исключение.
-     *
-     * @param optionalAudit передаются результаты поиска в БД, обернутые типом {@link Optional}.
-     * @param entityId      передается идентификатор, по которому производилась запись типа {@link Long}.
-     * @param simpleName    передается имя таблицы, в которой осуществлялся поиск типа {@link String}.
-     */
-    public static void deleteEntity(Optional<? extends AuditEntity> optionalAudit, Long entityId, String simpleName) {
-        if (optionalAudit.isPresent()) {
-            var entity = optionalAudit.get();
-            entity.setDeleted(true);
-        } else {
-            BusinessExceptionEnum.E001.thr(entityId, simpleName);
-        }
-    }
-
-    /**
-     * Вспомогательный метод, который делает проверку существует ли в БД запись по переданному id.
-     * Если существует, для записи меняется статус на "активна".
-     * Если не существует, будет выброшено соответствующее бизнес исключение.
-     *
-     * @param optionalAudit передаются результаты поиска в БД, обернутые типом {@link Optional}.
-     * @param entityId      передается идентификатор, по которому производилась запись типа {@link Long}.
-     * @param simpleName    передается имя таблицы, в которой осуществлялся поиск типа {@link String}.
-     */
-    public static void activateEntity(Optional<? extends AuditEntity> optionalAudit, Long entityId, String simpleName) {
-        if (optionalAudit.isPresent()) {
-            var entity = optionalAudit.get();
-            entity.activate();
-        } else {
-            BusinessExceptionEnum.E001.thr(entityId, simpleName);
-        }
     }
 }

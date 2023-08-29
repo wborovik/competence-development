@@ -6,7 +6,7 @@ import ru.axbit.domain.domain.common.UserData;
 import ru.axbit.domain.domain.order.WorkOrder;
 import ru.axbit.domain.domain.user.Customer;
 import ru.axbit.domain.domain.user.Executor;
-import ru.axbit.service.exception.BusinessExceptionEnum;
+import ru.axbit.service.util.ValidationUtils;
 import ru.axbit.vborovik.competence.core.v1.CustomerPageItemType;
 import ru.axbit.vborovik.competence.core.v1.CustomerPageType;
 import ru.axbit.vborovik.competence.core.v1.ExecutorPageItemType;
@@ -43,7 +43,7 @@ public class ResponseMapper {
         var customerPageType = CommonMapper.mapPagingResults(CustomerPageType.class, customerPojo.getCustomers());
         response.setResult(customerPageType);
         var customers = customerPojo.getCustomers();
-        BusinessExceptionEnum.E003.thr(!customers.isEmpty(), Customer.class.getSimpleName());
+        ValidationUtils.checkIsEmptyPage(customers, Customer.class.getSimpleName());
         var pageType = response.getResult();
         var resultList = pageType.getCustomerItem();
         customers.forEach(customer -> {
@@ -86,7 +86,7 @@ public class ResponseMapper {
         var executorPageType = CommonMapper.mapPagingResults(ExecutorPageType.class, executorPojo.getExecutors());
         response.setResult(executorPageType);
         var executors = executorPojo.getExecutors();
-        BusinessExceptionEnum.E003.thr(!executors.isEmpty(), Executor.class.getSimpleName());
+        ValidationUtils.checkIsEmptyPage(executors, Executor.class.getSimpleName());
         var pageType = response.getResult();
         var resultList = pageType.getCustomerItem();
         executors.forEach(executor -> {
@@ -148,7 +148,7 @@ public class ResponseMapper {
         var orderPageType = CommonMapper.mapPagingResults(OrderPageType.class, orderPojo.getOrders());
         response.setResult(orderPageType);
         var orders = orderPojo.getOrders();
-        BusinessExceptionEnum.E003.thr(!orders.isEmpty(), WorkOrder.class.getSimpleName());
+        ValidationUtils.checkIsEmptyPage(orders, WorkOrder.class.getSimpleName());
         var pageType = response.getResult();
         var resultList = pageType.getOrderItem();
         orders.forEach(order -> {

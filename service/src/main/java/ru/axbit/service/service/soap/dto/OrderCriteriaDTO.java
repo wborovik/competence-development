@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * DTO сущности заказа Order.
+ * DTO сущности заказа {@link ru.axbit.domain.domain.order.WorkOrder}.
  */
 @Data
 @Builder

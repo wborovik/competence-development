@@ -6,7 +6,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.axbit.domain.domain.cls.ClsOrderCategory;
 import ru.axbit.domain.domain.common.AbstractEntity;
-import ru.axbit.domain.domain.common.AuditEntity;
 import ru.axbit.domain.domain.order.WorkOrder;
 import ru.axbit.domain.domain.user.Customer;
 import ru.axbit.domain.domain.user.Executor;
@@ -14,15 +13,15 @@ import ru.axbit.domain.repository.ClsOrderCategoryRepository;
 import ru.axbit.domain.repository.CustomerRepository;
 import ru.axbit.domain.repository.ExecutorRepository;
 import ru.axbit.domain.repository.WorkOrderRepository;
-import ru.axbit.service.exception.BusinessException;
-import ru.axbit.service.exception.BusinessExceptionEnum;
 import ru.axbit.service.service.WorkOrderService;
+import ru.axbit.service.service.common.AbstractCommonService;
 import ru.axbit.service.service.json.JsonMappingService;
 import ru.axbit.service.service.soap.mapper.request.CommonMapperDTO;
 import ru.axbit.service.service.soap.mapper.response.OrderListPojo;
 import ru.axbit.service.service.soap.mapper.response.ResponseMapper;
 import ru.axbit.service.service.soap.spec.OrderSpecification;
 import ru.axbit.service.util.PagingUtils;
+import ru.axbit.service.util.ValidationUtils;
 import ru.axbit.vborovik.competence.core.v1.PagingOptions;
 import ru.axbit.vborovik.competence.filtertypes.v1.CreateOrEditOrderDataType;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetOrderListFilterType;
@@ -44,12 +43,17 @@ import java.util.Optional;
 @Service
 @Transactional
 @AllArgsConstructor
-public class WorkOrderServiceImpl implements WorkOrderService {
-    private final WorkOrderRepository workOrderRepository;
+public class WorkOrderServiceImpl extends AbstractCommonService implements WorkOrderService {
+    private final WorkOrderRepository orderRepository;
     private final CustomerRepository customerRepository;
     private final ExecutorRepository executorRepository;
     private final ClsOrderCategoryRepository categoryRepository;
     private final JsonMappingService jsonMappingService;
+
+    private static final String ORDER_TABLE_NAME = WorkOrder.class.getSimpleName();
+    private static final String CUSTOMER_TABLE_NAME = Customer.class.getSimpleName();
+    private static final String EXECUTOR_TABLE_NAME = Executor.class.getSimpleName();
+    private static final String CATEGORY_TABLE_NAME = ClsOrderCategory.class.getSimpleName();
 
     @Override
     public GetOrderListResponse getOrderList(GetOrderListRequest body) {
@@ -73,7 +77,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         var sorting = PagingUtils.getSortOptions(pagingOptions, AbstractEntity.Fields.id);
         var criteriaDTO = CommonMapperDTO.mapOrderDTO(filter);
         Specification<WorkOrder> specification = OrderSpecification.create(criteriaDTO, sorting);
-        Page<WorkOrder> orders = workOrderRepository.findAll(specification, pageRequest);
+        Page<WorkOrder> orders = orderRepository.findAll(specification, pageRequest);
 
         return OrderListPojo.builder()
                 .orders(orders)
@@ -90,25 +94,18 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     public DefaultResponse editOrder(EditOrderRequest body) {
         var editOrderReq = body.getEditOrder();
         var orderId = editOrderReq.getId();
-        var orderOptional = workOrderRepository.findById(orderId);
-        orderOptional.filter(AuditEntity::isDeleted)
-                .ifPresent(order -> BusinessExceptionEnum.E002.thr(order.getId(), WorkOrder.class.getSimpleName()));
-        if (orderOptional.isPresent()) {
-            var order = orderOptional.get();
-            var editOrder = editOrderReq.getCreateOrEditOrder();
-            createOrEditOrderDataType(order, editOrder);
-        } else {
-            BusinessExceptionEnum.E001.thr(orderId, WorkOrder.class.getSimpleName());
-        }
+        var order = findEntityById(orderId, orderRepository, ORDER_TABLE_NAME);
+        ValidationUtils.checkIsDeleted(order, orderId, ORDER_TABLE_NAME);
+        createOrEditOrderDataType(order, editOrderReq.getCreateOrEditOrder());
+
         return ResponseMapper.mapDefaultResponse(true);
     }
 
     @Override
     public DefaultResponse createOrder(CreateOrderRequest body) {
         var createOrderReq = body.getCreateOrder();
-        var createOrder = createOrderReq.getCreateOrEditOrder();
         var order = new WorkOrder();
-        createOrEditOrderDataType(order, createOrder);
+        createOrEditOrderDataType(order, createOrderReq.getCreateOrEditOrder());
 
         return ResponseMapper.mapDefaultResponse(true);
     }
@@ -123,11 +120,8 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     public DefaultResponse deleteOrder(DeleteOrderRequest body) {
         var deleteOrderReq = body.getDeleteOrder();
         var orderId = deleteOrderReq.getId();
-        var orderOptional = workOrderRepository.findById(orderId);
-        orderOptional.filter(AuditEntity::isDeleted)
-                .ifPresent(order -> BusinessExceptionEnum.E002
-                        .thr(order.getId(), WorkOrder.class.getSimpleName()));
-        CustomerServiceImpl.deleteEntity(orderOptional, orderId, WorkOrder.class.getSimpleName());
+        var order = findEntityById(orderId, orderRepository, ORDER_TABLE_NAME);
+        deleteEntity(order, orderId, ORDER_TABLE_NAME);
 
         return ResponseMapper.mapDefaultResponse(true);
     }
@@ -142,11 +136,8 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     public DefaultResponse activateOrder(ActivateOrderRequest body) {
         var activateOrderReq = body.getActivateOrder();
         var orderId = activateOrderReq.getId();
-        var orderOptional = workOrderRepository.findById(orderId);
-        orderOptional.filter(AuditEntity::nonDeleted)
-                .ifPresent(order -> BusinessExceptionEnum.E005
-                        .thr(order.getId(), WorkOrder.class.getSimpleName()));
-        CustomerServiceImpl.activateEntity(orderOptional, orderId, WorkOrder.class.getSimpleName());
+        var order = findEntityById(orderId, orderRepository, ORDER_TABLE_NAME);
+        activateEntity(order, orderId, ORDER_TABLE_NAME);
 
         return ResponseMapper.mapDefaultResponse(true);
     }
@@ -161,30 +152,25 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         Optional.ofNullable(createOrEditOrderDataType.getTitle()).ifPresent(order::setTitle);
         var customerId = createOrEditOrderDataType.getCustomerId();
         if (Objects.nonNull(customerId)) {
-            var customer = Optional.of(customerId)
-                    .flatMap(customerRepository::findById)
-                    .orElseThrow(() -> new BusinessException(BusinessExceptionEnum.E001, customerId,
-                            Customer.class.getSimpleName()));
+            var customer = findEntityById(customerId, customerRepository, CUSTOMER_TABLE_NAME);
+            ValidationUtils.checkIsDeleted(customer, customerId, CUSTOMER_TABLE_NAME);
             order.setCustomer(customer);
         }
         var executorId = createOrEditOrderDataType.getExecutorId();
         if (Objects.nonNull(executorId)) {
-            var executor = Optional.ofNullable(createOrEditOrderDataType.getExecutorId())
-                    .flatMap(executorRepository::findById)
-                    .orElseThrow(() -> new BusinessException(BusinessExceptionEnum.E001, executorId,
-                            Executor.class.getSimpleName()));
+            var executor = findEntityById(executorId, executorRepository, EXECUTOR_TABLE_NAME);
+            ValidationUtils.checkIsDeleted(executor, executorId, EXECUTOR_TABLE_NAME);
             order.setExecutor(executor);
         }
         var categoryId = createOrEditOrderDataType.getCategoryId();
         if (Objects.nonNull(categoryId)) {
-            var category = Optional.ofNullable(createOrEditOrderDataType.getCategoryId())
-                    .flatMap(categoryRepository::findById)
-                    .orElseThrow(() -> new BusinessException(BusinessExceptionEnum.E001, categoryId,
-                            ClsOrderCategory.class.getSimpleName()));
+            var category = findEntityById(categoryId, categoryRepository, CATEGORY_TABLE_NAME);
+            ValidationUtils.checkIsDeleted(category, categoryId, CATEGORY_TABLE_NAME);
             order.setCategory(category);
         }
         Optional.ofNullable(createOrEditOrderDataType.getOrderData()).ifPresent(orderData
                 -> order.setOrderCheck(jsonMappingService.mapToJsonNode(orderData)));
-        workOrderRepository.save(order);
+
+        orderRepository.save(order);
     }
 }

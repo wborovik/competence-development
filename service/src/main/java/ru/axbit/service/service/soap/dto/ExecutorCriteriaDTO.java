@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * DTO сущности исполнителя Executor.
+ * DTO сущности исполнителя {@link ru.axbit.domain.domain.user.Executor}.
  */
 @Data
 @Builder
