@@ -50,9 +50,7 @@
         <xs:complexContent>
             <xs:extension base="tns:Base">
                 <xs:sequence>
-                    <xs:element name="customerName" type="xs:string" minOccurs="0"/>
-                    <xs:element name="customerSurname" type="xs:string" minOccurs="0"/>
-                    <xs:element name="customerAge" type="xs:int" minOccurs="0"/>
+                    <xs:element name="userData" type="tns:CreateOrEditUserDataType"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -65,9 +63,7 @@
         <xs:complexContent>
             <xs:extension base="tns:Base">
                 <xs:sequence>
-                    <xs:element name="executorName" type="xs:string" minOccurs="0"/>
-                    <xs:element name="executorSurname" type="xs:string" minOccurs="0"/>
-                    <xs:element name="executorAge" type="xs:int" minOccurs="0"/>
+                    <xs:element name="userData" type="tns:CreateOrEditUserDataType"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -91,9 +87,7 @@
             <xs:documentation>Входные параметры метода createCustomer</xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="customerName" type="xs:string" minOccurs="0"/>
-            <xs:element name="customerSurname" type="xs:string" minOccurs="0"/>
-            <xs:element name="customerAge" type="xs:int" minOccurs="0"/>
+            <xs:element name="userData" type="tns:CreateOrEditUserDataType"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -102,9 +96,7 @@
             <xs:documentation>Входные параметры метода createExecutor</xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="executorName" type="xs:string" minOccurs="0"/>
-            <xs:element name="executorSurname" type="xs:string" minOccurs="0"/>
-            <xs:element name="executorAge" type="xs:int" minOccurs="0"/>
+            <xs:element name="userData" type="tns:CreateOrEditUserDataType"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -116,7 +108,7 @@
             <xs:element name="createOrEditOrder" type="tns:CreateOrEditOrderDataType"/>
         </xs:sequence>
     </xs:complexType>
-    
+
     <xs:complexType name="CreateOrEditOrderDataType">
         <xs:annotation>
             <xs:documentation>Данные, которые передаются в параметрах метода createOrder</xs:documentation>
@@ -134,8 +126,19 @@
         <xs:annotation>
             <xs:documentation>Входные параметры методов edit и activate</xs:documentation>
         </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="tns:AbstractRequest"/>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="CreateOrEditUserDataType">
+        <xs:annotation>
+            <xs:documentation>Входные параметры методов create и edit для пользователей</xs:documentation>
+        </xs:annotation>
         <xs:sequence>
-            <xs:element name="id" type="xs:long"/>
+            <xs:element name="userName" type="xs:string" minOccurs="0"/>
+            <xs:element name="userSurname" type="xs:string" minOccurs="0"/>
+            <xs:element name="userAge" type="xs:int" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -159,5 +162,14 @@
             <xs:documentation>Базовый тип для предоставления атрибута идентификатора</xs:documentation>
         </xs:annotation>
         <xs:attribute name="id" type="xs:long" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="AbstractRequest" abstract="true">
+        <xs:annotation>
+            <xs:documentation>Базовый тип для предоставления идентификатора в теле запроса</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+        </xs:sequence>
     </xs:complexType>
 </xs:schema>

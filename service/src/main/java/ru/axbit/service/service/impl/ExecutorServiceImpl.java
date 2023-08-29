@@ -5,16 +5,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.axbit.domain.domain.common.AbstractEntity;
-import ru.axbit.domain.domain.common.AuditEntity;
 import ru.axbit.domain.domain.user.Executor;
 import ru.axbit.domain.repository.ExecutorRepository;
-import ru.axbit.service.exception.BusinessExceptionEnum;
 import ru.axbit.service.service.ExecutorService;
+import ru.axbit.service.service.common.AbstractCommonService;
 import ru.axbit.service.service.soap.mapper.request.CommonMapperDTO;
 import ru.axbit.service.service.soap.mapper.response.ExecutorListPojo;
 import ru.axbit.service.service.soap.mapper.response.ResponseMapper;
 import ru.axbit.service.service.soap.spec.ExecutorSpecification;
 import ru.axbit.service.util.PagingUtils;
+import ru.axbit.service.util.ValidationUtils;
 import ru.axbit.vborovik.competence.core.v1.PagingOptions;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetExecutorListFilterType;
 import ru.axbit.vborovik.competence.userservice.types.v1.ActivateExecutorRequest;
@@ -27,7 +27,6 @@ import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListResponse
 
 import javax.transaction.Transactional;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Реализация основных CRUD методов сущности исполнителя {@link Executor}.
@@ -35,8 +34,9 @@ import java.util.Optional;
 @Service
 @Transactional
 @AllArgsConstructor
-public class ExecutorServiceImpl implements ExecutorService {
+public class ExecutorServiceImpl extends AbstractCommonService implements ExecutorService {
     private final ExecutorRepository executorRepository;
+    private static final String EXECUTOR_TABLE_NAME = Executor.class.getSimpleName();
 
     @Override
     public GetExecutorListResponse getExecutorList(GetExecutorListRequest body) {
@@ -77,19 +77,10 @@ public class ExecutorServiceImpl implements ExecutorService {
     public DefaultResponse editExecutor(EditExecutorRequest body) {
         var editExecutorReq = body.getEditExecutor();
         var executorId = editExecutorReq.getId();
-        var executorOptional = executorRepository.findById(executorId);
-        executorOptional.filter(AuditEntity::isDeleted)
-                .ifPresent(executor -> BusinessExceptionEnum.E002
-                        .thr(executor.getId(), Executor.class.getSimpleName()));
-        if (executorOptional.isPresent()) {
-            var executor = executorOptional.get();
-            Optional.ofNullable(editExecutorReq.getExecutorName()).ifPresent(executor::setName);
-            Optional.ofNullable(editExecutorReq.getExecutorSurname()).ifPresent(executor::setSurname);
-            Optional.ofNullable(editExecutorReq.getExecutorAge()).ifPresent(executor::setAge);
-            executorRepository.save(executor);
-        } else {
-            BusinessExceptionEnum.E001.thr(executorId, Executor.class.getSimpleName());
-        }
+        var executor = findEntityById(executorId, executorRepository, EXECUTOR_TABLE_NAME);
+        ValidationUtils.checkIsDeleted(executor, executorId, EXECUTOR_TABLE_NAME);
+        setUserData(executor, executorRepository, editExecutorReq.getUserData());
+
         return ResponseMapper.mapDefaultResponse(true);
     }
 
@@ -103,10 +94,7 @@ public class ExecutorServiceImpl implements ExecutorService {
     public DefaultResponse createExecutor(CreateExecutorRequest body) {
         var createExecutorReq = body.getCreateExecutor();
         var executor = new Executor();
-        Optional.ofNullable(createExecutorReq.getExecutorName()).ifPresent(executor::setName);
-        Optional.ofNullable(createExecutorReq.getExecutorSurname()).ifPresent(executor::setSurname);
-        Optional.ofNullable(createExecutorReq.getExecutorAge()).ifPresent(executor::setAge);
-        executorRepository.save(executor);
+        setUserData(executor, executorRepository, createExecutorReq.getUserData());
 
         return ResponseMapper.mapDefaultResponse(true);
     }
@@ -121,11 +109,8 @@ public class ExecutorServiceImpl implements ExecutorService {
     public DefaultResponse deleteExecutor(DeleteExecutorRequest body) {
         var deleteExecutorReq = body.getDeleteExecutor();
         var executorId = deleteExecutorReq.getId();
-        var executorOptional = executorRepository.findById(executorId);
-        executorOptional.filter(AuditEntity::isDeleted)
-                .ifPresent(executor -> BusinessExceptionEnum.E002
-                        .thr(executor.getId(), Executor.class.getSimpleName()));
-        CustomerServiceImpl.deleteEntity(executorOptional, executorId, Executor.class.getSimpleName());
+        var executor = findEntityById(executorId, executorRepository, EXECUTOR_TABLE_NAME);
+        deleteEntity(executor, executorId, EXECUTOR_TABLE_NAME);
 
         return ResponseMapper.mapDefaultResponse(true);
     }
@@ -140,11 +125,8 @@ public class ExecutorServiceImpl implements ExecutorService {
     public DefaultResponse activateExecutor(ActivateExecutorRequest body) {
         var activateExecutorReq = body.getActivateExecutor();
         var executorId = activateExecutorReq.getId();
-        var executorOptional = executorRepository.findById(executorId);
-        executorOptional.filter(AuditEntity::nonDeleted)
-                .ifPresent(executor -> BusinessExceptionEnum.E005
-                        .thr(executor.getId(), Executor.class.getSimpleName()));
-        CustomerServiceImpl.activateEntity(executorOptional, executorId, Executor.class.getSimpleName());
+        var executor = findEntityById(executorId, executorRepository, EXECUTOR_TABLE_NAME);
+        activateEntity(executor, executorId, EXECUTOR_TABLE_NAME);
 
         return ResponseMapper.mapDefaultResponse(true);
     }
