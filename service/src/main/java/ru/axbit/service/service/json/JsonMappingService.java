@@ -7,4 +7,6 @@ import com.fasterxml.jackson.databind.JsonNode;
  */
 public interface JsonMappingService {
     JsonNode mapToJsonNode(String json);
+
+    <T> JsonNode mapToJsonNode(T object);
 }

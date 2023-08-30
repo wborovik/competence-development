@@ -37,4 +37,10 @@
     <!--Создание индексов:-->
     <include file="changelog/11_create_index.xml" relativeToChangelogFile="true"/>
 
+    <!-- Создание таблицы change:-->
+    <include file="changelog/12_create_table_change.xml" relativeToChangelogFile="true"/>
+
+    <!--Добавить в таблицу change столбец created:-->
+    <include file="changelog/13_alter_table_change.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>

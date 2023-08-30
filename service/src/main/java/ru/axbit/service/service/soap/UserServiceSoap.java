@@ -2,6 +2,7 @@ package ru.axbit.service.service.soap;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.axbit.service.service.ChangeService;
 import ru.axbit.service.service.CustomerService;
 import ru.axbit.service.service.ExecutorService;
 import ru.axbit.service.service.WorkOrderService;
@@ -36,79 +37,80 @@ public class UserServiceSoap implements UserServicePortType {
     private final CustomerService customerService;
     private final ExecutorService executorService;
     private final WorkOrderService orderService;
+    private final ChangeService changeService;
 
     @Override
     public DefaultResponse deleteOrder(DeleteOrderRequest body) {
-        return CommonResultBuilder.buildResponse(orderService::deleteOrder, body);
+        return CommonResultBuilder.buildResponse(orderService::deleteOrder, body, changeService);
     }
 
     @Override
     public DefaultResponse activateCustomer(ActivateCustomerRequest body) {
-        return CommonResultBuilder.buildResponse(customerService::activateCustomer, body);
+        return CommonResultBuilder.buildResponse(customerService::activateCustomer, body, changeService);
     }
 
     @Override
     public GetExecutorListResponse getExecutorList(GetExecutorListRequest body) {
-        return CommonResultBuilder.buildResponse(executorService::getExecutorList, body);
+        return CommonResultBuilder.buildResponse(executorService::getExecutorList, body, changeService);
     }
 
     @Override
     public DefaultResponse deleteExecutor(DeleteExecutorRequest body) {
-        return CommonResultBuilder.buildResponse(executorService::deleteExecutor, body);
+        return CommonResultBuilder.buildResponse(executorService::deleteExecutor, body, changeService);
     }
 
     @Override
     public GetOrderListResponse getOrderList(GetOrderListRequest body) {
-        return CommonResultBuilder.buildResponse(orderService::getOrderList, body);
+        return CommonResultBuilder.buildResponse(orderService::getOrderList, body, changeService);
     }
 
     @Override
     public DefaultResponse createCustomer(CreateCustomerRequest body) {
-        return CommonResultBuilder.buildResponse(customerService::createCustomer, body);
+        return CommonResultBuilder.buildResponse(customerService::createCustomer, body, changeService);
     }
 
     @Override
     public DefaultResponse createExecutor(CreateExecutorRequest body) {
-        return CommonResultBuilder.buildResponse(executorService::createExecutor, body);
+        return CommonResultBuilder.buildResponse(executorService::createExecutor, body, changeService);
     }
 
     @Override
     public DefaultResponse deleteCustomer(DeleteCustomerRequest body) {
-        return CommonResultBuilder.buildResponse(customerService::deleteCustomer, body);
+        return CommonResultBuilder.buildResponse(customerService::deleteCustomer, body, changeService);
     }
 
     @Override
     public GetCustomerListResponse getCustomerList(GetCustomerListRequest body) {
-        return CommonResultBuilder.buildResponse(customerService::getCustomerList, body);
+        return CommonResultBuilder.buildResponse(customerService::getCustomerList, body, changeService);
     }
 
     @Override
     public DefaultResponse activateExecutor(ActivateExecutorRequest body) {
-        return CommonResultBuilder.buildResponse(executorService::activateExecutor, body);
+        return CommonResultBuilder.buildResponse(executorService::activateExecutor, body, changeService);
     }
 
     @Override
     public DefaultResponse activateOrder(ActivateOrderRequest body) {
-        return CommonResultBuilder.buildResponse(orderService::activateOrder, body);
+        return CommonResultBuilder.buildResponse(orderService::activateOrder, body, changeService);
     }
 
     @Override
     public DefaultResponse editCustomer(EditCustomerRequest body) {
-        return CommonResultBuilder.buildResponse(customerService::editCustomer, body);
+        return CommonResultBuilder.buildResponse(customerService::editCustomer, body, changeService);
     }
 
     @Override
     public DefaultResponse editExecutor(EditExecutorRequest body) {
-        return CommonResultBuilder.buildResponse(executorService::editExecutor, body);
+        return CommonResultBuilder.buildResponse(executorService::editExecutor, body, changeService);
     }
 
     @Override
     public DefaultResponse editOrder(EditOrderRequest body) {
-        return CommonResultBuilder.buildResponse(orderService::editOrder, body);
+        return CommonResultBuilder.buildResponse(orderService::editOrder, body, changeService);
     }
 
     @Override
     public DefaultResponse createOrder(CreateOrderRequest body) {
-        return CommonResultBuilder.buildResponse(orderService::createOrder, body);
+        return CommonResultBuilder.buildResponse(orderService::createOrder, body, changeService);
     }
 }
