@@ -43,4 +43,15 @@ public class JsonMappingServiceImpl implements JsonMappingService {
             throw new BusinessException(BusinessExceptionEnum.E004, json);
         }
     }
+
+    @Override
+    public <T> JsonNode mapToJsonNode(T object) {
+        String json = object.toString();
+        try {
+            json = objectMapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new BusinessException(BusinessExceptionEnum.E004, json);
+        }
+        return mapToJsonNode(json);
+    }
 }
