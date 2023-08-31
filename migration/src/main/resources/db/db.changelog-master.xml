@@ -43,4 +43,10 @@
     <!--Добавить в таблицу change столбец created:-->
     <include file="changelog/13_alter_table_change.xml" relativeToChangelogFile="true"/>
 
+    <!-- Создание таблицы action_log:-->
+    <include file="changelog/14_create_table_action_log.xml" relativeToChangelogFile="true"/>
+
+    <!-- Удаление столбца exception_message таблицы action_log:-->
+    <include file="changelog/15_alter_table_action_log.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>

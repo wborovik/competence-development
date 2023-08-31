@@ -6,6 +6,8 @@ import javax.xml.ws.soap.SOAPBinding;
 import lombok.RequiredArgsConstructor;
 import org.apache.cxf.Bus;
 import org.apache.cxf.bus.spring.SpringBus;
+import org.apache.cxf.interceptor.LoggingInInterceptor;
+import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxws.EndpointImpl;
 import org.apache.cxf.transport.servlet.CXFServlet;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,6 +17,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
+import ru.axbit.service.service.journal.impl.ActionLogPrepareInInterceptor;
+import ru.axbit.service.service.journal.impl.LogInputInterceptor;
+import ru.axbit.service.service.journal.impl.LogOutputInterceptor;
 import ru.axbit.vborovik.competence.userservice.v1.UserService;
 import ru.axbit.vborovik.competence.userservice.v1.UserServicePortType;
 
@@ -26,8 +31,11 @@ import java.util.Map;
  */
 @Configuration
 @RequiredArgsConstructor
-@Profile("userService")
+@SuppressWarnings("deprecation")
 public class SoapConfig {
+    private final ActionLogPrepareInInterceptor actionLogPrepareInInterceptor;
+    private final LogInputInterceptor logInputInterceptor;
+    private final LogOutputInterceptor logOutputInterceptor;
 
     /**
      * Регистрация сервлета {@link ServletRegistrationBean}.
@@ -74,11 +82,19 @@ public class SoapConfig {
      * @return возвращает {@link Endpoint} компонент.
      */
     @Bean
+    @Profile("userService")
     public Endpoint createUserServiceEndpoint(SpringBus bus, @Qualifier("userServiceSoap")
     UserServicePortType userServicePortType) {
         EndpointImpl endpoint = new EndpointImpl(bus, userServicePortType, SOAPBinding.SOAP12HTTP_BINDING);
         endpoint.setProperties(getEndpointProps());
         endpoint.setServiceName(UserService.SERVICE);
+        endpoint.getInInterceptors().add(actionLogPrepareInInterceptor);
+        endpoint.getInInterceptors().add(new LoggingInInterceptor());
+        endpoint.getOutInterceptors().add(new LoggingOutInterceptor());
+        endpoint.getInInterceptors().add(logInputInterceptor);
+        endpoint.getOutInterceptors().add(logOutputInterceptor);
+        endpoint.getInFaultInterceptors().add(new LoggingInInterceptor());
+        endpoint.getOutFaultInterceptors().add(new LoggingOutInterceptor());
         endpoint.setWsdlLocation("classpath:wsdl/v1/userService/userService.wsdl");
         endpoint.publish("competence/userService/v1");
 
@@ -93,7 +109,6 @@ public class SoapConfig {
     private Map<String, Object> getEndpointProps() {
         Map<String, Object> props = new HashMap<>();
         props.put("schema-validation-enabled", "REQUEST");
-
         return props;
     }
 }
