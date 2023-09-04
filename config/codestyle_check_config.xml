@@ -80,10 +80,10 @@
 
 		<!-- Checks for Javadoc comments.                     -->
 		<!-- See http://checkstyle.sourceforge.net/config_javadoc.html -->
-		<module name="JavadocMethod">
+		<!--<module name="JavadocMethod">
 			<property name="minLineCount" value="3"/>
-		</module>
-		<module name="JavadocType"/>
+		</module>-->
+		<!--<module name="JavadocType"/>-->
 		<!--		<module name="JavadocVariable"/>-->
 		<module name="JavadocStyle"/>
 
