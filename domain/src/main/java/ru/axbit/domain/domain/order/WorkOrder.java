@@ -8,6 +8,7 @@ import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import ru.axbit.domain.domain.cls.ClsOrderCategory;
+import ru.axbit.domain.domain.cls.ClsOrderStatus;
 import ru.axbit.domain.domain.common.AuditEntity;
 import ru.axbit.domain.domain.user.Customer;
 import ru.axbit.domain.domain.user.Executor;
@@ -55,4 +56,10 @@ public class WorkOrder extends AuditEntity {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     private ClsOrderCategory category;
+
+    /**
+     * Статус заказа.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ClsOrderStatus status;
 }

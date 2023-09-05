@@ -52,4 +52,7 @@
     <!-- Удаление таблицы change:-->
     <include file="changelog/16_drop_table_change.xml" relativeToChangelogFile="true"/>
 
+    <!-- Создание таблицы change:-->
+    <include file="changelog/17_create_table_cls_order_status.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>

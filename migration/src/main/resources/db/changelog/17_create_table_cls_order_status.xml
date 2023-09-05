@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="17-01" author="vborovik">
+        <sql>
+            create table cls_order_status
+            (
+                global_id bigint  not null,
+                changed   timestamp(6),
+                created   timestamp(6),
+                deleted   boolean not null,
+                status    varchar(255),
+                primary key (global_id)
+            );
+
+            alter table work_order
+                add column status_global_id bigint;
+
+            alter table if exists work_order add constraint work_order_status foreign key (status_global_id) references cls_order_status;
+
+            insert into cls_order_status(global_id, created, deleted, status)
+            values (1, now(), false, 'new');
+
+            insert into cls_order_status(global_id, created, deleted, status)
+            values (2, now(), false, 'progress');
+
+            insert into cls_order_status(global_id, created, deleted, status)
+            values (3, now(), false, 'executed');
+
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
