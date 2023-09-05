@@ -7,6 +7,7 @@ import org.apache.cxf.common.util.PackageUtils;
 import org.springframework.data.util.CastUtils;
 import ru.axbit.vborovik.competence.faults.v1.BusinessFault;
 import ru.axbit.vborovik.competence.faults.v1.ErrorMessage;
+import ru.axbit.vborovik.competence.faults.v1.ErrorMessageCollection;
 
 /**
  * Класс маппинга кастомных бизнес ошибок в SOAP структуру.
@@ -44,11 +45,14 @@ public class UserServiceExceptionMapper {
      * @return Возвращается SOAP тип {@link BusinessFault}, который содержит описание бизнес ошибки.
      */
     private static BusinessFault getBusinessFault(BusinessException e) {
-        BusinessFault businessFault = new BusinessFault();
-        ErrorMessage errorMessage = new ErrorMessage();
+        var businessFault = new BusinessFault();
+        var errorMessage = new ErrorMessage();
+
         errorMessage.setMessage(e.getMessage());
         errorMessage.setCode(e.getBusinessExceptionEnum().getCode());
-        businessFault.setMessage(errorMessage);
+        var errorMessageCollection = new ErrorMessageCollection();
+        errorMessageCollection.getMessage().add(errorMessage);
+        businessFault.setMessages(errorMessageCollection);
 
         return businessFault;
     }

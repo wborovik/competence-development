@@ -16,6 +16,9 @@ import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+/**
+ * Класс описывающий сущность для логирования выполняемых методов, их входных и выходных данных.
+ */
 @Getter
 @Setter
 @Entity

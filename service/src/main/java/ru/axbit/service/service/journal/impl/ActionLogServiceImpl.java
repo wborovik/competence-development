@@ -19,7 +19,6 @@ import ru.axbit.domain.repository.journal.ActionLogRepository;
 import ru.axbit.service.service.journal.ActionLogService;
 
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.stream.StreamSource;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,6 +27,9 @@ import java.io.SequenceInputStream;
 import java.io.StringWriter;
 import java.util.Objects;
 
+/**
+ * Класс, реализующий сервис класса логирования.
+ */
 @Service
 @RequiredArgsConstructor
 public class ActionLogServiceImpl implements ActionLogService {
@@ -47,6 +49,12 @@ public class ActionLogServiceImpl implements ActionLogService {
 
     }
 
+    /**
+     * Возвращает имя выполняемого метода.
+     *
+     * @param message передается перехваченное сообщение {@link Message}.
+     * @return возвращается имя метода, представленного строкой {@link String}.
+     */
     private String getMethodName(Message message) {
         var method = message.get(SoapBindingConstants.SOAP_ACTION);
         Preconditions.checkNotNull(method, "Method not found");
@@ -64,6 +72,12 @@ public class ActionLogServiceImpl implements ActionLogService {
         }
     }
 
+    /**
+     * Метод возвращает результирующую строку для записи в журнал.
+     *
+     * @param message передается перехваченное сообщение {@link Message}.
+     * @return возвращается результирующая строка {@link String}.
+     */
     @SneakyThrows
     private String getStringMessage(Message message) {
         var buffer = new StringBuilder();
@@ -97,6 +111,15 @@ public class ActionLogServiceImpl implements ActionLogService {
         return buffer.toString();
     }
 
+    /**
+     * Метод получения содержимого входного потока.
+     *
+     * @param message       передается перехваченное сообщение {@link Message}.
+     * @param requestStream передается входной поток {@link InputStream}.
+     * @param encoding      передается строка {@link String}.
+     * @param contentType   передается строка {@link String}.
+     * @return возвращается результирующая строка {@link String}.
+     */
     protected String getContentFromInputStream(
             Message message, InputStream requestStream, String encoding, String contentType) {
         var cachedOutputStream = new CachedOutputStream();
@@ -123,6 +146,15 @@ public class ActionLogServiceImpl implements ActionLogService {
         }
     }
 
+    /**
+     * Вспомогательный метод записывает в результирующую строку данные для логирования.
+     *
+     * @param builder     передается строитель строк {@link StringBuilder}.
+     * @param cos         передается выходной поток {@link CachedOutputStream}.
+     * @param encoding    передается строку {@link String}.
+     * @param contentType передается строку {@link String}.
+     * @throws Exception пробрасывается исключение {@link Exception}.
+     */
     private void writePayload(
             StringBuilder builder, CachedOutputStream cos, String encoding, String contentType) throws Exception {
         if (Objects.nonNull(contentType) && contentType.contains("xml") && cos.size() > 0L) {

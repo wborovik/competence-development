@@ -10,6 +10,9 @@ import ru.axbit.service.service.journal.ActionLogService;
 
 import java.util.Objects;
 
+/**
+ * Класс перехватчика выходных данных для логирования.
+ */
 @Slf4j
 @Component
 public class LogOutputInterceptor extends AbstractPhaseInterceptor<Message> {
