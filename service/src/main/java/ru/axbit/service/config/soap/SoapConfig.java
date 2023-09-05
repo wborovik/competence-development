@@ -44,8 +44,8 @@ public class SoapConfig {
      */
     @Bean
     public ServletRegistrationBean<CXFServlet> cxfServlet() {
-        CXFServlet cxfServlet = new CXFServlet();
-        ServletRegistrationBean<CXFServlet> servletReg = new ServletRegistrationBean<>(cxfServlet, "/services/*");
+        var cxfServlet = new CXFServlet();
+        var servletReg = new ServletRegistrationBean<>(cxfServlet, "/services/*");
         servletReg.setLoadOnStartup(1);
         return servletReg;
     }
@@ -93,8 +93,11 @@ public class SoapConfig {
         endpoint.getOutInterceptors().add(new LoggingOutInterceptor());
         endpoint.getInInterceptors().add(logInputInterceptor);
         endpoint.getOutInterceptors().add(logOutputInterceptor);
+        endpoint.getInFaultInterceptors().add(actionLogPrepareInInterceptor);
         endpoint.getInFaultInterceptors().add(new LoggingInInterceptor());
         endpoint.getOutFaultInterceptors().add(new LoggingOutInterceptor());
+        endpoint.getInFaultInterceptors().add(logInputInterceptor);
+        endpoint.getOutFaultInterceptors().add(logOutputInterceptor);
         endpoint.setWsdlLocation("classpath:wsdl/v1/userService/userService.wsdl");
         endpoint.publish("competence/userService/v1");
 

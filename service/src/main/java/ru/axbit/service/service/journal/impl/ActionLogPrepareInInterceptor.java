@@ -7,6 +7,9 @@ import org.apache.cxf.phase.Phase;
 import org.springframework.stereotype.Component;
 import ru.axbit.service.service.journal.ActionLogService;
 
+/**
+ * Класс подготовки журнала действий в перехватчике.
+ */
 @Component
 public class ActionLogPrepareInInterceptor extends AbstractPhaseInterceptor<Message> {
     private final ActionLogService actionLogService;

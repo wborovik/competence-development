@@ -9,6 +9,9 @@ import ru.axbit.service.service.journal.ActionLogService;
 
 import java.util.Objects;
 
+/**
+ * Класс перехватчика входных данных для логирования.
+ */
 @Component
 public class LogInputInterceptor extends AbstractPhaseInterceptor<Message> {
 
