@@ -20,6 +20,7 @@ import java.util.List;
 @Entity
 @FieldNameConstants
 public class ClsOrderStatus extends ClsBase {
+    private String title;
     private String status;
     @BatchSize(size = 500)
     @OneToMany(mappedBy = "executor", fetch = FetchType.LAZY)
