@@ -58,4 +58,7 @@
     <!-- Добавление в таблицу cls_order_status столбца title:-->
     <include file="changelog/18_alter_table_cls_order_status.xml" relativeToChangelogFile="true"/>
 
+    <!-- Добавление данных в столбец status таблицы work_order:-->
+    <include file="changelog/19_insert_table_work_order.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>
