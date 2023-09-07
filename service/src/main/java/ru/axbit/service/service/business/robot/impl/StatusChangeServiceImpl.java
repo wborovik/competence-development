@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-import ru.axbit.domain.domain.cls.ClsOrderStatus;
 import ru.axbit.domain.domain.order.WorkOrder;
 import ru.axbit.domain.repository.ClsOrderStatusRepository;
 import ru.axbit.domain.repository.WorkOrderRepository;

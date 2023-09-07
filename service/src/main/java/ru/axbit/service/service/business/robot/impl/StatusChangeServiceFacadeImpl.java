@@ -37,6 +37,10 @@ public class StatusChangeServiceFacadeImpl implements StatusChangeServiceFacade 
         );
     }
 
+    /**
+     *
+     * @param order передается сущность {@link WorkOrder}
+     */
     public void processEveryOrder(WorkOrder order) {
         try {
             changeService.processOrder(order);
