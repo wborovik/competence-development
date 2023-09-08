@@ -30,6 +30,8 @@ public class StatusChangeServiceImpl implements StatusChangeService {
     public void processOrder(WorkOrder order) {
         var orderId = order.getId();
 
+
+
         var status = statusRepository.findByStatus(PROGRESS_ORDER_STATUS);
         status.ifPresent(order::setStatus);
         orderRepository.save(order);

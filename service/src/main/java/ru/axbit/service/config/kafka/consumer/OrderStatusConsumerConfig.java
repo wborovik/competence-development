@@ -2,7 +2,16 @@ package ru.axbit.service.config.kafka.consumer;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.core.ConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.listener.LoggingErrorHandler;
 import ru.axbit.service.config.kafka.AbstractKafkaConfig;
 
 /**
@@ -11,6 +20,46 @@ import ru.axbit.service.config.kafka.AbstractKafkaConfig;
 @Setter
 @Getter
 @Configuration
+@Profile("orderSchedulerService")
+@ConfigurationProperties(prefix = "order-status.kafka")
 public class OrderStatusConsumerConfig extends AbstractKafkaConfig {
 
+    private String topic;
+
+    /**
+     * Фабрика консюмера.
+     *
+     * @return возвращает экземпляр {@link ConsumerFactory}.
+     */
+    @Bean
+    public ConsumerFactory<String, String> consumerFactory() {
+        return new DefaultKafkaConsumerFactory<>(getConfigMap());
+    }
+
+    /**
+     * Фабрика для создания контейнера.
+     *
+     * @param consumerFactory принимает {@link ConsumerFactory}.
+     * @return возвращает {@link ConcurrentKafkaListenerContainerFactory}.
+     */
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, String> ruleKafkaListenerContainerFactory(
+            ConsumerFactory<String, String> consumerFactory) {
+        ConcurrentKafkaListenerContainerFactory<String, String> listenerFactory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+        listenerFactory.setConsumerFactory(consumerFactory);
+        listenerFactory.setErrorHandler(new LoggingErrorHandler());
+        return listenerFactory;
+    }
+
+    /**
+     * Шаблон взаимодействия с Kafka.
+     *
+     * @param producerFactory принимает {@link ProducerFactory}.
+     * @return возвращает объект {@link KafkaTemplate}.
+     */
+    @Bean
+    public KafkaTemplate<String, String> ruleKafkaTemplate(ProducerFactory<String, String> producerFactory) {
+        return new KafkaTemplate<>(producerFactory);
+    }
 }
