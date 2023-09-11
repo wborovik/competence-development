@@ -61,4 +61,7 @@
     <!-- Добавление данных в столбец status таблицы work_order:-->
     <include file="changelog/19_insert_table_work_order.xml" relativeToChangelogFile="true"/>
 
+    <!-- Создание таблицы shedlock:-->
+    <include file="changelog/20_create_table_shedlock.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>

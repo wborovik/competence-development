@@ -2,30 +2,36 @@ package ru.axbit.service.config.kafka.producer;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
-import ru.axbit.service.config.kafka.AbstractKafkaConfig;
+
+import java.util.Map;
 
 /**
  * Конфигурация продюсера.
  */
 @Setter
 @Getter
+@EnableKafka
 @Profile("businessRulesScheduler")
-public class OrderStatusProducerConfig extends AbstractKafkaConfig {
+@ConfigurationProperties(prefix = "order-status.producer.kafka")
+public class OrderStatusProducerConfig {
 
+    private Map<String, Object> configMap;
     private String topic;
 
     @Bean
-    public ProducerFactory<String, String> kafkaFactory() {
+    public ProducerFactory<String, String> producerFactory() {
         return new DefaultKafkaProducerFactory<>(getConfigMap());
     }
 
     @Bean
-    public KafkaTemplate<String, String> template() {
-        return new KafkaTemplate<>(kafkaFactory());
+    public KafkaTemplate<String, String> template(ProducerFactory<String, String> producerFactory) {
+        return new KafkaTemplate<>(producerFactory);
     }
 }
