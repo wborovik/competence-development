@@ -30,8 +30,7 @@ public class StatusChangeServiceFacadeImpl implements StatusChangeServiceFacade 
     @Override
     public void processAllOrders() {
         PagingUtils.forEachPage(
-                pageable -> orderRepository.findAllByStatusAndDeletedIsFalse(
-                        NEW_ORDER_STATUS, pageable),
+                pageable -> orderRepository.findAllByStatus(NEW_ORDER_STATUS, pageable),
                 this::processEveryOrder,
                 maxTasksLimit
         );

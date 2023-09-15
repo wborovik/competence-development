@@ -7,4 +7,6 @@ import ru.axbit.domain.domain.order.WorkOrder;
  */
 public interface StatusChangeService {
     void processOrder(WorkOrder order);
+
+    void execute(Long message);
 }

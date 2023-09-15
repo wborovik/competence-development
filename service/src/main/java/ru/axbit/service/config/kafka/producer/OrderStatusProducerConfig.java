@@ -9,8 +9,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
-
-import java.util.Map;
+import ru.axbit.service.config.kafka.AbstractKafkaConfig;
 
 /**
  * Конфигурация продюсера.
@@ -18,11 +17,10 @@ import java.util.Map;
 @Setter
 @Getter
 @EnableKafka
-@Profile("businessRulesScheduler")
-@ConfigurationProperties(prefix = "order-status.producer.kafka")
-public class OrderStatusProducerConfig {
+@Profile("orderSchedulerService")
+@ConfigurationProperties(prefix = "order-status.kafka")
+public class OrderStatusProducerConfig extends AbstractKafkaConfig {
 
-    private Map<String, Object> configMap;
     private String topic;
 
     @Bean

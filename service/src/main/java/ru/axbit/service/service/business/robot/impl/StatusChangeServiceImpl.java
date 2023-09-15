@@ -22,11 +22,17 @@ import javax.transaction.Transactional;
 public class StatusChangeServiceImpl implements StatusChangeService {
     private final OrderStatusProducerService orderStatusProducerService;
 
-    private static final String PROGRESS_ORDER_STATUS = "executed";
+    private static final String PROGRESS_ORDER_STATUS = "progress";
+    private static final String EXECUTED_ORDER_STATUS = "executed";
 
     private final ClsOrderStatusRepository statusRepository;
     private final WorkOrderRepository orderRepository;
 
+    /**
+     * Метод меняет статус заказа с new на progress и отправляет сообщение в kafka топик.
+     *
+     * @param order принимает заказ {@link WorkOrder}
+     */
     @Override
     @Transactional
     public void processOrder(WorkOrder order) {
@@ -34,5 +40,20 @@ public class StatusChangeServiceImpl implements StatusChangeService {
         status.ifPresent(order::setStatus);
         orderRepository.save(order);
         orderStatusProducerService.sendMessage(order.getId());
+    }
+
+    /**
+     * Метод обрабатывает сообщение, прочитанное в kafka топике.
+     *
+     * @param message в сообщении передается идентификатор обрабатываемого заказа.
+     */
+    @Override
+    public void execute(Long message) {
+        var status = statusRepository.findByStatus(EXECUTED_ORDER_STATUS);
+        var workOrder = orderRepository.findById(message);
+        status.ifPresent(clsOrderStatus -> workOrder.ifPresent(order -> {
+            order.setStatus(clsOrderStatus);
+            orderRepository.save(order);
+        }));
     }
 }

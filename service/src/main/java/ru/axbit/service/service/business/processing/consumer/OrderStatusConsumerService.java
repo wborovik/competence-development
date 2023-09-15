@@ -5,13 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
-import ru.axbit.domain.repository.ClsOrderStatusRepository;
-import ru.axbit.domain.repository.WorkOrderRepository;
+import ru.axbit.service.service.business.robot.impl.StatusChangeServiceImpl;
 
 import javax.transaction.Transactional;
 
 /**
- * Сервис получения сообщений топика OrderStatus для дальнейшей обработки.
+ * Сервис получения сообщений из kafka топика для дальнейшей обработки.
  */
 @Slf4j
 @Service
@@ -19,27 +18,13 @@ import javax.transaction.Transactional;
 @Profile("orderSchedulerService")
 public class OrderStatusConsumerService {
 
-    private static final String EXECUTED_ORDER_STATUS = "executed";
-    private final ClsOrderStatusRepository orderStatusRepository;
-    private final WorkOrderRepository orderRepository;
+    private final StatusChangeServiceImpl changeService;
 
     @Transactional
-    @KafkaListener(topics = {"${order-status.consumer.kafka.topic}"},
+    @KafkaListener(topics = {"${order-status.kafka.topic}"},
             containerFactory = "kafkaListenerContainerFactory")
     public void consume(Long message) {
         log.info("Consumed message from OrderStatus topic : {}", message);
-        execute(message);
-    }
-
-    /**
-     * Метод обрабатывает сообщение, прочитанное в kafka топике.
-     *
-     * @param message сообщение.
-     */
-    private void execute(Long message) {
-        var status = orderStatusRepository.findByStatus(EXECUTED_ORDER_STATUS);
-        var order = orderRepository.findById(message);
-        status.ifPresent(clsOrderStatus ->
-                order.ifPresent(o -> o.setStatus(clsOrderStatus)));
+        changeService.execute(message);
     }
 }
