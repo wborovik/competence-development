@@ -12,8 +12,7 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.LoggingErrorHandler;
-
-import java.util.Map;
+import ru.axbit.service.config.kafka.AbstractKafkaConfig;
 
 /**
  * Конфигурация консюмера.
@@ -22,10 +21,9 @@ import java.util.Map;
 @Getter
 @Configuration
 @Profile("orderSchedulerService")
-@ConfigurationProperties(prefix = "order-status.consumer.kafka")
-public class OrderStatusConsumerConfig {
+@ConfigurationProperties(prefix = "order-status.kafka")
+public class OrderStatusConsumerConfig extends AbstractKafkaConfig {
 
-    private Map<String, Object> configMap;
     private String topic;
 
     /**
@@ -34,7 +32,7 @@ public class OrderStatusConsumerConfig {
      * @return возвращает экземпляр {@link ConsumerFactory}.
      */
     @Bean
-    public ConsumerFactory<String, String> consumerFactory() {
+    public ConsumerFactory<String, Long> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(getConfigMap());
     }
 

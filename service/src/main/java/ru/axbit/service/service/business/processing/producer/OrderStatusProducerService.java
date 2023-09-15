@@ -15,6 +15,7 @@ import ru.axbit.service.config.kafka.producer.OrderStatusProducerConfig;
 @RequiredArgsConstructor
 @Profile("orderSchedulerService")
 public class OrderStatusProducerService {
+
     private final KafkaTemplate<String, Long> template;
     private final OrderStatusProducerConfig config;
 
