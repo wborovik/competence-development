@@ -26,12 +26,12 @@ public class OrderStatusProducerConfig {
     private String topic;
 
     @Bean
-    public ProducerFactory<String, String> producerFactory() {
+    public ProducerFactory<String, Long> producerFactory() {
         return new DefaultKafkaProducerFactory<>(getConfigMap());
     }
 
     @Bean
-    public KafkaTemplate<String, String> template(ProducerFactory<String, String> producerFactory) {
-        return new KafkaTemplate<>(producerFactory);
+    public KafkaTemplate<String, Long> template() {
+        return new KafkaTemplate<>(producerFactory());
     }
 }

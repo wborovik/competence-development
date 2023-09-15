@@ -12,7 +12,6 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.LoggingErrorHandler;
-import ru.axbit.service.config.kafka.AbstractKafkaConfig;
 
 import java.util.Map;
 
@@ -24,7 +23,7 @@ import java.util.Map;
 @Configuration
 @Profile("orderSchedulerService")
 @ConfigurationProperties(prefix = "order-status.consumer.kafka")
-public class OrderStatusConsumerConfig extends AbstractKafkaConfig {
+public class OrderStatusConsumerConfig {
 
     private Map<String, Object> configMap;
     private String topic;
@@ -46,9 +45,9 @@ public class OrderStatusConsumerConfig extends AbstractKafkaConfig {
      * @return возвращает {@link ConcurrentKafkaListenerContainerFactory}.
      */
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory(
-            ConsumerFactory<String, String> consumerFactory) {
-        ConcurrentKafkaListenerContainerFactory<String, String> listenerFactory =
+    public ConcurrentKafkaListenerContainerFactory<String, Long> kafkaListenerContainerFactory(
+            ConsumerFactory<String, Long> consumerFactory) {
+        ConcurrentKafkaListenerContainerFactory<String, Long> listenerFactory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         listenerFactory.setConsumerFactory(consumerFactory);
         listenerFactory.setErrorHandler(new LoggingErrorHandler());
@@ -62,7 +61,7 @@ public class OrderStatusConsumerConfig extends AbstractKafkaConfig {
      * @return возвращает объект {@link KafkaTemplate}.
      */
     @Bean
-    public KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String, String> producerFactory) {
+    public KafkaTemplate<String, Long> kafkaTemplate(ProducerFactory<String, Long> producerFactory) {
         return new KafkaTemplate<>(producerFactory);
     }
 }

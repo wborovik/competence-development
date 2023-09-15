@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.axbit.domain.domain.order.WorkOrder;
 import ru.axbit.domain.repository.ClsOrderStatusRepository;
 import ru.axbit.domain.repository.WorkOrderRepository;
+import ru.axbit.service.service.business.processing.producer.OrderStatusProducerService;
 import ru.axbit.service.service.business.robot.StatusChangeService;
 
 import javax.transaction.Transactional;
@@ -19,8 +20,9 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 @Profile("orderSchedulerService")
 public class StatusChangeServiceImpl implements StatusChangeService {
+    private final OrderStatusProducerService orderStatusProducerService;
 
-    private static final String PROGRESS_ORDER_STATUS = "progress";
+    private static final String PROGRESS_ORDER_STATUS = "executed";
 
     private final ClsOrderStatusRepository statusRepository;
     private final WorkOrderRepository orderRepository;
@@ -28,12 +30,9 @@ public class StatusChangeServiceImpl implements StatusChangeService {
     @Override
     @Transactional
     public void processOrder(WorkOrder order) {
-        var orderId = order.getId();
-
-
-
         var status = statusRepository.findByStatus(PROGRESS_ORDER_STATUS);
         status.ifPresent(order::setStatus);
         orderRepository.save(order);
+        orderStatusProducerService.sendMessage(order.getId());
     }
 }
