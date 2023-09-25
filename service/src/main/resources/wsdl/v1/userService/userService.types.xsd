@@ -227,6 +227,18 @@
         </xs:complexType>
     </xs:element>
 
+    <!-- Метод edit Evaluation-->
+    <xs:element name="editEvaluationRequest">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода editEvaluation</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="editEvaluation" type="filter:EditEvaluationType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
     <xs:element name="defaultResponse">
         <xs:annotation>
             <xs:documentation>Выходные параметры методов ничего не возвращающих</xs:documentation>
