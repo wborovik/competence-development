@@ -26,6 +26,7 @@ public class EvaluationServiceImpl implements EvaluationService {
      * Метод для изменения оценки {@link Evaluation}.
      *
      * @param body передается SOAP тип {@link EditEvaluationRequest} с вносимыми изменениями.
+     *             Указывается идентификатор исполнителя {@link Executor}, у которого изменяется оценка.
      * @return возвращается SOAP тип {@link DefaultResponse}, содержащий статус проведенной операции.
      */
     @Override
@@ -47,6 +48,11 @@ public class EvaluationServiceImpl implements EvaluationService {
         return ResponseMapper.mapDefaultResponse(true);
     }
 
+    /**
+     * Метод создает новую оценку {@link Evaluation}.
+     *
+     * @return возвращается, созданная оценка.
+     */
     @Override
     public Evaluation createEvaluation() {
         var newEvaluation = new Evaluation();

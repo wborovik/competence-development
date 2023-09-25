@@ -45,6 +45,7 @@
         <xs:sequence>
             <xs:element name="executorId" type="xs:long"/>
             <xs:element name="userData" type="UserDataPageType" minOccurs="0"/>
+            <xs:element name="evaluation" type="xs:double"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -88,7 +89,9 @@
         </xs:attribute>
         <xs:attribute name="morePagesAvailable" type="xs:boolean" use="required">
             <xs:annotation>
-                <xs:documentation>Флаг доступности других страниц с результатами для "постраничного листания" (true - если доступны еще страницы; false - иначе)</xs:documentation>
+                <xs:documentation>Флаг доступности других страниц с результатами для "постраничного листания" (true -
+                    если доступны еще страницы; false - иначе)
+                </xs:documentation>
             </xs:annotation>
         </xs:attribute>
         <xs:attribute name="totalItemsCount" type="xs:long" use="required">

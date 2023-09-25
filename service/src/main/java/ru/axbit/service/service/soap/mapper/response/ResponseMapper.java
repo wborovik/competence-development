@@ -21,6 +21,7 @@ import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListResponse
 import ru.axbit.vborovik.competence.userservice.types.v1.GetOrderListResponse;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Класс, содержащий статические методы мапинга для получения возвращаемого(response) SOAP значения CRUD методов.
@@ -111,6 +112,12 @@ public class ResponseMapper {
         result.setExecutorId(executor.getId());
         var userData = mapUserDataType(executor);
         result.setUserData(userData);
+        Optional.ofNullable(executor.getEvaluation()).ifPresent(e -> {
+            var evaluation = e.getEvaluation();
+            var scale = Math.pow(10, 1);
+            evaluation = Math.ceil(evaluation * scale) / scale;
+            result.setEvaluation(evaluation);
+        });
         return result;
     }
 
