@@ -2,6 +2,7 @@ package ru.axbit.service.service.soap;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.axbit.service.service.BillService;
 import ru.axbit.service.service.CustomerService;
 import ru.axbit.service.service.EvaluationService;
 import ru.axbit.service.service.ExecutorService;
@@ -10,6 +11,7 @@ import ru.axbit.service.util.CommonResultBuilder;
 import ru.axbit.vborovik.competence.userservice.types.v1.ActivateCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.ActivateExecutorRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.ActivateOrderRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.CreateBillRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.CreateCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.CreateExecutorRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.CreateOrderRequest;
@@ -39,6 +41,7 @@ public class UserServiceSoap implements UserServicePortType {
     private final ExecutorService executorService;
     private final WorkOrderService orderService;
     private final EvaluationService evaluationService;
+    private final BillService billService;
 
     @Override
     public DefaultResponse deleteOrder(DeleteOrderRequest body) {
@@ -58,6 +61,11 @@ public class UserServiceSoap implements UserServicePortType {
     @Override
     public DefaultResponse deleteExecutor(DeleteExecutorRequest body) {
         return CommonResultBuilder.buildResponse(executorService::deleteExecutor, body);
+    }
+
+    @Override
+    public DefaultResponse createBill(CreateBillRequest body) {
+        return CommonResultBuilder.buildResponse(billService::createBill, body);
     }
 
     @Override

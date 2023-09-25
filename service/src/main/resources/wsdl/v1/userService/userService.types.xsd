@@ -155,6 +155,18 @@
         </xs:complexType>
     </xs:element>
 
+    <!-- Метод createBill-->
+    <xs:element name="createBillRequest">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода createBill</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="createBill" type="filter:CreateBillType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
     <!-- Метод deleteCustomer-->
     <xs:element name="deleteCustomerRequest">
         <xs:annotation>
