@@ -50,6 +50,10 @@
         <wsdl:part name="body" element="ns:editOrderRequest"/>
     </wsdl:message>
 
+    <wsdl:message name="editEvaluationInput">
+        <wsdl:part name="body" element="ns:editEvaluationRequest"/>
+    </wsdl:message>
+
     <wsdl:message name="createCustomerInput">
         <wsdl:part name="body" element="ns:createCustomerRequest"/>
     </wsdl:message>
@@ -60,6 +64,10 @@
 
     <wsdl:message name="createOrderInput">
         <wsdl:part name="body" element="ns:createOrderRequest"/>
+    </wsdl:message>
+
+    <wsdl:message name="createBillInput">
+        <wsdl:part name="body" element="ns:createBillRequest"/>
     </wsdl:message>
 
     <wsdl:message name="deleteCustomerInput">
@@ -84,10 +92,6 @@
 
     <wsdl:message name="activateOrderInput">
         <wsdl:part name="body" element="ns:activateOrderRequest"/>
-    </wsdl:message>
-
-    <wsdl:message name="editEvaluationInput">
-        <wsdl:part name="body" element="ns:editEvaluationRequest"/>
     </wsdl:message>
 
     <!--    Output msg-->
@@ -124,6 +128,10 @@
     </wsdl:message>
 
     <wsdl:message name="createOrderOutput">
+        <wsdl:part name="body" element="ns:defaultResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="createBillOutput">
         <wsdl:part name="body" element="ns:defaultResponse"/>
     </wsdl:message>
 
@@ -224,6 +232,13 @@
             <wsdl:documentation>Метод для создания заказа Order</wsdl:documentation>
             <wsdl:input message="tns:createOrderInput"/>
             <wsdl:output message="tns:createOrderOutput"/>
+            <wsdl:fault name="fault" message="tns:fault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="createBill">
+            <wsdl:documentation>Метод для создания счета на оплату Bill</wsdl:documentation>
+            <wsdl:input message="tns:createBillInput"/>
+            <wsdl:output message="tns:createBillOutput"/>
             <wsdl:fault name="fault" message="tns:fault"/>
         </wsdl:operation>
 
@@ -392,6 +407,19 @@
 
         <wsdl:operation name="createOrder">
             <soap:operation soapAction="createOrder" soapActionRequired="true"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="fault">
+                <soap:fault name="fault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="createBill">
+            <soap:operation soapAction="createBill" soapActionRequired="true"/>
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>
