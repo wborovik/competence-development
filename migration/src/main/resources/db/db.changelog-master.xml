@@ -64,4 +64,7 @@
     <!-- Создание таблицы shedlock:-->
     <include file="changelog/20_create_table_shedlock.xml" relativeToChangelogFile="true"/>
 
+    <!-- Создание таблицы bill:-->
+    <include file="changelog/21_create_table_bill.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>

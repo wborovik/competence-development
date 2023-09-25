@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.axbit.domain.domain.common.AbstractEntity;
 import ru.axbit.domain.domain.user.Executor;
 import ru.axbit.domain.repository.ExecutorRepository;
+import ru.axbit.service.service.EvaluationService;
 import ru.axbit.service.service.ExecutorService;
 import ru.axbit.service.service.common.AbstractCommonService;
 import ru.axbit.service.service.soap.mapper.request.CommonMapperDTO;
@@ -36,6 +37,7 @@ import java.util.Objects;
 @AllArgsConstructor
 public class ExecutorServiceImpl extends AbstractCommonService implements ExecutorService {
     private final ExecutorRepository executorRepository;
+    private final EvaluationService evaluationService;
     private static final String EXECUTOR_TABLE_NAME = Executor.class.getSimpleName();
 
     @Override
@@ -94,8 +96,9 @@ public class ExecutorServiceImpl extends AbstractCommonService implements Execut
     public DefaultResponse createExecutor(CreateExecutorRequest body) {
         var createExecutorReq = body.getCreateExecutor();
         var executor = new Executor();
+        var evaluation = evaluationService.createEvaluation();
+        executor.setEvaluation(evaluation);
         setUserData(executor, executorRepository, createExecutorReq.getUserData());
-
         return ResponseMapper.mapDefaultResponse(true);
     }
 

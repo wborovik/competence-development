@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:tns="http://vborovik.axbit.ru/competence/filterTypes/v1/"
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           xmlns:core="http://vborovik.axbit.ru/competence/core/v1/"
+           xmlns:core="http://vborovik.axbit.ru/competence/core/v1/" xmlns:Xs="http://www.w3.org/2001/XMLSchema"
            targetNamespace="http://vborovik.axbit.ru/competence/filterTypes/v1/"
            elementFormDefault="qualified">
 
@@ -77,6 +77,19 @@
             <xs:extension base="tns:Base">
                 <xs:sequence>
                     <xs:element name="createOrEditOrder" type="tns:CreateOrEditOrderDataType"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="EditEvaluationType">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода editEvaluation</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="tns:Base">
+                <xs:sequence>
+                    <xs:element name="evaluation" type="xs:int"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>

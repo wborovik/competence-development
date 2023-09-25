@@ -10,6 +10,8 @@ import org.hibernate.annotations.TypeDef;
 import ru.axbit.domain.domain.cls.ClsOrderCategory;
 import ru.axbit.domain.domain.cls.ClsOrderStatus;
 import ru.axbit.domain.domain.common.AuditEntity;
+import ru.axbit.domain.domain.transaction.Bill;
+import ru.axbit.domain.domain.transaction.Payment;
 import ru.axbit.domain.domain.user.Customer;
 import ru.axbit.domain.domain.user.Executor;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -17,6 +19,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  * Класс, описывающий заказ.
@@ -62,4 +65,16 @@ public class WorkOrder extends AuditEntity {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     private ClsOrderStatus status;
+
+    /**
+     * Счет на оплату заказа.
+     */
+    @OneToOne(mappedBy = "workOrder")
+    private Bill bill;
+
+    /**
+     * Оплата заказа.
+     */
+    @OneToOne(mappedBy = "workOrder")
+    private Payment payment;
 }

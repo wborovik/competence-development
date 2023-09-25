@@ -3,6 +3,7 @@ package ru.axbit.service.service.soap;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.axbit.service.service.CustomerService;
+import ru.axbit.service.service.EvaluationService;
 import ru.axbit.service.service.ExecutorService;
 import ru.axbit.service.service.WorkOrderService;
 import ru.axbit.service.util.CommonResultBuilder;
@@ -17,6 +18,7 @@ import ru.axbit.vborovik.competence.userservice.types.v1.DeleteCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.DeleteExecutorRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.DeleteOrderRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.EditCustomerRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.EditEvaluationRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.EditExecutorRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.EditOrderRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListRequest;
@@ -36,6 +38,7 @@ public class UserServiceSoap implements UserServicePortType {
     private final CustomerService customerService;
     private final ExecutorService executorService;
     private final WorkOrderService orderService;
+    private final EvaluationService evaluationService;
 
     @Override
     public DefaultResponse deleteOrder(DeleteOrderRequest body) {
@@ -100,6 +103,11 @@ public class UserServiceSoap implements UserServicePortType {
     @Override
     public DefaultResponse editExecutor(EditExecutorRequest body) {
         return CommonResultBuilder.buildResponse(executorService::editExecutor, body);
+    }
+
+    @Override
+    public DefaultResponse editEvaluation(EditEvaluationRequest body) {
+        return CommonResultBuilder.buildResponse(evaluationService::editEvaluation, body);
     }
 
     @Override
