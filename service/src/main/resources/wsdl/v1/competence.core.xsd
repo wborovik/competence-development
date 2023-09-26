@@ -62,8 +62,27 @@
     <xs:complexType name="OrderPageItemType">
         <xs:sequence>
             <xs:element name="orderId" type="xs:long"/>
+            <xs:element name="title" type="xs:string" minOccurs="0"/>
             <xs:element name="customer" type="CustomerPageItemType" minOccurs="0"/>
             <xs:element name="executor" type="ExecutorPageItemType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="BillPageType">
+        <xs:complexContent>
+            <xs:extension base="PagingResults">
+                <xs:sequence>
+                    <xs:element name="billItem" type="BillPageItemType" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="BillPageItemType">
+        <xs:sequence>
+            <xs:element name="billId" type="xs:long" minOccurs="0"/>
+            <xs:element name="order" type="OrderPageItemType" minOccurs="0"/>
+            <xs:element name="price" type="xs:decimal" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 

@@ -43,6 +43,18 @@
         </xs:sequence>
     </xs:complexType>
 
+    <xs:complexType name="GetBillListFilterType">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода getBillList</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="billId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="orderId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="customerId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="executorId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
     <xs:complexType name="EditCustomerType">
         <xs:annotation>
             <xs:documentation>Входные параметры метода editCustomer</xs:documentation>

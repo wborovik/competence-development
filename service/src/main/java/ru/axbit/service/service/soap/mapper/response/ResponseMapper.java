@@ -4,9 +4,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.axbit.domain.domain.common.UserData;
 import ru.axbit.domain.domain.order.WorkOrder;
+import ru.axbit.domain.domain.transaction.Bill;
 import ru.axbit.domain.domain.user.Customer;
 import ru.axbit.domain.domain.user.Executor;
 import ru.axbit.service.util.ValidationUtils;
+import ru.axbit.vborovik.competence.core.v1.BillPageItemType;
+import ru.axbit.vborovik.competence.core.v1.BillPageType;
 import ru.axbit.vborovik.competence.core.v1.CustomerPageItemType;
 import ru.axbit.vborovik.competence.core.v1.CustomerPageType;
 import ru.axbit.vborovik.competence.core.v1.ExecutorPageItemType;
@@ -16,6 +19,7 @@ import ru.axbit.vborovik.competence.core.v1.OrderPageType;
 import ru.axbit.vborovik.competence.core.v1.Result;
 import ru.axbit.vborovik.competence.core.v1.UserDataPageType;
 import ru.axbit.vborovik.competence.userservice.types.v1.DefaultResponse;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetBillListResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetOrderListResponse;
@@ -29,6 +33,49 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class ResponseMapper {
+    /**
+     * Метод, преобразующий страницы {@link org.springframework.data.domain.Page}
+     * счетов на оплату {@link Bill} в выходной SOAP тип.
+     *
+     * @param billPojo принимает класс, содержащий страницы Page заказчика Customer {@link BillListPojo}.
+     * @return возвращает {@link GetBillListResponse} выходной SOAP тип.
+     */
+    public static GetBillListResponse mapGetBillResponse(BillListPojo billPojo) {
+        var response = new GetBillListResponse();
+        if (Objects.isNull(billPojo)) {
+            return response;
+        }
+        var billPageType = CommonMapper.mapPagingResults(BillPageType.class, billPojo.getBills());
+        response.setResult(billPageType);
+        var bills = billPojo.getBills();
+        ValidationUtils.checkIsEmptyPage(bills, Bill.class.getSimpleName());
+        var pageType = response.getResult();
+        var resultList = pageType.getBillItem();
+        bills.forEach(bill -> {
+            var result = mapBillPageItemType(bill);
+            resultList.add(result);
+        });
+        return response;
+    }
+
+    /**
+     * Метод преобразующий счет на оплату {@link Bill} к SOAP типу {@link BillPageItemType},
+     * содержащему его идентификатор данные.
+     *
+     * @param bill Счет на оплату {@link Bill}.
+     * @return Возвращает {@link BillPageItemType} тип, содержащий id и данные счета на оплату.
+     */
+    public static BillPageItemType mapBillPageItemType(Bill bill) {
+        var result = new BillPageItemType();
+        if (Objects.isNull(bill)) {
+            return result;
+        }
+        result.setBillId(bill.getId());
+        result.setOrder(mapOrderPageItemType(bill.getWorkOrder()));
+        result.setPrice(bill.getPrice());
+        return result;
+    }
+
     /**
      * Метод, преобразующий страницы {@link org.springframework.data.domain.Page}
      * заказчика {@link Customer} в выходной SOAP тип.
@@ -180,6 +227,8 @@ public class ResponseMapper {
         result.setOrderId(workOrder.getId());
         result.setCustomer(mapCustomerPageItemType(workOrder.getCustomer()));
         result.setExecutor(mapExecutorPageItemType(workOrder.getExecutor()));
+        Optional.ofNullable(workOrder.getTitle()).ifPresent(result::setTitle);
+
         return result;
     }
 
