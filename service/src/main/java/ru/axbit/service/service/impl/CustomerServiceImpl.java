@@ -15,6 +15,7 @@ import ru.axbit.service.service.soap.mapper.response.CustomerListPojo;
 import ru.axbit.service.service.soap.mapper.response.ResponseMapper;
 import ru.axbit.service.service.soap.spec.CustomerSpecification;
 import ru.axbit.service.util.PagingUtils;
+import ru.axbit.service.util.TableNameConst;
 import ru.axbit.service.util.ValidationUtils;
 import ru.axbit.vborovik.competence.core.v1.PagingOptions;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetCustomerListFilterType;
@@ -36,8 +37,6 @@ import java.util.Objects;
 @AllArgsConstructor
 public class CustomerServiceImpl extends AbstractCommonService implements CustomerService {
     private final CustomerRepository customerRepository;
-
-    private static final String CUSTOMER_TABLE_NAME = Customer.class.getSimpleName();
 
     @Override
     public GetCustomerListResponse getCustomerList(GetCustomerListRequest body) {
@@ -77,8 +76,8 @@ public class CustomerServiceImpl extends AbstractCommonService implements Custom
     public DefaultResponse editCustomer(EditCustomerRequest body) {
         var editCustomerReq = body.getEditCustomer();
         var customerId = editCustomerReq.getId();
-        var customer = findEntityById(customerId, customerRepository, CUSTOMER_TABLE_NAME);
-        ValidationUtils.checkIsDeleted(customer, customerId, CUSTOMER_TABLE_NAME);
+        var customer = findEntityById(customerId, customerRepository, TableNameConst.CUSTOMER_TABLE_NAME);
+        ValidationUtils.checkIsDeleted(customer, customerId, TableNameConst.CUSTOMER_TABLE_NAME);
         setUserData(customer, customerRepository, editCustomerReq.getUserData());
 
         return ResponseMapper.mapDefaultResponse(true);
@@ -109,8 +108,8 @@ public class CustomerServiceImpl extends AbstractCommonService implements Custom
     public DefaultResponse deleteCustomer(DeleteCustomerRequest body) {
         var deleteCustomerReq = body.getDeleteCustomer();
         var customerId = deleteCustomerReq.getId();
-        var customer = findEntityById(customerId, customerRepository, CUSTOMER_TABLE_NAME);
-        deleteEntity(customer, customerId, CUSTOMER_TABLE_NAME);
+        var customer = findEntityById(customerId, customerRepository, TableNameConst.CUSTOMER_TABLE_NAME);
+        deleteEntity(customer, customerId, TableNameConst.CUSTOMER_TABLE_NAME);
 
         return ResponseMapper.mapDefaultResponse(true);
     }
@@ -125,8 +124,8 @@ public class CustomerServiceImpl extends AbstractCommonService implements Custom
     public DefaultResponse activateCustomer(ActivateCustomerRequest body) {
         var activateCustomerReq = body.getActivateCustomer();
         var customerId = activateCustomerReq.getId();
-        var customer = findEntityById(customerId, customerRepository, CUSTOMER_TABLE_NAME);
-        activateEntity(customer, customerId, CUSTOMER_TABLE_NAME);
+        var customer = findEntityById(customerId, customerRepository, TableNameConst.CUSTOMER_TABLE_NAME);
+        activateEntity(customer, customerId, TableNameConst.CUSTOMER_TABLE_NAME);
 
         return ResponseMapper.mapDefaultResponse(true);
     }

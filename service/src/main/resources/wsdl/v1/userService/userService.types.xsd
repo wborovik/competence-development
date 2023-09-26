@@ -263,7 +263,7 @@
         </xs:complexType>
     </xs:element>
 
-    <!-- Метод edit Evaluation-->
+    <!-- Метод editEvaluation-->
     <xs:element name="editEvaluationRequest">
         <xs:annotation>
             <xs:documentation>Входные параметры метода editEvaluation</xs:documentation>
@@ -271,6 +271,18 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="editEvaluation" type="filter:EditEvaluationType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Метод makeOrderPayment-->
+    <xs:element name="makeOrderPaymentRequest">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода makeOrderPayment</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="makeOrderPayment" type="filter:MakeOrderPaymentType"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

@@ -158,11 +158,20 @@
 
     <xs:complexType name="CreateBillDataType">
         <xs:annotation>
-            <xs:documentation>Данные, которые передаются в параметрах методов createBill</xs:documentation>
+            <xs:documentation>Данные, которые передаются в параметрах метода createBill</xs:documentation>
         </xs:annotation>
         <xs:sequence>
             <xs:element name="orderId" type="xs:long"/>
             <xs:element name="price" type="xs:decimal"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="MakeOrderPaymentType">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода makeOrderPayment</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="orderId" type="xs:long"/>
         </xs:sequence>
     </xs:complexType>
 

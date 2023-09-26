@@ -4,11 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import ru.axbit.domain.domain.cls.ClsOrderCategory;
 import ru.axbit.domain.domain.common.AbstractEntity;
 import ru.axbit.domain.domain.order.WorkOrder;
-import ru.axbit.domain.domain.user.Customer;
-import ru.axbit.domain.domain.user.Executor;
 import ru.axbit.domain.repository.ClsOrderCategoryRepository;
 import ru.axbit.domain.repository.CustomerRepository;
 import ru.axbit.domain.repository.ExecutorRepository;
@@ -21,6 +18,7 @@ import ru.axbit.service.service.soap.mapper.response.OrderListPojo;
 import ru.axbit.service.service.soap.mapper.response.ResponseMapper;
 import ru.axbit.service.service.soap.spec.OrderSpecification;
 import ru.axbit.service.util.PagingUtils;
+import ru.axbit.service.util.TableNameConst;
 import ru.axbit.service.util.ValidationUtils;
 import ru.axbit.vborovik.competence.core.v1.PagingOptions;
 import ru.axbit.vborovik.competence.filtertypes.v1.CreateOrEditOrderDataType;
@@ -44,16 +42,12 @@ import java.util.Optional;
 @Transactional
 @AllArgsConstructor
 public class WorkOrderServiceImpl extends AbstractCommonService implements WorkOrderService {
+
     private final WorkOrderRepository orderRepository;
     private final CustomerRepository customerRepository;
     private final ExecutorRepository executorRepository;
     private final ClsOrderCategoryRepository categoryRepository;
     private final JsonMappingService jsonMappingService;
-
-    private static final String ORDER_TABLE_NAME = WorkOrder.class.getSimpleName();
-    private static final String CUSTOMER_TABLE_NAME = Customer.class.getSimpleName();
-    private static final String EXECUTOR_TABLE_NAME = Executor.class.getSimpleName();
-    private static final String CATEGORY_TABLE_NAME = ClsOrderCategory.class.getSimpleName();
 
     @Override
     public GetOrderListResponse getOrderList(GetOrderListRequest body) {
@@ -94,8 +88,8 @@ public class WorkOrderServiceImpl extends AbstractCommonService implements WorkO
     public DefaultResponse editOrder(EditOrderRequest body) {
         var editOrderReq = body.getEditOrder();
         var orderId = editOrderReq.getId();
-        var order = findEntityById(orderId, orderRepository, ORDER_TABLE_NAME);
-        ValidationUtils.checkIsDeleted(order, orderId, ORDER_TABLE_NAME);
+        var order = findEntityById(orderId, orderRepository, TableNameConst.ORDER_TABLE_NAME);
+        ValidationUtils.checkIsDeleted(order, orderId, TableNameConst.ORDER_TABLE_NAME);
         createOrEditOrderDataType(order, editOrderReq.getCreateOrEditOrder());
 
         return ResponseMapper.mapDefaultResponse(true);
@@ -120,8 +114,8 @@ public class WorkOrderServiceImpl extends AbstractCommonService implements WorkO
     public DefaultResponse deleteOrder(DeleteOrderRequest body) {
         var deleteOrderReq = body.getDeleteOrder();
         var orderId = deleteOrderReq.getId();
-        var order = findEntityById(orderId, orderRepository, ORDER_TABLE_NAME);
-        deleteEntity(order, orderId, ORDER_TABLE_NAME);
+        var order = findEntityById(orderId, orderRepository, TableNameConst.ORDER_TABLE_NAME);
+        deleteEntity(order, orderId, TableNameConst.ORDER_TABLE_NAME);
 
         return ResponseMapper.mapDefaultResponse(true);
     }
@@ -136,8 +130,8 @@ public class WorkOrderServiceImpl extends AbstractCommonService implements WorkO
     public DefaultResponse activateOrder(ActivateOrderRequest body) {
         var activateOrderReq = body.getActivateOrder();
         var orderId = activateOrderReq.getId();
-        var order = findEntityById(orderId, orderRepository, ORDER_TABLE_NAME);
-        activateEntity(order, orderId, ORDER_TABLE_NAME);
+        var order = findEntityById(orderId, orderRepository, TableNameConst.ORDER_TABLE_NAME);
+        activateEntity(order, orderId, TableNameConst.ORDER_TABLE_NAME);
 
         return ResponseMapper.mapDefaultResponse(true);
     }
@@ -152,20 +146,20 @@ public class WorkOrderServiceImpl extends AbstractCommonService implements WorkO
         Optional.ofNullable(createOrEditOrderDataType.getTitle()).ifPresent(order::setTitle);
         var customerId = createOrEditOrderDataType.getCustomerId();
         if (Objects.nonNull(customerId)) {
-            var customer = findEntityById(customerId, customerRepository, CUSTOMER_TABLE_NAME);
-            ValidationUtils.checkIsDeleted(customer, customerId, CUSTOMER_TABLE_NAME);
+            var customer = findEntityById(customerId, customerRepository, TableNameConst.CUSTOMER_TABLE_NAME);
+            ValidationUtils.checkIsDeleted(customer, customerId, TableNameConst.CUSTOMER_TABLE_NAME);
             order.setCustomer(customer);
         }
         var executorId = createOrEditOrderDataType.getExecutorId();
         if (Objects.nonNull(executorId)) {
-            var executor = findEntityById(executorId, executorRepository, EXECUTOR_TABLE_NAME);
-            ValidationUtils.checkIsDeleted(executor, executorId, EXECUTOR_TABLE_NAME);
+            var executor = findEntityById(executorId, executorRepository, TableNameConst.EXECUTOR_TABLE_NAME);
+            ValidationUtils.checkIsDeleted(executor, executorId, TableNameConst.EXECUTOR_TABLE_NAME);
             order.setExecutor(executor);
         }
         var categoryId = createOrEditOrderDataType.getCategoryId();
         if (Objects.nonNull(categoryId)) {
-            var category = findEntityById(categoryId, categoryRepository, CATEGORY_TABLE_NAME);
-            ValidationUtils.checkIsDeleted(category, categoryId, CATEGORY_TABLE_NAME);
+            var category = findEntityById(categoryId, categoryRepository, TableNameConst.CATEGORY_TABLE_NAME);
+            ValidationUtils.checkIsDeleted(category, categoryId, TableNameConst.CATEGORY_TABLE_NAME);
             order.setCategory(category);
         }
         Optional.ofNullable(createOrEditOrderDataType.getOrderData()).ifPresent(orderData
