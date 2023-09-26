@@ -23,6 +23,8 @@ import ru.axbit.vborovik.competence.userservice.types.v1.EditCustomerRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.EditEvaluationRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.EditExecutorRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.EditOrderRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetBillListRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetBillListResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListRequest;
@@ -101,6 +103,11 @@ public class UserServiceSoap implements UserServicePortType {
     @Override
     public DefaultResponse activateOrder(ActivateOrderRequest body) {
         return CommonResultBuilder.buildResponse(orderService::activateOrder, body);
+    }
+
+    @Override
+    public GetBillListResponse getBillList(GetBillListRequest body) {
+        return CommonResultBuilder.buildResponse(billService::getBillList, body);
     }
 
     @Override

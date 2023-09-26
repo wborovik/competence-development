@@ -38,6 +38,10 @@
         <wsdl:part name="body" element="ns:getOrderListRequest"/>
     </wsdl:message>
 
+    <wsdl:message name="getBillListInput">
+        <wsdl:part name="body" element="ns:getBillListRequest"/>
+    </wsdl:message>
+
     <wsdl:message name="editCustomerInput">
         <wsdl:part name="body" element="ns:editCustomerRequest"/>
     </wsdl:message>
@@ -105,6 +109,10 @@
 
     <wsdl:message name="getOrderListOutput">
         <wsdl:part name="body" element="ns:getOrderListResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="getBillListOutput">
+        <wsdl:part name="body" element="ns:getBillListResponse"/>
     </wsdl:message>
 
     <wsdl:message name="editCustomerOutput">
@@ -183,6 +191,13 @@
             <wsdl:documentation>Метод, который возвращает список заказов Order</wsdl:documentation>
             <wsdl:input message="tns:getOrderListInput"/>
             <wsdl:output message="tns:getOrderListOutput"/>
+            <wsdl:fault name="fault" message="tns:fault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getBillList">
+            <wsdl:documentation>Метод, который возвращает список счетов на оплату Bill</wsdl:documentation>
+            <wsdl:input message="tns:getBillListInput"/>
+            <wsdl:output message="tns:getBillListOutput"/>
             <wsdl:fault name="fault" message="tns:fault"/>
         </wsdl:operation>
 
@@ -316,6 +331,19 @@
 
         <wsdl:operation name="getOrderList">
             <soap:operation soapAction="getOrderList" soapActionRequired="true"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="fault">
+                <soap:fault name="fault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getBillList">
+            <soap:operation soapAction="getBillList" soapActionRequired="true"/>
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>

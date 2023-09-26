@@ -1,8 +1,10 @@
 package ru.axbit.service.service.soap.mapper.request;
 
+import ru.axbit.service.service.soap.dto.BillCriteriaDTO;
 import ru.axbit.service.service.soap.dto.CustomerCriteriaDTO;
 import ru.axbit.service.service.soap.dto.ExecutorCriteriaDTO;
 import ru.axbit.service.service.soap.dto.OrderCriteriaDTO;
+import ru.axbit.vborovik.competence.filtertypes.v1.GetBillListFilterType;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetCustomerListFilterType;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetExecutorListFilterType;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetOrderListFilterType;
@@ -70,6 +72,24 @@ public class CommonMapperDTO {
                         .map(KeyValuePair::getValue)
                         .filter(orgData -> !orgData.isBlank())
                         .orElse(null))
+                .isDeleted(false)
+                .build();
+    }
+
+    /**
+     * Метод, преобразующий входные данные SOAP типа {@link GetBillListFilterType}
+     * к DTO типу счета на оплату {@link BillCriteriaDTO}.
+     *
+     * @param filter Принимает SOAP тип {@link GetBillListFilterType}, содержащий переданные данные.
+     * @return Возвращает {@link BillCriteriaDTO} заказа {@link ru.axbit.domain.domain.transaction.Bill},
+     */
+    public static BillCriteriaDTO mapBillDTO(GetBillListFilterType filter) {
+        BillCriteriaDTO.BillCriteriaDTOBuilder builder = BillCriteriaDTO.builder();
+        return builder
+                .billId(filter.getBillId())
+                .orderId(filter.getOrderId())
+                .customerId(filter.getCustomerId())
+                .executorId(filter.getExecutorId())
                 .isDeleted(false)
                 .build();
     }
