@@ -1,8 +1,11 @@
 package ru.axbit.service.service.impl;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.axbit.domain.domain.common.AbstractEntity;
 import ru.axbit.domain.domain.order.WorkOrder;
 import ru.axbit.domain.domain.transaction.Bill;
 import ru.axbit.domain.repository.BillRepository;
@@ -11,15 +14,23 @@ import ru.axbit.service.exception.BusinessException;
 import ru.axbit.service.exception.BusinessExceptionEnum;
 import ru.axbit.service.service.BillService;
 import ru.axbit.service.service.common.AbstractCommonService;
+import ru.axbit.service.service.soap.mapper.request.CommonMapperDTO;
+import ru.axbit.service.service.soap.mapper.response.BillListPojo;
 import ru.axbit.service.service.soap.mapper.response.ResponseMapper;
+import ru.axbit.service.service.soap.spec.BillSpecification;
+import ru.axbit.service.util.PagingUtils;
+import ru.axbit.vborovik.competence.core.v1.PagingOptions;
+import ru.axbit.vborovik.competence.filtertypes.v1.GetBillListFilterType;
 import ru.axbit.vborovik.competence.userservice.types.v1.CreateBillRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.DefaultResponse;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetBillListRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetBillListResponse;
 
 import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Реализация основных CRUD методов сущности счета на оплату {@link ru.axbit.domain.domain.transaction.Bill}.
+ * Реализация основных CRUD методов сущности счета на оплату {@link Bill}.
  */
 @Service
 @Transactional
@@ -30,6 +41,34 @@ public class BillServiceImpl extends AbstractCommonService implements BillServic
     private final WorkOrderRepository orderRepository;
 
     private static final String ORDER_TABLE_NAME = WorkOrder.class.getSimpleName();
+
+    @Override
+    public GetBillListResponse getBillList(GetBillListRequest body) {
+        var billPojo = getBillList(body.getFilter(), body.getPagingOptions());
+
+        return ResponseMapper.mapGetBillResponse(billPojo);
+    }
+
+    /**
+     * Метод для получения списка счетов на оплату {@link Bill}.
+     *
+     * @param filter        принимает тип {@link GetBillListFilterType}, содержащий критерии поиска.
+     * @param pagingOptions принимает тип {@link PagingOptions}, содержащий условия сортировки страниц.
+     * @return возвращает {@link BillListPojo}, который содержит страницы счетов на оплату, полученных из БД.
+     */
+    public BillListPojo getBillList(GetBillListFilterType filter, PagingOptions pagingOptions) {
+        if (Objects.isNull(filter)) {
+            return null;
+        }
+        var pageRequest = PagingUtils.getPageRequest(pagingOptions);
+        var sorting = PagingUtils.getSortOptions(pagingOptions, AbstractEntity.Fields.id);
+        var criteriaDTO = CommonMapperDTO.mapBillDTO(filter);
+        Specification<Bill> specification = BillSpecification.create(criteriaDTO, sorting);
+        Page<Bill> bills = billRepository.findAll(specification, pageRequest);
+        return BillListPojo.builder()
+                .bills(bills)
+                .build();
+    }
 
     /**
      * Метод для создания счета на оплату {@link Bill}.

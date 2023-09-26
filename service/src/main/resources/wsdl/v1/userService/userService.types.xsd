@@ -83,6 +83,30 @@
         </xs:complexType>
     </xs:element>
 
+    <!--    Метод getBillList-->
+    <xs:element name="getBillListRequest">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода getBillList</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="filter" type="filter:GetBillListFilterType" minOccurs="0"/>
+                <xs:element name="pagingOptions" type="core:PagingOptions" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getBillListResponse">
+        <xs:annotation>
+            <xs:documentation>Выходные параметры метода getBillList</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="result" type="core:BillPageType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
     <!--    Метод editCustomer-->
     <xs:element name="editCustomerRequest">
         <xs:annotation>
