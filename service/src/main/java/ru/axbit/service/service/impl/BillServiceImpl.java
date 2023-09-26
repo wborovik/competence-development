@@ -6,7 +6,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.axbit.domain.domain.common.AbstractEntity;
-import ru.axbit.domain.domain.order.WorkOrder;
 import ru.axbit.domain.domain.transaction.Bill;
 import ru.axbit.domain.repository.BillRepository;
 import ru.axbit.domain.repository.WorkOrderRepository;
@@ -19,6 +18,7 @@ import ru.axbit.service.service.soap.mapper.response.BillListPojo;
 import ru.axbit.service.service.soap.mapper.response.ResponseMapper;
 import ru.axbit.service.service.soap.spec.BillSpecification;
 import ru.axbit.service.util.PagingUtils;
+import ru.axbit.service.util.TableNameConst;
 import ru.axbit.vborovik.competence.core.v1.PagingOptions;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetBillListFilterType;
 import ru.axbit.vborovik.competence.userservice.types.v1.CreateBillRequest;
@@ -39,8 +39,6 @@ public class BillServiceImpl extends AbstractCommonService implements BillServic
 
     private final BillRepository billRepository;
     private final WorkOrderRepository orderRepository;
-
-    private static final String ORDER_TABLE_NAME = WorkOrder.class.getSimpleName();
 
     @Override
     public GetBillListResponse getBillList(GetBillListRequest body) {
@@ -81,9 +79,9 @@ public class BillServiceImpl extends AbstractCommonService implements BillServic
     public DefaultResponse createBill(CreateBillRequest body) {
         var createBillReq = body.getCreateBill();
         var billData = createBillReq.getCreateBill();
-        var order = findEntityById(billData.getOrderId(), orderRepository, ORDER_TABLE_NAME);
-        checkIfExistsBill(order);
+        var order = findEntityById(billData.getOrderId(), orderRepository, TableNameConst.ORDER_TABLE_NAME);
         var bill = order.getBill();
+        checkIfExistsBill(bill, order.getId());
         if (Objects.isNull(bill)) {
             bill = new Bill();
         }
@@ -99,12 +97,15 @@ public class BillServiceImpl extends AbstractCommonService implements BillServic
      * Вспомогательный метод, который проверяет наличие счета на оплату для заказа.
      * Если счет существует и его статус активный, будет выброшено соответствующее исключение.
      *
-     * @param order передается заказ {@link WorkOrder}.
+     * @param bill    передается заказ {@link ru.axbit.domain.domain.order.WorkOrder}.
+     * @param orderId передается идентификатор заказа {@link ru.axbit.domain.domain.order.WorkOrder}.
      */
-    private void checkIfExistsBill(WorkOrder order) {
-        var bill = order.getBill();
+    private void checkIfExistsBill(Bill bill, Long orderId) {
         if (Objects.nonNull(bill) && bill.nonDeleted()) {
-            throw new BusinessException(BusinessExceptionEnum.E006, order.getId());
+            throw new BusinessException(BusinessExceptionEnum.E006, orderId);
+        }
+        if (bill.isPayment()) {
+            throw new BusinessException(BusinessExceptionEnum.E008, bill.getId(), orderId);
         }
     }
 }

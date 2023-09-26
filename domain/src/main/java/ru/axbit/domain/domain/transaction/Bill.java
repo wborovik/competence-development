@@ -8,6 +8,7 @@ import ru.axbit.domain.domain.order.WorkOrder;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**
@@ -28,4 +29,10 @@ public class Bill extends AuditEntity {
      * Стоимость выполнения заказа.
      */
     private BigDecimal price;
+
+    /**
+     * Статус оплаты заказа.
+     */
+    @NotNull
+    private boolean isPayment;
 }

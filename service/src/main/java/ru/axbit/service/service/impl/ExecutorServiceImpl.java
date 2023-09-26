@@ -15,6 +15,7 @@ import ru.axbit.service.service.soap.mapper.response.ExecutorListPojo;
 import ru.axbit.service.service.soap.mapper.response.ResponseMapper;
 import ru.axbit.service.service.soap.spec.ExecutorSpecification;
 import ru.axbit.service.util.PagingUtils;
+import ru.axbit.service.util.TableNameConst;
 import ru.axbit.service.util.ValidationUtils;
 import ru.axbit.vborovik.competence.core.v1.PagingOptions;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetExecutorListFilterType;
@@ -36,9 +37,9 @@ import java.util.Objects;
 @Transactional
 @AllArgsConstructor
 public class ExecutorServiceImpl extends AbstractCommonService implements ExecutorService {
+
     private final ExecutorRepository executorRepository;
     private final EvaluationService evaluationService;
-    private static final String EXECUTOR_TABLE_NAME = Executor.class.getSimpleName();
 
     @Override
     public GetExecutorListResponse getExecutorList(GetExecutorListRequest body) {
@@ -79,8 +80,8 @@ public class ExecutorServiceImpl extends AbstractCommonService implements Execut
     public DefaultResponse editExecutor(EditExecutorRequest body) {
         var editExecutorReq = body.getEditExecutor();
         var executorId = editExecutorReq.getId();
-        var executor = findEntityById(executorId, executorRepository, EXECUTOR_TABLE_NAME);
-        ValidationUtils.checkIsDeleted(executor, executorId, EXECUTOR_TABLE_NAME);
+        var executor = findEntityById(executorId, executorRepository, TableNameConst.EXECUTOR_TABLE_NAME);
+        ValidationUtils.checkIsDeleted(executor, executorId, TableNameConst.EXECUTOR_TABLE_NAME);
         setUserData(executor, executorRepository, editExecutorReq.getUserData());
 
         return ResponseMapper.mapDefaultResponse(true);
@@ -112,8 +113,8 @@ public class ExecutorServiceImpl extends AbstractCommonService implements Execut
     public DefaultResponse deleteExecutor(DeleteExecutorRequest body) {
         var deleteExecutorReq = body.getDeleteExecutor();
         var executorId = deleteExecutorReq.getId();
-        var executor = findEntityById(executorId, executorRepository, EXECUTOR_TABLE_NAME);
-        deleteEntity(executor, executorId, EXECUTOR_TABLE_NAME);
+        var executor = findEntityById(executorId, executorRepository, TableNameConst.EXECUTOR_TABLE_NAME);
+        deleteEntity(executor, executorId, TableNameConst.EXECUTOR_TABLE_NAME);
 
         return ResponseMapper.mapDefaultResponse(true);
     }
@@ -128,8 +129,8 @@ public class ExecutorServiceImpl extends AbstractCommonService implements Execut
     public DefaultResponse activateExecutor(ActivateExecutorRequest body) {
         var activateExecutorReq = body.getActivateExecutor();
         var executorId = activateExecutorReq.getId();
-        var executor = findEntityById(executorId, executorRepository, EXECUTOR_TABLE_NAME);
-        activateEntity(executor, executorId, EXECUTOR_TABLE_NAME);
+        var executor = findEntityById(executorId, executorRepository, TableNameConst.EXECUTOR_TABLE_NAME);
+        activateEntity(executor, executorId, TableNameConst.EXECUTOR_TABLE_NAME);
 
         return ResponseMapper.mapDefaultResponse(true);
     }

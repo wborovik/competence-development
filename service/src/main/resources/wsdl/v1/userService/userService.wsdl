@@ -98,6 +98,10 @@
         <wsdl:part name="body" element="ns:activateOrderRequest"/>
     </wsdl:message>
 
+    <wsdl:message name="makeOrderPaymentInput">
+        <wsdl:part name="body" element="ns:makeOrderPaymentRequest"/>
+    </wsdl:message>
+
     <!--    Output msg-->
     <wsdl:message name="getCustomerListOutput">
         <wsdl:part name="body" element="ns:getCustomerListResponse"/>
@@ -168,6 +172,10 @@
     </wsdl:message>
 
     <wsdl:message name="editEvaluationOutput">
+        <wsdl:part name="body" element="ns:defaultResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="makeOrderPaymentOutput">
         <wsdl:part name="body" element="ns:defaultResponse"/>
     </wsdl:message>
 
@@ -296,6 +304,13 @@
             <wsdl:documentation>Метод для активации удаленного заказа Order</wsdl:documentation>
             <wsdl:input message="tns:activateOrderInput"/>
             <wsdl:output message="tns:activateOrderOutput"/>
+            <wsdl:fault name="fault" message="tns:fault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="makeOrderPayment">
+            <wsdl:documentation>Метод для оплаты счета заказа Order</wsdl:documentation>
+            <wsdl:input message="tns:makeOrderPaymentInput"/>
+            <wsdl:output message="tns:makeOrderPaymentOutput"/>
             <wsdl:fault name="fault" message="tns:fault"/>
         </wsdl:operation>
     </wsdl:portType>
@@ -526,6 +541,19 @@
 
         <wsdl:operation name="activateOrder">
             <soap:operation soapAction="activateOrder" soapActionRequired="true"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="fault">
+                <soap:fault name="fault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="makeOrderPayment">
+            <soap:operation soapAction="makeOrderPayment" soapActionRequired="true"/>
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>

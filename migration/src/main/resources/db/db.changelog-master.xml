@@ -67,4 +67,7 @@
     <!-- Создание таблицы bill:-->
     <include file="changelog/21_create_table_bill.xml" relativeToChangelogFile="true"/>
 
+    <!-- Добавление в таблицу bill столбец isPayment:-->
+    <include file="changelog/22_alter_table_bill.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>
