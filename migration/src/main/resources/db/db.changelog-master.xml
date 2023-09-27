@@ -70,4 +70,13 @@
     <!-- Добавление в таблицу bill столбец isPayment:-->
     <include file="changelog/22_alter_table_bill.xml" relativeToChangelogFile="true"/>
 
+    <!-- Добавление таблицы executor_category:-->
+    <include file="changelog/23_create_table_executor_category.xml" relativeToChangelogFile="true"/>
+
+    <!-- Добавление данных в таблицу executor_category:-->
+    <include file="changelog/24_insert_table_executor.xml" relativeToChangelogFile="true"/>
+
+    <!-- Изменение данных в таблице cls_order_category:-->
+    <include file="changelog/25_update_table_cls_order_category.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>

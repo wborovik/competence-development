@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.axbit.domain.domain.common.AbstractEntity;
 import ru.axbit.domain.domain.user.Executor;
+import ru.axbit.domain.repository.ClsOrderCategoryRepository;
 import ru.axbit.domain.repository.ExecutorRepository;
 import ru.axbit.service.service.EvaluationService;
 import ru.axbit.service.service.ExecutorService;
@@ -18,6 +19,7 @@ import ru.axbit.service.util.PagingUtils;
 import ru.axbit.service.util.TableNameConst;
 import ru.axbit.service.util.ValidationUtils;
 import ru.axbit.vborovik.competence.core.v1.PagingOptions;
+import ru.axbit.vborovik.competence.filtertypes.v1.EditExecutorType;
 import ru.axbit.vborovik.competence.filtertypes.v1.GetExecutorListFilterType;
 import ru.axbit.vborovik.competence.userservice.types.v1.ActivateExecutorRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.CreateExecutorRequest;
@@ -28,6 +30,7 @@ import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListResponse;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -40,6 +43,7 @@ public class ExecutorServiceImpl extends AbstractCommonService implements Execut
 
     private final ExecutorRepository executorRepository;
     private final EvaluationService evaluationService;
+    private final ClsOrderCategoryRepository categoryRepository;
 
     @Override
     public GetExecutorListResponse getExecutorList(GetExecutorListRequest body) {
@@ -82,9 +86,41 @@ public class ExecutorServiceImpl extends AbstractCommonService implements Execut
         var executorId = editExecutorReq.getId();
         var executor = findEntityById(executorId, executorRepository, TableNameConst.EXECUTOR_TABLE_NAME);
         ValidationUtils.checkIsDeleted(executor, executorId, TableNameConst.EXECUTOR_TABLE_NAME);
+        addWorkCategories(executor, editExecutorReq);
+        deleteWorkCategory(executor, editExecutorReq);
         setUserData(executor, executorRepository, editExecutorReq.getUserData());
 
         return ResponseMapper.mapDefaultResponse(true);
+    }
+
+    /**
+     * Метод для добавления новых категорий работ {@link ru.axbit.domain.domain.cls.ClsOrderCategory}
+     * исполнителю {@link Executor}.
+     *
+     * @param executor         передается исполнитель {@link Executor}.
+     * @param editExecutorType передается SOAP тип, который содержит добавляемые категории работ.
+     */
+    private void addWorkCategories(Executor executor, EditExecutorType editExecutorType) {
+        var categories = executor.getWorkCategories();
+        var designations = new ArrayList<String>();
+        categories.forEach(category -> designations.add(category.getDesignation()));
+        var addCategories = editExecutorType.getAddWorkCategory();
+        addCategories.removeAll(designations);
+        var newCategories = categoryRepository.findAllByDesignationIn(addCategories);
+        categories.addAll(newCategories);
+    }
+
+    /**
+     * Метод для удаления категорий работ {@link ru.axbit.domain.domain.cls.ClsOrderCategory}
+     * для исполнителя {@link Executor}.
+     *
+     * @param executor         передается исполнитель {@link Executor}.
+     * @param editExecutorType передается SOAP тип, который содержит добавляемые категории работ.
+     */
+    private void deleteWorkCategory(Executor executor, EditExecutorType editExecutorType) {
+        var categories = executor.getWorkCategories();
+        var deleteCategories = editExecutorType.getDeleteWorkCategory();
+        categories.removeAll(categoryRepository.findAllByDesignationIn(deleteCategories));
     }
 
     /**
@@ -99,7 +135,11 @@ public class ExecutorServiceImpl extends AbstractCommonService implements Execut
         var executor = new Executor();
         var evaluation = evaluationService.createEvaluation();
         executor.setEvaluation(evaluation);
+        var addCategories = createExecutorReq.getWorkCategory();
+        var newCategories = categoryRepository.findAllByDesignationIn(addCategories);
+        executor.setWorkCategories(newCategories);
         setUserData(executor, executorRepository, createExecutorReq.getUserData());
+
         return ResponseMapper.mapDefaultResponse(true);
     }
 

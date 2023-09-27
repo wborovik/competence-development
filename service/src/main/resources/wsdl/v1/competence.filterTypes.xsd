@@ -76,6 +76,8 @@
             <xs:extension base="tns:Base">
                 <xs:sequence>
                     <xs:element name="userData" type="tns:CreateOrEditUserDataType"/>
+                    <xs:element name="addWorkCategory" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="deleteWorkCategory" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -122,6 +124,7 @@
         </xs:annotation>
         <xs:sequence>
             <xs:element name="userData" type="tns:CreateOrEditUserDataType"/>
+            <xs:element name="workCategory" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
 

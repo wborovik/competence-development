@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="23-01" author="vborovik">
+        <sql>
+            update cls_order_category
+            set designation = 'audio'
+            where designation = 'Audio';
+
+            update cls_order_category
+            set designation = 'text'
+            where designation = 'Text';
+
+            update cls_order_category
+            set designation = 'image'
+            where designation = 'Image';
+
+            update cls_order_category
+            set designation = 'video'
+            where designation = 'Video';
+
+            insert into cls_order_category(global_id, created, deleted, description, designation)
+            values (5, now(), false, 'Перевод текста', 'translation');
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
