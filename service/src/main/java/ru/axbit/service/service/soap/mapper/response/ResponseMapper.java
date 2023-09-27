@@ -165,6 +165,9 @@ public class ResponseMapper {
             evaluation = Math.ceil(evaluation * scale) / scale;
             result.setEvaluation(evaluation);
         });
+        var categoryResults = result.getWorkCategory();
+        var categories = executor.getWorkCategories();
+        categories.forEach(category -> categoryResults.add(category.getDesignation()));
         return result;
     }
 
