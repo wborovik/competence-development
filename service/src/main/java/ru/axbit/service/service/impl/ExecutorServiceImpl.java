@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.axbit.domain.domain.common.AbstractEntity;
 import ru.axbit.domain.domain.user.Executor;
 import ru.axbit.domain.repository.ClsOrderCategoryRepository;
+import ru.axbit.domain.repository.ClsWorkSpeedRepository;
 import ru.axbit.domain.repository.ExecutorRepository;
 import ru.axbit.service.service.EvaluationService;
 import ru.axbit.service.service.ExecutorService;
@@ -44,6 +45,7 @@ public class ExecutorServiceImpl extends AbstractCommonService implements Execut
     private final ExecutorRepository executorRepository;
     private final EvaluationService evaluationService;
     private final ClsOrderCategoryRepository categoryRepository;
+    private final ClsWorkSpeedRepository workSpeedRepository;
 
     @Override
     public GetExecutorListResponse getExecutorList(GetExecutorListRequest body) {
@@ -88,6 +90,7 @@ public class ExecutorServiceImpl extends AbstractCommonService implements Execut
         ValidationUtils.checkIsDeleted(executor, executorId, TableNameConst.EXECUTOR_TABLE_NAME);
         addWorkCategories(executor, editExecutorReq);
         deleteWorkCategory(executor, editExecutorReq);
+        editWorkSpeed(executor, editExecutorReq);
         setUserData(executor, executorRepository, editExecutorReq.getUserData());
 
         return ResponseMapper.mapDefaultResponse(true);
@@ -121,6 +124,19 @@ public class ExecutorServiceImpl extends AbstractCommonService implements Execut
         var categories = executor.getWorkCategories();
         var deleteCategories = editExecutorType.getDeleteWorkCategory();
         categories.removeAll(categoryRepository.findAllByDesignationIn(deleteCategories));
+    }
+
+    /**
+     * Метод для изменения характеристики {@link ru.axbit.domain.domain.cls.ClsWorkSpeed},
+     * указывающей на среднюю скорость выполнения работ исполнителем {@link Executor}.
+     *
+     * @param executor передается исполнитель {@link Executor}.
+     * @param editExecutorType передается SOAP тип, который содержит добавляемые категории работ.
+     */
+    private void editWorkSpeed(Executor executor, EditExecutorType editExecutorType) {
+        var speed = editExecutorType.getWorkSpeed();
+        var workSpeed = workSpeedRepository.findBySpeed(speed);
+        workSpeed.ifPresent(executor::setWorkSpeed);
     }
 
     /**

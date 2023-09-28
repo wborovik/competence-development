@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.BatchSize;
 import ru.axbit.domain.domain.cls.ClsOrderCategory;
+import ru.axbit.domain.domain.cls.ClsWorkSpeed;
 import ru.axbit.domain.domain.common.UserData;
 import ru.axbit.domain.domain.evaluation.Evaluation;
 import ru.axbit.domain.domain.order.WorkOrder;
@@ -48,4 +49,10 @@ public class Executor extends UserData {
             joinColumns = @JoinColumn(name = "executor_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<ClsOrderCategory> workCategories;
+
+    /**
+     * Характеристика скорости выполнения работ исполнителем.
+     */
+    @OneToOne
+    private ClsWorkSpeed workSpeed;
 }

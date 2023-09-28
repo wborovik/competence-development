@@ -79,4 +79,7 @@
     <!-- Изменение данных в таблице cls_order_category:-->
     <include file="changelog/25_update_table_cls_order_category.xml" relativeToChangelogFile="true"/>
 
+    <!-- Добавление таблицы cls_work_speed:-->
+    <include file="changelog/26_create_table_cls_work_speed.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>
