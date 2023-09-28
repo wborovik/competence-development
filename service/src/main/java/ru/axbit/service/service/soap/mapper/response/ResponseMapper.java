@@ -167,7 +167,10 @@ public class ResponseMapper {
         });
         var categoryResults = result.getWorkCategory();
         var categories = executor.getWorkCategories();
-        categories.forEach(category -> categoryResults.add(category.getDesignation()));
+        categories.forEach(category -> categoryResults.add(category.getDescription()));
+        Optional.ofNullable(executor.getWorkSpeed())
+                .ifPresent(speed -> result.setWorkSpeed(speed.getDescription()));
+
         return result;
     }
 

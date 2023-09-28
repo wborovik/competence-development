@@ -47,6 +47,7 @@
             <xs:element name="userData" type="UserDataPageType" minOccurs="0"/>
             <xs:element name="evaluation" type="xs:double"/>
             <xs:element name="workCategory" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="workSpeed" type="xs:string" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
