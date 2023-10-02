@@ -35,7 +35,7 @@
         <xs:complexContent>
             <xs:extension base="PagingResults">
                 <xs:sequence>
-                    <xs:element name="customerItem" type="ExecutorPageItemType" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="executorItem" type="ExecutorPageItemType" minOccurs="0" maxOccurs="unbounded"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -46,7 +46,7 @@
             <xs:element name="executorId" type="xs:long"/>
             <xs:element name="userData" type="UserDataPageType" minOccurs="0"/>
             <xs:element name="evaluation" type="xs:double"/>
-            <xs:element name="workCategory" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="workCategory" type="xs:string" minOccurs="0"/>
             <xs:element name="workSpeed" type="xs:string" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>

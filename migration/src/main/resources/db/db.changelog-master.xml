@@ -82,4 +82,7 @@
     <!-- Добавление таблицы cls_work_speed:-->
     <include file="changelog/26_create_table_cls_work_speed.xml" relativeToChangelogFile="true"/>
 
+    <!-- Изменение атрибута work_category у executor:-->
+    <include file="changelog/27_update_table_executor.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>
