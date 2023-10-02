@@ -102,6 +102,10 @@
         <wsdl:part name="body" element="ns:makeOrderPaymentRequest"/>
     </wsdl:message>
 
+    <wsdl:message name="getExecutorByOrderSettingsInput">
+        <wsdl:part name="body" element="ns:getExecutorByOrderSettingsRequest"/>
+    </wsdl:message>
+
     <!--    Output msg-->
     <wsdl:message name="getCustomerListOutput">
         <wsdl:part name="body" element="ns:getCustomerListResponse"/>
@@ -177,6 +181,10 @@
 
     <wsdl:message name="makeOrderPaymentOutput">
         <wsdl:part name="body" element="ns:defaultResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="getExecutorByOrderSettingsOutput">
+        <wsdl:part name="body" element="ns:getExecutorByOrderSettingsResponse"/>
     </wsdl:message>
 
     <!--    PortType  -->
@@ -311,6 +319,13 @@
             <wsdl:documentation>Метод для оплаты счета заказа Order</wsdl:documentation>
             <wsdl:input message="tns:makeOrderPaymentInput"/>
             <wsdl:output message="tns:makeOrderPaymentOutput"/>
+            <wsdl:fault name="fault" message="tns:fault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getExecutorByOrderSettings">
+            <wsdl:documentation>Метод для подбора исполнителя Executor по настройкам заказа Order</wsdl:documentation>
+            <wsdl:input message="tns:getExecutorByOrderSettingsInput"/>
+            <wsdl:output message="tns:getExecutorByOrderSettingsOutput"/>
             <wsdl:fault name="fault" message="tns:fault"/>
         </wsdl:operation>
     </wsdl:portType>
@@ -554,6 +569,19 @@
 
         <wsdl:operation name="makeOrderPayment">
             <soap:operation soapAction="makeOrderPayment" soapActionRequired="true"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="fault">
+                <soap:fault name="fault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getExecutorByOrderSettings">
+            <soap:operation soapAction="getExecutorByOrderSettings" soapActionRequired="true"/>
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>

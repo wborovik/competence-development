@@ -136,7 +136,7 @@ public class ResponseMapper {
         var executors = executorPojo.getExecutors();
         ValidationUtils.checkIsEmptyPage(executors, Executor.class.getSimpleName());
         var pageType = response.getResult();
-        var resultList = pageType.getCustomerItem();
+        var resultList = pageType.getExecutorItem();
         executors.forEach(executor -> {
             var result = mapExecutorPageItemType(executor);
             resultList.add(result);
@@ -165,9 +165,8 @@ public class ResponseMapper {
             evaluation = Math.ceil(evaluation * scale) / scale;
             result.setEvaluation(evaluation);
         });
-        var categoryResults = result.getWorkCategory();
-        var categories = executor.getWorkCategories();
-        categories.forEach(category -> categoryResults.add(category.getDescription()));
+        Optional.ofNullable(executor.getWorkCategory())
+                .ifPresent(category -> result.setWorkCategory(category.getDescription()));
         Optional.ofNullable(executor.getWorkSpeed())
                 .ifPresent(speed -> result.setWorkSpeed(speed.getDescription()));
 

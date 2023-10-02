@@ -287,6 +287,30 @@
         </xs:complexType>
     </xs:element>
 
+    <!-- Метод getExecutorByOrderSettings-->
+    <xs:element name="getExecutorByOrderSettingsRequest">
+        <xs:annotation>
+            <xs:documentation>Входные параметры метода getExecutorByOrderSettings</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="orderSettings" type="filter:OrderSettingsType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getExecutorByOrderSettingsResponse">
+        <xs:annotation>
+            <xs:documentation>Выходные параметры метода getExecutorByOrderSettings</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="executor" type="core:ExecutorPageItemType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
     <xs:element name="defaultResponse">
         <xs:annotation>
             <xs:documentation>Выходные параметры методов ничего не возвращающих</xs:documentation>

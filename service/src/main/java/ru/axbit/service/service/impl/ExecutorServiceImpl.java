@@ -31,7 +31,6 @@ import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListResponse;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -88,8 +87,7 @@ public class ExecutorServiceImpl extends AbstractCommonService implements Execut
         var executorId = editExecutorReq.getId();
         var executor = findEntityById(executorId, executorRepository, TableNameConst.EXECUTOR_TABLE_NAME);
         ValidationUtils.checkIsDeleted(executor, executorId, TableNameConst.EXECUTOR_TABLE_NAME);
-        addWorkCategories(executor, editExecutorReq);
-        deleteWorkCategory(executor, editExecutorReq);
+        editWorkCategory(executor, editExecutorReq);
         editWorkSpeed(executor, editExecutorReq);
         setUserData(executor, executorRepository, editExecutorReq.getUserData());
 
@@ -97,40 +95,23 @@ public class ExecutorServiceImpl extends AbstractCommonService implements Execut
     }
 
     /**
-     * Метод для добавления новых категорий работ {@link ru.axbit.domain.domain.cls.ClsOrderCategory}
-     * исполнителю {@link Executor}.
+     * Метод для изменения характеристики {@link ru.axbit.domain.domain.cls.ClsOrderCategory},
+     * указывающей на категорию выполняемых работ исполнителем {@link Executor}.
      *
      * @param executor         передается исполнитель {@link Executor}.
      * @param editExecutorType передается SOAP тип, который содержит добавляемые категории работ.
      */
-    private void addWorkCategories(Executor executor, EditExecutorType editExecutorType) {
-        var categories = executor.getWorkCategories();
-        var designations = new ArrayList<String>();
-        categories.forEach(category -> designations.add(category.getDesignation()));
-        var addCategories = editExecutorType.getAddWorkCategory();
-        addCategories.removeAll(designations);
-        var newCategories = categoryRepository.findAllByDesignationIn(addCategories);
-        categories.addAll(newCategories);
-    }
-
-    /**
-     * Метод для удаления категорий работ {@link ru.axbit.domain.domain.cls.ClsOrderCategory}
-     * для исполнителя {@link Executor}.
-     *
-     * @param executor         передается исполнитель {@link Executor}.
-     * @param editExecutorType передается SOAP тип, который содержит добавляемые категории работ.
-     */
-    private void deleteWorkCategory(Executor executor, EditExecutorType editExecutorType) {
-        var categories = executor.getWorkCategories();
-        var deleteCategories = editExecutorType.getDeleteWorkCategory();
-        categories.removeAll(categoryRepository.findAllByDesignationIn(deleteCategories));
+    private void editWorkCategory(Executor executor, EditExecutorType editExecutorType) {
+        var category = editExecutorType.getWorkCategory();
+        var workCategory = categoryRepository.findByDesignation(category);
+        workCategory.ifPresent(executor::setWorkCategory);
     }
 
     /**
      * Метод для изменения характеристики {@link ru.axbit.domain.domain.cls.ClsWorkSpeed},
      * указывающей на среднюю скорость выполнения работ исполнителем {@link Executor}.
      *
-     * @param executor передается исполнитель {@link Executor}.
+     * @param executor         передается исполнитель {@link Executor}.
      * @param editExecutorType передается SOAP тип, который содержит добавляемые категории работ.
      */
     private void editWorkSpeed(Executor executor, EditExecutorType editExecutorType) {
@@ -152,8 +133,8 @@ public class ExecutorServiceImpl extends AbstractCommonService implements Execut
         var evaluation = evaluationService.createEvaluation();
         executor.setEvaluation(evaluation);
         var addCategories = createExecutorReq.getWorkCategory();
-        var newCategories = categoryRepository.findAllByDesignationIn(addCategories);
-        executor.setWorkCategories(newCategories);
+        var newCategories = categoryRepository.findByDesignation(addCategories);
+        newCategories.ifPresent(executor::setWorkCategory);
         setUserData(executor, executorRepository, createExecutorReq.getUserData());
 
         return ResponseMapper.mapDefaultResponse(true);

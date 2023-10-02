@@ -28,11 +28,14 @@ import ru.axbit.vborovik.competence.userservice.types.v1.GetBillListRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetBillListResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetCustomerListResponse;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorByOrderSettingsRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorByOrderSettingsResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorListResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetOrderListRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetOrderListResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.MakeOrderPaymentRequest;
+import ru.axbit.vborovik.competence.userservice.v1.Fault;
 import ru.axbit.vborovik.competence.userservice.v1.UserServicePortType;
 
 /**
@@ -91,6 +94,12 @@ public class UserServiceSoap implements UserServicePortType {
     @Override
     public DefaultResponse deleteCustomer(DeleteCustomerRequest body) {
         return CommonResultBuilder.buildResponse(customerService::deleteCustomer, body);
+    }
+
+    @Override
+    public GetExecutorByOrderSettingsResponse getExecutorByOrderSettings(GetExecutorByOrderSettingsRequest body)
+            throws Fault {
+        return CommonResultBuilder.buildResponse(orderService::getExecutorByOrderSettings, body);
     }
 
     @Override

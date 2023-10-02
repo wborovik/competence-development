@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.axbit.domain.domain.common.AbstractEntity;
 import ru.axbit.domain.domain.order.WorkOrder;
+import ru.axbit.domain.domain.user.Executor;
 import ru.axbit.domain.repository.ClsOrderCategoryRepository;
 import ru.axbit.domain.repository.CustomerRepository;
 import ru.axbit.domain.repository.ExecutorRepository;
@@ -17,6 +18,11 @@ import ru.axbit.service.service.soap.mapper.request.CommonMapperDTO;
 import ru.axbit.service.service.soap.mapper.response.OrderListPojo;
 import ru.axbit.service.service.soap.mapper.response.ResponseMapper;
 import ru.axbit.service.service.soap.spec.OrderSpecification;
+import ru.axbit.service.service.strategy.order.OrderSettingContext;
+import ru.axbit.service.service.strategy.order.impl.CategoryStrategy;
+import ru.axbit.service.service.strategy.order.impl.EvaluationAndSpeedStrategy;
+import ru.axbit.service.service.strategy.order.impl.EvaluationStrategy;
+import ru.axbit.service.service.strategy.order.impl.SpeedStrategy;
 import ru.axbit.service.util.PagingUtils;
 import ru.axbit.service.util.TableNameConst;
 import ru.axbit.service.util.ValidationUtils;
@@ -28,6 +34,8 @@ import ru.axbit.vborovik.competence.userservice.types.v1.CreateOrderRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.DefaultResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.DeleteOrderRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.EditOrderRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorByOrderSettingsRequest;
+import ru.axbit.vborovik.competence.userservice.types.v1.GetExecutorByOrderSettingsResponse;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetOrderListRequest;
 import ru.axbit.vborovik.competence.userservice.types.v1.GetOrderListResponse;
 
@@ -48,6 +56,8 @@ public class WorkOrderServiceImpl extends AbstractCommonService implements WorkO
     private final ExecutorRepository executorRepository;
     private final ClsOrderCategoryRepository categoryRepository;
     private final JsonMappingService jsonMappingService;
+
+    private final CategoryStrategy categoryStrategy;
 
     @Override
     public GetOrderListResponse getOrderList(GetOrderListRequest body) {
@@ -166,5 +176,41 @@ public class WorkOrderServiceImpl extends AbstractCommonService implements WorkO
                 -> order.setOrderCheck(jsonMappingService.mapToJsonNode(orderData)));
 
         orderRepository.save(order);
+    }
+
+    /**
+     * Метод находит оптимального исполнителя по заданным настройкам заказа.
+     *
+     * @param body передается SOAP тип, содержащий настройки заказа.
+     * @return возвращается SOAP тип, содержащий данные найденного исполнителя.
+     */
+    @Override
+    public GetExecutorByOrderSettingsResponse getExecutorByOrderSettings(GetExecutorByOrderSettingsRequest body) {
+        var orderSettingsType = body.getOrderSettings();
+        var context = new OrderSettingContext();
+        Executor executor;
+
+        if (Objects.nonNull(orderSettingsType.getWorkCategory())) {
+            var isEvaluation = orderSettingsType.isIsEvaluation();
+            var isSpeed = orderSettingsType.isIsSpeed();
+
+            if (!isEvaluation && !isSpeed) {
+                context.setStrategy(categoryStrategy);
+            }
+            if (isEvaluation && !isSpeed) {
+                context.setStrategy(new EvaluationStrategy());
+            }
+            if (!isEvaluation && isSpeed) {
+                context.setStrategy(new SpeedStrategy());
+            }
+            if (isEvaluation && isSpeed) {
+                context.setStrategy(new EvaluationAndSpeedStrategy());
+            }
+        }
+        executor = context.getExecutorByOrderService(orderSettingsType);
+        var response = new GetExecutorByOrderSettingsResponse();
+        response.setExecutor(ResponseMapper.mapExecutorPageItemType(executor));
+
+        return response;
     }
 }

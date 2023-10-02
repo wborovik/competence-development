@@ -12,9 +12,6 @@ import ru.axbit.domain.domain.order.WorkOrder;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.util.List;
@@ -42,13 +39,10 @@ public class Executor extends UserData {
     private Evaluation evaluation;
 
     /**
-     * Категории работ, которые выполняет исполнитель.
+     * Категория работ, которые выполняет исполнитель.
      */
-    @ManyToMany
-    @JoinTable(name = "executor_category",
-            joinColumns = @JoinColumn(name = "executor_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private List<ClsOrderCategory> workCategories;
+    @OneToOne
+    private ClsOrderCategory workCategory;
 
     /**
      * Характеристика скорости выполнения работ исполнителем.
